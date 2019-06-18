@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% set page_name = 'dashboard' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+{% include 'navbar.html' %}
+<div class='container'>
+  <a href='{{ url('dashboard:crawl') }}'>Crawl</a>
+</div>
+{% endblock %}

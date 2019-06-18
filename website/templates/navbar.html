@@ -1,16 +1,16 @@
 {% from 'render_form_macro.html' import render_form with context %}
 <nav class='navbar navbar-expand-lg navbar-light bg-light'>
-    <a class='navbar-brand' href={{ url('home') }}>S3 Activity Viewer</a>
+    <a class='navbar-brand' href={{ url('root') }}>S3 Activity Viewer</a>
     <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown'
         aria-expanded='false' aria-label='Toggle navigation'>
         <span class='navbar-toggler-icon'></span>
     </button>
     <div class='collapse navbar-collapse' id='navbarNavDropdown'>
         <ul class='navbar-nav mr-auto'>
-            <li class='nav-item{{ ' active' if page_name == 'home' else '' }}'>
-                <a class='nav-link' href={{ url('home') }}>
-                    {# <span class='mr-2 oi oi-home' aria-hidden='true'></span> #}
-                    Home
+            <li class='nav-item{{ ' active' if page_name == 'dashboard' else '' }}'>
+                <a class='nav-link' href={{ url('dashboard:dashboard') }}>
+                    <span class='mr-2 oi oi-wrench' aria-hidden='true'></span>
+                    Dashboard
                 </a>
             </li>
         </ul>
