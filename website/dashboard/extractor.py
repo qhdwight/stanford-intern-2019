@@ -1,6 +1,7 @@
 import glob
 import os
 import gc
+from datetime import datetime
 
 from django.db import transaction
 from s3logparse.s3logparse import parse_log_lines
@@ -9,7 +10,7 @@ from .models import Log
 
 LOCAL_LOGS = 's3_logs'
 
-BATCH_SIZE = 1000
+BATCH_SIZE = 5000
 
 def get_model_from_log_line(key_name, log) -> Log:
     model_log = Log(
@@ -44,7 +45,7 @@ def extract_from_local_into_database():
         # Skip if we have already pulled this log file
         if Log.objects.filter(key_name=key_name).exists():
             if log_file_number % 1000 == 0:
-                print(f'Skipping through... at log #{log_file_number} with name {key_name}')
+                print(f'[{datetime.now()}] Skipping through... at log #{log_file_number} with name {key_name}')
             continue
         with open(LOCAL_LOGS + '/' + file_name, 'r') as log_file:
             for log in parse_log_lines(log_file.readlines()):
@@ -56,4 +57,4 @@ def extract_from_local_into_database():
                     model.save()
             models.clear()
             gc.collect()
-            print(f'On log #{log_file_number} with name {key_name}')
+            print(f'[{datetime.now()}] On log #{log_file_number} with name {key_name}')
