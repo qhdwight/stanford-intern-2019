@@ -13,6 +13,7 @@ LOCAL_LOGS = 's3_logs'
 BATCH_SIZE = 5000
 
 def get_model_from_log_line(key_name, log) -> Log:
+    # TODO compress somehow?
     model_log = Log(
         key_name=key_name,
         bucket=log.bucket,
