@@ -103,3 +103,5 @@ ENV/
 s3_logs/
 
 .vscode/settings.json
+
+*.sqlite3
