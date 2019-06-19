@@ -6,8 +6,10 @@ from .models import Log
 
 
 def dashboard(request):
-    # Log.objects.filter
-    return render(request, 'dashboard.html')
+    request_count = Log.objects.count()
+    return render(request, 'dashboard.html', {
+        'request_count' : request_count
+    })
 
 
 def crawl(request):

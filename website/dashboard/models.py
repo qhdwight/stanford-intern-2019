@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Log(models.Model):
-    key_name=models.CharField(max_length=64)
+    key_name=models.CharField(max_length=64, db_index=True)
     bucket = models.CharField(max_length=64, null=True)
     time = models.DateTimeField(null=True)
     ip_address = models.GenericIPAddressField(null=True)
