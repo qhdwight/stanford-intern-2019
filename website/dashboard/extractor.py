@@ -10,11 +10,11 @@ from .models import Log
 
 LOCAL_LOGS = 's3_logs'
 
-BATCH_SIZE = 5000
+BATCH_SIZE = 500
 
 def get_model_from_log_line(key_name, log) -> Log:
     # TODO compress somehow?
-    model_log = Log(
+    return Log(
         key_name=key_name,
         bucket=log.bucket,
         time=log.timestamp,
@@ -34,13 +34,13 @@ def get_model_from_log_line(key_name, log) -> Log:
         user_agent=log.user_agent,
         version_id=log.version_id
     )
-    return model_log
 
 def extract_from_local_into_database():
     log_file_number = 0
     models = []
     # Loop through all log files which have multiple log entries in them
     batch_time_spent_parsing = timedelta()
+    last_batch_time = datetime.now()
     for file_name in os.listdir(LOCAL_LOGS):
         key_name = file_name
         log_file_number += 1
@@ -65,13 +65,17 @@ def extract_from_local_into_database():
         if model_count >= BATCH_SIZE:
             start = datetime.now()
             # Save all in one chunk
-            with transaction.atomic():
-                for model in models:
-                    model.save()
+            Log.objects.bulk_create(models)
             models.clear()
             gc.collect()
+            now = datetime.now()
             db_time = datetime.now() - start
             print(f'[{datetime.now()}] On log #{log_file_number} with name {key_name}')
             print(f'Done with {model_count} objets and {log_file_number} logs')
             print(f'Database update and GC collect took {db_time} parsing took {batch_time_spent_parsing}')
             batch_time_spent_parsing = timedelta()
+            now = datetime.now()
+            batch_time = now - last_batch_time
+            logs_per_second = model_count / batch_time.seconds
+            print(f'Logs per second {logs_per_second}')
+            last_batch_time = now
