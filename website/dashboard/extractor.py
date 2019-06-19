@@ -40,6 +40,7 @@ def extract_from_local_into_database():
     log_file_number = 0
     models = []
     # Loop through all log files which have multiple log entries in them
+    batch_time_spent_parsing = timedelta()
     for file_name in os.listdir(LOCAL_LOGS):
         key_name = file_name
         log_file_number += 1
@@ -48,7 +49,6 @@ def extract_from_local_into_database():
         #     if log_file_number % 1000 == 0:
         #         print(f'[{datetime.now()}] Skipping through... at log #{log_file_number} with name {key_name}')
         #     continue
-        batch_time_spent_parsing = timedelta()
         start = datetime.now()
         # Open log and create a model from each line if it has data we want
         with open(LOCAL_LOGS + '/' + file_name, 'r') as log_file:
@@ -61,7 +61,8 @@ def extract_from_local_into_database():
         # Add to running time spent parsing which rolls back every database update
         batch_time_spent_parsing += delta
         # After a certain number of log entries commit them to the database in chunk
-        if len(models) >= BATCH_SIZE:
+        model_count = len(models)
+        if model_count >= BATCH_SIZE:
             start = datetime.now()
             # Save all in one chunk
             with transaction.atomic():
@@ -71,6 +72,6 @@ def extract_from_local_into_database():
             gc.collect()
             db_time = datetime.now() - start
             print(f'[{datetime.now()}] On log #{log_file_number} with name {key_name}')
-            print(f'Done with {len(models)} objets and {log_file_number} logs')
+            print(f'Done with {model_count} objets and {log_file_number} logs')
             print(f'Database update and GC collect took {db_time} parsing took {batch_time_spent_parsing}')
             batch_time_spent_parsing = timedelta()
