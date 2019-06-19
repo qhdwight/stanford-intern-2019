@@ -6,6 +6,7 @@ import boto3
 import pandas as pd
 from decouple import config
 from s3logparse.s3logparse import LogLine, parse_log_lines
+from .extractor import save_model_from_raw_log
 
 from .models import Log
 
@@ -61,7 +62,6 @@ def crawl():
         Bucket=BUCKET_NAME, PaginationConfig=pagination_config)
     page_number = 0
     for page in pages:
-        all_logs = []
         page_number += 1
         log_file_number = 0
         for content in page['Contents']:
@@ -71,41 +71,12 @@ def crawl():
                 continue
             log_file_number += 1
             obj = client.get_object(Bucket=BUCKET_NAME, Key=key_name)
-            logs = obj['Body'].read().decode('utf-8').splitlines(True)
-            for log in parse_log_lines(logs):
-                all_logs.append((log, key_name))
+            log_lines = obj['Body'].read().decode('utf-8').splitlines(True)
+                save_model_from_raw_log(key_name, log_lines)
             if log_file_number % 100 == 0:
                 print("Waiting...")
                 time.sleep(2)
-            print(
-                f"Read log #{log_file_number} with size {content['Size']} bytes")
-        if len(all_logs) > 0:
-            print(f"Creating log models for page #{page_number}...")
-            for log, key_name in all_logs:
-                # TODO refactor to do automatically?
-                model_log = Log(
-                    key_name=key_name,
-                    bucket_owner=log.bucket_owner,
-                    bucket=log.bucket,
-                    time=log.timestamp,
-                    ip_address=log.remote_ip,
-                    requester=log.requester,
-                    request_id=log.request_id,
-                    operation=log.operation,
-                    s3_key=log.s3_key,
-                    request_uri=log.request_uri,
-                    http_status=log.status_code,
-                    error_code=log.error_code,
-                    bytes_sent=log.bytes_sent,
-                    object_size=log.object_size,
-                    total_time=log.total_time,
-                    turn_around_time=log.turn_around_time,
-                    referrer=log.referrer,
-                    user_agent=log.user_agent,
-                    version_id=log.version_id
-                )
-                model_log.save()
-            print(f"Saved models and finished page #{page_number}\n")
+            print( f"Read log #{log_file_number} with size {content['Size']} bytes")
 
 # bucket = res.Bucket(name='encode-public-logs')
 

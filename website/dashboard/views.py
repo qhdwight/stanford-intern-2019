@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 
-from . import crawler
+from . import extractor
 
 
 def dashboard(request):
@@ -8,5 +8,5 @@ def dashboard(request):
 
 
 def crawl(request):
-    crawler.crawl()
+    extractor.extract_from_local_into_database()
     return redirect('dashboard:dashboard')

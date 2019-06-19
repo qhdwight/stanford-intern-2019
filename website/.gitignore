@@ -101,3 +101,5 @@ ENV/
 .mypy_cache/
 
 s3_logs/
+
+.vscode/settings.json
