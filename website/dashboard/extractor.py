@@ -1,7 +1,7 @@
 import glob
 import os
 import gc
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.db import transaction
 from s3logparse.s3logparse import parse_log_lines
@@ -46,6 +46,7 @@ def extract_from_local_into_database():
         #     if log_file_number % 1000 == 0:
         #         print(f'[{datetime.now()}] Skipping through... at log #{log_file_number} with name {key_name}')
         #     continue
+        batch_time_spent_parsing = timedelta()
         with open(LOCAL_LOGS + '/' + file_name, 'r') as log_file:
             start = datetime.now()
             for log in parse_log_lines(log_file.readlines()):
@@ -54,7 +55,7 @@ def extract_from_local_into_database():
                 model = get_model_from_log_line(key_name, log)
                 models.append(model)
             delta = datetime.now() - start
-            print(f'Parse took {delta}')
+            batch_time_spent_parsing += delta
         if len(models) >= BATCH_SIZE:
             start = datetime.now()
             with transaction.atomic():
@@ -62,6 +63,8 @@ def extract_from_local_into_database():
                     model.save()
             models.clear()
             gc.collect()
-            delta = datetime.now() - start
-            print(f'Database update and GC collect took {delta}')
+            db_time = datetime.now() - start
+            batch_time_spent_parsing = timedelta()
             print(f'[{datetime.now()}] On log #{log_file_number} with name {key_name}')
+            print(f'Done with {BATCH_SIZE} objets and {log_file_number} logs')
+            print(f'Database update and GC collect took {db_time} parsing took {batch_time_spent_parsing}')
