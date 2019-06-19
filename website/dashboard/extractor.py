@@ -75,7 +75,7 @@ def extract_from_local_into_database():
             print(f'Database update and GC collect took {db_time} parsing took {batch_time_spent_parsing}')
             batch_time_spent_parsing = timedelta()
             now = datetime.now()
-            batch_time_seconds = (now - last_batch_time).seconds
+            batch_time_seconds = (now - last_batch_time).total_seconds()
             if batch_time_seconds > 0:
                 logs_per_second = model_count / batch_time_seconds
                 print(f'Logs per second {logs_per_second}')
