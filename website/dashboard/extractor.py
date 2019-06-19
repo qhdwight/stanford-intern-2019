@@ -10,7 +10,7 @@ from .models import Log
 
 LOCAL_LOGS = 's3_logs'
 
-BATCH_SIZE = 2000
+BATCH_SIZE = 5000
 
 def get_model_from_log_line(key_name, log) -> Log:
     model_log = Log(
@@ -47,15 +47,15 @@ def extract_from_local_into_database():
         #         print(f'[{datetime.now()}] Skipping through... at log #{log_file_number} with name {key_name}')
         #     continue
         batch_time_spent_parsing = timedelta()
+        start = datetime.now()
         with open(LOCAL_LOGS + '/' + file_name, 'r') as log_file:
-            start = datetime.now()
             for log in parse_log_lines(log_file.readlines()):
                 if log.operation != 'REST.GET.OBJECT' and log.operation != 'REST.HEAD.OBJECT':
                     continue
                 model = get_model_from_log_line(key_name, log)
                 models.append(model)
-            delta = datetime.now() - start
-            batch_time_spent_parsing += delta
+        delta = datetime.now() - start
+        batch_time_spent_parsing += delta
         if len(models) >= BATCH_SIZE:
             start = datetime.now()
             with transaction.atomic():
