@@ -2,8 +2,11 @@ from django.shortcuts import redirect, render
 
 from . import extractor
 
+from .models import Log
+
 
 def dashboard(request):
+    # Log.objects.filter
     return render(request, 'dashboard.html')
 
 

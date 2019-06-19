@@ -5,9 +5,10 @@ from datetime import datetime, timedelta
 import boto3
 import pandas as pd
 from decouple import config
+from django.db import transaction
 from s3logparse.s3logparse import LogLine, parse_log_lines
-from .extractor import save_model_from_raw_log
 
+from .extractor import get_model_from_log_line
 from .models import Log
 
 BUCKET_NAME = 'encode-public-logs'
@@ -72,7 +73,10 @@ def crawl():
             log_file_number += 1
             obj = client.get_object(Bucket=BUCKET_NAME, Key=key_name)
             log_lines = obj['Body'].read().decode('utf-8').splitlines(True)
-                save_model_from_raw_log(key_name, log_lines)
+            with transaction.atomic():
+                for log in parse_log_lines(log_lines):
+                    model = get_model_from_log_line(key_name, log)
+                    model.save()
             if log_file_number % 100 == 0:
                 print("Waiting...")
                 time.sleep(2)
