@@ -41,8 +41,7 @@ def extract_from_local_into_database():
         if Log.objects.filter(key_name=key_name).exists():
             continue
         log_file_number += 1
-        print(file_name)
         with open(LOCAL_LOGS + '/' + file_name, 'r') as log_file:
             save_model_from_raw_log(key_name, log_file.readlines())
         if log_file_number % LOG_EVERY_N == 0:
-            print(f'On log #{log_file_number}')
+            print(f'On log #{log_file_number} with name {key_name}')
