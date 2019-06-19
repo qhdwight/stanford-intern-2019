@@ -3,7 +3,6 @@ from django.db import models
 
 class Log(models.Model):
     key_name=models.CharField(max_length=64)
-    bucket_owner = models.CharField(max_length=64, null=True)
     bucket = models.CharField(max_length=64, null=True)
     time = models.DateTimeField(null=True)
     ip_address = models.GenericIPAddressField(null=True)
