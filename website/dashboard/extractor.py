@@ -64,7 +64,7 @@ def extract_from_local_into_database():
             models.clear()
             gc.collect()
             db_time = datetime.now() - start
-            batch_time_spent_parsing = timedelta()
             print(f'[{datetime.now()}] On log #{log_file_number} with name {key_name}')
             print(f'Done with {BATCH_SIZE} objets and {log_file_number} logs')
             print(f'Database update and GC collect took {db_time} parsing took {batch_time_spent_parsing}')
+            batch_time_spent_parsing = timedelta()
