@@ -8,8 +8,8 @@ from decouple import config
 from django.db import transaction
 from s3logparse.s3logparse import LogLine, parse_log_lines
 
-from .extractor import get_model_from_log_line
-from .models import Log
+from dashboard.management.extractor import get_model_from_log_line
+from dashboard.models import Log
 
 BUCKET_NAME = 'encode-public-logs'
 

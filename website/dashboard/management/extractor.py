@@ -1,16 +1,17 @@
+import gc
 import glob
 import os
-import gc
 from datetime import datetime, timedelta
 
 from django.db import transaction
 from s3logparse.s3logparse import parse_log_lines
 
-from .models import Log
+from dashboard.models import Log
 
 LOCAL_LOGS = 's3_logs'
 
 BATCH_SIZE = 800
+
 
 def get_model_from_log_line(key_name, log) -> Log:
     # TODO compress somehow?
@@ -34,6 +35,7 @@ def get_model_from_log_line(key_name, log) -> Log:
         user_agent=log.user_agent,
         version_id=log.version_id
     )
+
 
 def extract_from_local_into_database():
     log_file_number = 0
@@ -70,9 +72,11 @@ def extract_from_local_into_database():
             gc.collect()
             now = datetime.now()
             db_time = datetime.now() - start
-            print(f'[{datetime.now()}] On log #{log_file_number} with name {key_name}')
+            print(
+                f'[{datetime.now()}] On log #{log_file_number} with name {key_name}')
             print(f'Done with {model_count} objets and {log_file_number} logs')
-            print(f'Database update and GC collect took {db_time} parsing took {batch_time_spent_parsing}')
+            print(
+                f'Database update and GC collect took {db_time} parsing took {batch_time_spent_parsing}')
             batch_time_spent_parsing = timedelta()
             now = datetime.now()
             batch_time_seconds = (now - last_batch_time).total_seconds()
