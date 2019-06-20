@@ -1,10 +1,7 @@
 import gc
-import glob
 import os
 from datetime import datetime, timedelta
-from itertools import chain
 
-from django.db import transaction
 from s3logparse import s3logparse
 
 from dashboard.models import Log

@@ -1,12 +1,9 @@
-import os.path
 import time
-from datetime import datetime, timedelta
 
 import boto3
-import pandas as pd
 from decouple import config
 from django.db import transaction
-from s3logparse.s3logparse import LogLine, parse_log_lines
+from s3logparse.s3logparse import parse_log_lines
 
 from dashboard.management.extractor import get_model_from_log_line
 from dashboard.models import Log
@@ -80,7 +77,7 @@ def crawl():
             if log_file_number % 100 == 0:
                 print("Waiting...")
                 time.sleep(2)
-            print( f"Read log #{log_file_number} with size {content['Size']} bytes")
+            print(f"Read log #{log_file_number} with size {content['Size']} bytes")
 
 # bucket = res.Bucket(name='encode-public-logs')
 
