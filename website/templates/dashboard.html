@@ -9,15 +9,69 @@
                 <p class='counter display-1' data-count='{{ request_count }}'>0</p>
                 <h3 id='requests-made-text'>Requests Made to S3</h3>
             </div>
-            <div class='row px-5'>
-                <canvas id='most-used-chart' style='width: 100%; height: auto'></canvas>
+            <div class='row p-5'>
+                <canvas id='most-queried-chart' style='width: 100%; height: 60vh'></canvas>
+                {#                <canvas id='most-using-chart' style='width: 100%; height: 60vh'></canvas>#}
+            </div>
+            <div class='row p5'>
+                <table class='table'>
+                    <tr>
+                        <th scope='col'>Item</th>
+                        <th scope='col'>Count</th>
+                    </tr>
+                    {% for item in most_queried %}
+                        <tr>
+                            <td>{{ item.s3_key }}</td>
+                            <td>{{ item.total }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block scripts %}
     <script>
-        $('.counter').hide().fadeIn(1000).each(function () {
+        function makeChart(canvas, labels, data) {
+            return new Chart(canvas[0].getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '# of Hits',
+                        data: data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+
+        $('.counter').fadeTo(0, 0).fadeTo(1000, 1).each(function () {
             const $this = $(this), countTo = $this.attr('data-count');
             $({finalNumber: $this.text()}).animate({
                     finalNumber: countTo
@@ -33,45 +87,11 @@
                     }
                 });
         });
-        $('#requests-made-text').hide().delay(1000).fadeIn(500);
-        const $mostUsedChart = $('#most-used-chart');
-        $mostUsedChart.hide().delay(1500).fadeIn(250);
-        const ctx = $mostUsedChart[0].getContext('2d');
-        const mostUsedChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {{ header_json|safe }},
-                datasets: [{
-                    label: '# of Hits',
-                    data: {{ data_json|safe }},
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
+
+        $('#requests-made-text').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
+        const $mostQueriedChart = $('#most-queried-chart');
+        $mostQueriedChart.fadeTo(0, 0).finish().fadeTo(1000, 1);
+        const mostQueriedChart = makeChart($mostQueriedChart, {{ most_queried_labels|safe }}, {{ most_queried_data|safe }});
+        {#const mostUsingChart = makeChart($('#most-using-chart'), {{ most_using_labels|safe }}, {{ most_using_data|safe }});#}
     </script>
 {% endblock %}
