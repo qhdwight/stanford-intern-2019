@@ -44,7 +44,7 @@ class Command(BaseCommand):
             .distinct() \
             .annotate(count=Count('s3_key')) \
             .order_by('-count')
-        limited_most_queried = most_queried_s3_keys[:2]
+        limited_most_queried = most_queried_s3_keys[:32]
         with transaction.atomic():
             for most_queried in limited_most_queried:
                 item = get_or_create_item(most_queried['s3_key'])
