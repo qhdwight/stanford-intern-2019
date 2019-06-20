@@ -2,18 +2,19 @@ import gc
 import glob
 import os
 from datetime import datetime, timedelta
+from itertools import chain
 
 from django.db import transaction
-from s3logparse.s3logparse import parse_log_lines
+from s3logparse import s3logparse
 
 from dashboard.models import Log
 
 LOCAL_LOGS = 's3_logs'
 
-BATCH_SIZE = 600
+BATCH_SIZE = 700
 
 
-def get_model_from_log_line(key_name, log) -> Log:
+def get_model_from_log_line(key_name, log):
     # TODO compress somehow?
     return Log(
         key_name=key_name,
@@ -39,50 +40,52 @@ def get_model_from_log_line(key_name, log) -> Log:
 
 def extract_from_local_into_database():
     log_file_number = 0
-    models = []
-    # Loop through all log files which have multiple log entries in them
+    batched_models = []
     batch_time_spent_parsing = timedelta()
     last_batch_time = datetime.now()
-    for file_name in os.listdir(LOCAL_LOGS):
-        key_name = file_name
+    def save_batched():
+        nonlocal last_batch_time, batched_models, batch_time_spent_parsing, log_file_number
+        model_count = len(batched_models)
+        start = datetime.now()
+        # Save all in one chunk
+        Log.objects.bulk_create(batched_models)
+        batched_models.clear()
+        now = datetime.now()
+        database_insert_time = datetime.now() - start
+        print(
+            f'[{now}] On log #{log_file_number} with name {key_name}')
+        print(f'Done with {model_count} objets and {log_file_number} logs')
+        print(
+            f'Database update took {database_insert_time} parsing took {batch_time_spent_parsing}')
+        batch_time_spent_parsing = timedelta()
+        batch_time_seconds = (now - last_batch_time).total_seconds()
+        logs_per_second = model_count / batch_time_seconds
+        print(f'Current rate of logs per second {logs_per_second}')
+        last_batch_time = now
+        gc.collect()
+    # Loop through all log files which have multiple log entries in them
+    already_seen = False
+    for key_name in os.listdir(LOCAL_LOGS):
+        if already_seen:
+            break
         log_file_number += 1
-        # Skip if we have already pulled this log file
-        if Log.objects.filter(key_name=key_name).exists():
-            if log_file_number % 1000 == 0:
-                print(f'[{datetime.now()}] Skipping through... at log #{log_file_number} with name {key_name}')
-            continue
         start = datetime.now()
         # Open log and create a model from each line if it has data we want
-        with open(LOCAL_LOGS + '/' + file_name, 'r') as log_file:
-            for log in parse_log_lines(log_file.readlines()):
+        with open(f'{LOCAL_LOGS}/{key_name}', 'r') as log_file:
+            for log in s3logparse.parse_log_lines(log_file.readlines()):
+                # Skip if we have already pulled this log file
+                if Log.objects.filter(request_id=log.request_id).exists():
+                    already_seen = True
+                    break
                 if log.operation != 'REST.GET.OBJECT' and log.operation != 'REST.HEAD.OBJECT':
                     continue
                 model = get_model_from_log_line(key_name, log)
-                models.append(model)
-        delta = datetime.now() - start
+                batched_models.append(model)
+        parse_delta = datetime.now() - start
         # Add to running time spent parsing which rolls back every database update
-        batch_time_spent_parsing += delta
+        batch_time_spent_parsing += parse_delta
         # After a certain number of log entries commit them to the database in chunk
-        model_count = len(models)
-        if model_count >= BATCH_SIZE:
-            start = datetime.now()
-            # Save all in one chunk
-            Log.objects.bulk_create(models)
-            models.clear()
-            gc.collect()
-            now = datetime.now()
-            db_time = datetime.now() - start
-            print(
-                f'[{datetime.now()}] On log #{log_file_number} with name {key_name}')
-            print(f'Done with {model_count} objets and {log_file_number} logs')
-            print(
-                f'Database update and GC collect took {db_time} parsing took {batch_time_spent_parsing}')
-            batch_time_spent_parsing = timedelta()
-            now = datetime.now()
-            batch_time_seconds = (now - last_batch_time).total_seconds()
-            if batch_time_seconds > 0:
-                logs_per_second = model_count / batch_time_seconds
-                print(f'Logs per second {logs_per_second}')
-            else:
-                print('zoooom')
-            last_batch_time = now
+        if len(batched_models) >= BATCH_SIZE:
+            save_batched()
+    if batched_models:
+        save_batched()
