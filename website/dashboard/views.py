@@ -1,34 +1,43 @@
-from django.db.models import Count
-from django.shortcuts import render
-
-from .models import Log
 import json
 
+from django.shortcuts import render
 
-def parse_key(s3_key):
-    if s3_key.count('/') > 1:
-        return s3_key.split('/')[-1]
-    return s3_key
+from .models import Log, MostQueried, IntervalQueryCount, get_file_name
 
 
 def dashboard(request):
-    request_count = Log.objects.count()
-    most_queried_s3_keys = Log.objects.values('s3_key', 'ip_address').distinct().annotate(
-        total=Count('s3_key')).order_by('-total')
-    graph_most_queried = most_queried_s3_keys[:6]
-    table_most_queried = most_queried_s3_keys[:50]
-    most_queried_labels = json.dumps(
-        [parse_key(s3_key) for s3_key in graph_most_queried.values_list('s3_key', flat=True)])
-    most_queried_data = json.dumps(list(graph_most_queried.values_list('total', flat=True)))
-    # most_using = Log.objects.values('requester').annotate(total=Count('requester')).order_by('-total')
-    # graph_most_using = most_using[:6]
-    # most_using_labels = json.dumps(list(graph_most_using.values_list('requester', flat=True)))
-    # most_using_data = json.dumps(list(graph_most_using.values_list('total', flat=True)))
+    # get_requests = Log.objects.filter(operation='REST.GET.OBJECT')
+    #
+    # most_queried_s3_keys = get_requests \
+    #     .values('s3_key', 'ip_address') \
+    #     .distinct() \
+    #     .annotate(total=Count('s3_key')) \
+    #     .order_by('-total')
+    # table_most_queried = most_queried_s3_keys[:50]
+    # graph_most_queried = most_queried_s3_keys[:6]
+    #
+    # most_using = get_requests \
+    #     .values('requester') \
+    #     .filter(requester__contains='user/') \
+    #     .exclude(requester__contains='user/pds-test-user') \
+    #     .exclude(requester__contains='user/admin2') \
+    #     .exclude(requester__contains='user/test1') \
+    #     .annotate(total=Count('requester')) \
+    #     .order_by('-total')
+    # graph_most_using = most_using[:10]
+    # print(graph_most_using)
+
+    graph_most_queried = MostQueried.objects.all()[:6]
+    time_info = IntervalQueryCount.objects.all()
+
     return render(request, 'dashboard.html', {
-        'request_count': request_count,
-        'most_queried': table_most_queried,
-        'most_queried_labels': most_queried_labels,
-        'most_queried_data': most_queried_data,
-        # 'most_using_labels': most_using_labels,
-        # 'most_using_data': most_using_data
+        'request_count': Log.objects.count(),
+        'most_queried_table': MostQueried.objects.all()[:50],
+        'most_queried_labels': json.dumps(
+            [get_file_name(most_queried.item.s3_key) for most_queried in graph_most_queried]),
+        'most_queried_data': json.dumps(list(graph_most_queried.values_list('count', flat=True))),
+        # 'most_using_labels': json.dumps(list(graph_most_using.values_list('requester', flat=True))),
+        # 'most_using_data': json.dumps(list(graph_most_using.values_list('count', flat=True))),
+        'time_info_times': json.dumps([time.time.isoformat() for time in time_info]),
+        'time_info_counts': json.dumps(list(time_info.values_list('count', flat=True)))
     })

@@ -4,25 +4,32 @@
 {% block content %}
     {% include 'navbar.html' %}
     <div class='container'>
-        <div class='col mt-2'>
-            <div class='text-center'>
+        <div class='col m-4'>
+            <div class='text-center m-4'>
                 <p class='counter display-1' data-count='{{ request_count }}'>0</p>
-                <h3 id='requests-made-text'>Requests Made to S3</h3>
+                <h3 id='requests-made-text'>Requests Made to S3 Server</h3>
             </div>
-            <div class='row p-5'>
-                <canvas id='most-queried-chart' style='width: 100%; height: 60vh'></canvas>
-                {#                <canvas id='most-using-chart' style='width: 100%; height: 60vh'></canvas>#}
+            <hr>
+            <div class='row m-4'>
+                <canvas class='m-4' id='time-chart' style='width: 100%; height: 60vh'></canvas>
+                <canvas class='m-4' id='most-queried-chart' style='width: 100%; height: 60vh'></canvas>
+{#                <canvas class='m-2' id='most-using-chart' style='width: 100%; height: 60vh'></canvas>#}
             </div>
-            <div class='row p5'>
+            <div class='row m-4'>
                 <table class='table'>
                     <tr>
                         <th scope='col'>Item</th>
+                        <th scope='col'>Experiment</th>
+                        <th scope='col'>Assay Type</th>
                         <th scope='col'>Count</th>
                     </tr>
-                    {% for item in most_queried %}
+                    {% for most_queried in most_queried_table %}
                         <tr>
-                            <td>{{ item.s3_key }}</td>
-                            <td>{{ item.total }}</td>
+                        {% set name = render_s3_key(most_queried.item.s3_key) %}
+                            <td><a target='_blank' href='{{ get_encode_url(name.split('.')[0]) }}'>{{ name }}</a></td>
+                            <td><a target='_blank' href='{{ get_encode_url('experiments/' + most_queried.item.experiment) }}'>{{ most_queried.item.experiment }}</a></td>
+                            <td>{{ most_queried.item.assay_title }}</td>
+                            <td>{{ most_queried.count }}</td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -32,7 +39,7 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        function makeChart(canvas, labels, data) {
+        function makeBarChart(canvas, labels, data) {
             return new Chart(canvas[0].getContext('2d'), {
                 type: 'bar',
                 data: {
@@ -71,6 +78,33 @@
             });
         }
 
+        function makeTimeChart(canvas, times, counts) {
+            return new Chart(canvas[0].getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: times,
+                        datasets: [{
+                            label: '# of hits',
+                            data: counts,
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderWidth: 1
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                type: 'time',
+                                time: {
+                                    unit: 'day'
+                                }
+                            }]
+                        }
+                    }
+                }
+            )
+        }
+
         $('.counter').fadeTo(0, 0).fadeTo(1000, 1).each(function () {
             const $this = $(this), countTo = $this.attr('data-count');
             $({finalNumber: $this.text()}).animate({
@@ -91,7 +125,8 @@
         $('#requests-made-text').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
         const $mostQueriedChart = $('#most-queried-chart');
         $mostQueriedChart.fadeTo(0, 0).finish().fadeTo(1000, 1);
-        const mostQueriedChart = makeChart($mostQueriedChart, {{ most_queried_labels|safe }}, {{ most_queried_data|safe }});
-        {#const mostUsingChart = makeChart($('#most-using-chart'), {{ most_using_labels|safe }}, {{ most_using_data|safe }});#}
+        const mostQueriedChart = makeBarChart($mostQueriedChart, {{ most_queried_labels|safe }}, {{ most_queried_data|safe }}),
+            {#mostUsingChart = makeBarChart($('#most-using-chart'), {{ most_using_labels|safe }}, {{ most_using_data|safe }}),#}
+            timeChart = makeTimeChart($('#time-chart'), {{ time_info_times|safe }}, {{ time_info_counts|safe }});
     </script>
 {% endblock %}

@@ -1,5 +1,42 @@
 from django.db import models
 
+ENCODE_URL_BASE = 'https://www.encodeproject.org'
+
+
+def get_file_name(s3_key):
+    return s3_key.split('/')[-1] if s3_key.count('/') > 1 else s3_key
+
+
+def get_item_name(s3_key):
+    name = get_file_name(s3_key)
+    if '.' in name:
+        name = name.split('.')[0]
+    return name
+
+
+def get_encode_url(name):
+    return f'{ENCODE_URL_BASE}/{name}'
+
+
+def get_encode_url_from_s3(s3_key):
+    return get_encode_url(get_item_name(s3_key))
+
+
+class Item(models.Model):
+    s3_key = models.CharField(max_length=64, unique=True)
+    experiment = models.CharField(max_length=64)
+    assay_title = models.CharField(max_length=64)
+
+
+class MostQueried(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    count = models.PositiveIntegerField()
+
+
+class IntervalQueryCount(models.Model):
+    time = models.DateTimeField()
+    count = models.PositiveIntegerField()
+
 
 class Log(models.Model):
     key_name = models.CharField(max_length=64, db_index=True)
