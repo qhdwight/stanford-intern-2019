@@ -17,7 +17,7 @@
       <sourceFolder url="file://$MODULE_DIR$/dashboard" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/activity_viewer" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.6 (website)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Django Lib" level="project" />
   </component>

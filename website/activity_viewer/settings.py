@@ -55,7 +55,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'environment': 'activity_viewer.jinja2.environment'
+            'environment': 'activity_viewer.jinja_settings.environment'
         }
     },
     {
