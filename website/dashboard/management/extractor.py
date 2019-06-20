@@ -10,7 +10,7 @@ from dashboard.models import Log
 
 LOCAL_LOGS = 's3_logs'
 
-BATCH_SIZE = 800
+BATCH_SIZE = 600
 
 
 def get_model_from_log_line(key_name, log) -> Log:
@@ -47,10 +47,10 @@ def extract_from_local_into_database():
         key_name = file_name
         log_file_number += 1
         # Skip if we have already pulled this log file
-        # if Log.objects.filter(key_name=key_name).exists():
-        #     if log_file_number % 1000 == 0:
-        #         print(f'[{datetime.now()}] Skipping through... at log #{log_file_number} with name {key_name}')
-        #     continue
+        if Log.objects.filter(key_name=key_name).exists():
+            if log_file_number % 1000 == 0:
+                print(f'[{datetime.now()}] Skipping through... at log #{log_file_number} with name {key_name}')
+            continue
         start = datetime.now()
         # Open log and create a model from each line if it has data we want
         with open(LOCAL_LOGS + '/' + file_name, 'r') as log_file:
