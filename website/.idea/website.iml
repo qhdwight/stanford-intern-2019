@@ -22,7 +22,7 @@
     <orderEntry type="library" name="Django Lib" level="project" />
   </component>
   <component name="TemplatesService">
-    <option name="TEMPLATE_CONFIGURATION" value="Django" />
+    <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/venv/Lib/site-packages/django/forms/templates" />

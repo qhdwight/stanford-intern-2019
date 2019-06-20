@@ -10,6 +10,7 @@ def render_field_with_class(field, css_class_name):
         field.field.widget.attrs['class'] = css_class_name
     return field
 
+
 def environment(**options):
     env = Environment(**options)
     env.globals.update({
