@@ -43,33 +43,35 @@ def extract_from_local_into_database():
     batched_models = []
     batch_time_spent_parsing = timedelta()
     last_batch_time = datetime.now()
+
     def save_batched():
         nonlocal last_batch_time, batched_models, batch_time_spent_parsing, log_file_number
         model_count = len(batched_models)
-        start = datetime.now()
+        database_insert_start = datetime.now()
         # Save all in one chunk
         Log.objects.bulk_create(batched_models)
         batched_models.clear()
         now = datetime.now()
-        database_insert_time = datetime.now() - start
+        database_insert_start_time = datetime.now() - database_insert_start
         print(
             f'[{now}] On log #{log_file_number} with name {key_name}')
-        print(f'Done with {model_count} objets and {log_file_number} logs')
+        print(f'Done with {model_count} objects and {log_file_number} logs')
         print(
-            f'Database update took {database_insert_time} parsing took {batch_time_spent_parsing}')
+            f'Database update took {database_insert_start_time} parsing took {batch_time_spent_parsing}')
         batch_time_spent_parsing = timedelta()
         batch_time_seconds = (now - last_batch_time).total_seconds()
         logs_per_second = model_count / batch_time_seconds
         print(f'Current rate of logs per second {logs_per_second}')
         last_batch_time = now
         gc.collect()
+
     # Loop through all log files which have multiple log entries in them
     already_seen = False
     for key_name in os.listdir(LOCAL_LOGS):
         if already_seen:
             break
         log_file_number += 1
-        start = datetime.now()
+        parse_data_start_time = datetime.now()
         # Open log and create a model from each line if it has data we want
         with open(f'{LOCAL_LOGS}/{key_name}', 'r') as log_file:
             for log in s3logparse.parse_log_lines(log_file.readlines()):
@@ -81,7 +83,7 @@ def extract_from_local_into_database():
                     continue
                 model = get_model_from_log_line(key_name, log)
                 batched_models.append(model)
-        parse_delta = datetime.now() - start
+        parse_delta = datetime.now() - parse_data_start_time
         # Add to running time spent parsing which rolls back every database update
         batch_time_spent_parsing += parse_delta
         # After a certain number of log entries commit them to the database in chunk

@@ -1,6 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
-
-from dashboard.management.extractor import extract_from_local_into_database
+from django.core.management.base import BaseCommand
 
 from dashboard.models import Log
 
