@@ -13,7 +13,7 @@ def parse_key(s3_key):
 
 def dashboard(request):
     request_count = Log.objects.count()
-    most_queried_s3_keys = Log.objects.values('s3_key').annotate(
+    most_queried_s3_keys = Log.objects.values('s3_key', 'ip_address').annotate(
         total=Count('s3_key')).order_by('-total')
     graph_most_queried = most_queried_s3_keys[:6]
     table_most_queried = most_queried_s3_keys[:50]
