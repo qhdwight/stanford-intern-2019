@@ -5,31 +5,57 @@
     {% include 'navbar.html' %}
     <div class='container'>
         <div class='col m-4'>
-            <div class='text-center m-4'>
-                <p class='counter display-1' data-count='{{ request_count }}'>0</p>
-                <h3 id='requests-made-text'>Requests Made to S3 Server</h3>
+            <div class='row'>
+                <div class='col text-center m-4'>
+                    <p class='counter display-2' data-count='{{ request_count }}' format='regular'>0</p>
+                    <h3 class='fade-in-header'>Requests Made to S3 Server</h3>
+                </div>
+                <div class='col'>
+                    <div class='text-center m-4'>
+                        <p class='counter display-2' data-count='{{ average_object_size }}' format='space'>0</p>
+                        <h3 class='fade-in-header'>Average object size</h3>
+                    </div>
+                </div>
             </div>
             <hr>
             <div class='row m-4'>
-                <canvas class='m-4' id='time-chart' style='width: 100%; height: 60vh'></canvas>
-                <canvas class='m-4' id='most-queried-chart' style='width: 100%; height: 60vh'></canvas>
-{#                <canvas class='m-2' id='most-using-chart' style='width: 100%; height: 60vh'></canvas>#}
+                {#                <canvas class='m-4' id='time-chart' style='width: 100%; height: 60vh'></canvas>#}
+                <div class='m-4 chart' id='time-chart' style='width: 100%; height: 60vh'></div>
+                {#                <canvas class='m-4' id='most-queried-chart' style='width: 100%; height: 60vh'></canvas>#}
+                <div class='m-4 chart' id='most-queried-chart' style='width: 100%; height: 60vh'></div>
+                {#                <canvas class='m-2' id='most-using-chart' style='width: 100%; height: 60vh'></canvas>#}
             </div>
             <div class='row m-4'>
+                <div class='col text-center'>
+                    <h1>Most accessed files</h1>
+                </div>
                 <table class='table'>
                     <tr>
                         <th scope='col'>Item</th>
                         <th scope='col'>Experiment</th>
                         <th scope='col'>Assay Type</th>
                         <th scope='col'>Count</th>
+                        <th scope='col'>Details</th>
                     </tr>
                     {% for most_queried in most_queried_table %}
                         <tr>
-                        {% set name = render_s3_key(most_queried.item.s3_key) %}
+                            {% set name = render_s3_key(most_queried.item.s3_key) %}
                             <td><a target='_blank' href='{{ get_encode_url(name.split('.')[0]) }}'>{{ name }}</a></td>
-                            <td><a target='_blank' href='{{ get_encode_url('experiments/' + most_queried.item.experiment) }}'>{{ most_queried.item.experiment }}</a></td>
+                            <td>
+                                <a target='_blank'
+                                   href='{{ get_encode_url('experiments/' + most_queried.item.experiment) }}'>
+                                    {{ most_queried.item.experiment }}
+                                </a>
+                            </td>
                             <td>{{ most_queried.item.assay_title }}</td>
                             <td>{{ most_queried.count }}</td>
+                            <td>
+                                <a id='btn-{{ name }}'
+                                   href='{{ url('dashboard:item_dashboard', kwargs={'item_name':name}) }}'>
+                                    Details
+                                    <span class='ml-2 oi oi-bar-chart' aria-hidden='true'></span>
+                                </a>
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -39,23 +65,52 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        function makeBarChart(canvas, labels, data) {
-            return new Chart(canvas[0].getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '# of Hits',
-                        data: data,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
+        function formatBytes(bytes, decimals) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024,
+                dm = decimals <= 0 ? 0 : decimals || 2,
+                sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        function formatCount(number, formatType) {
+            if (formatType === 'regular') {
+                return Math.floor(number).toLocaleString();
+            } else if (formatType === 'space') {
+                return formatBytes(number, 1);
+            }
+        }
+
+        $('.counter').fadeTo(0, 0).fadeTo(1000, 1).each(function () {
+            const $this = $(this), countTo = $this.attr('data-count'), formatType = $this.attr('format');
+            $({finalNumber: $this.text()}).animate({
+                    count: countTo
+                },
+                {
+                    duration: 1500,
+                    easing: 'swing',
+                    step: function () {
+                        $this.text(formatCount(this.count, formatType))
+                    },
+                    complete: this.step
+                });
+        });
+
+        Plotly.newPlot('most-queried-chart', [{
+                x: {{ most_queried_labels|safe }},
+                y: {{ most_queried_data|safe }},
+                marker: {
+                    color: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    line: {
+                        color: [
                             'rgba(255, 99, 132, 1)',
                             'rgba(54, 162, 235, 1)',
                             'rgba(255, 206, 86, 1)',
@@ -63,70 +118,52 @@
                             'rgba(153, 102, 255, 1)',
                             'rgba(255, 159, 64, 1)'
                         ],
-                        borderWidth: 1
-                    }]
+                        width: 1
+                    }
                 },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
+                type: 'bar'
+            }], {
+                title: 'Most accessed files',
+                xaxis: {
+                    title: 'File'
+                }, yaxis: {
+                    title: 'Request count'
                 }
-            });
-        }
+            }
+        );
 
-        function makeTimeChart(canvas, times, counts) {
-            return new Chart(canvas[0].getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: times,
-                        datasets: [{
-                            label: '# of hits',
-                            data: counts,
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderWidth: 1
-                        }],
-                    },
-                    options: {
-                        scales: {
-                            xAxes: [{
-                                type: 'time',
-                                time: {
-                                    unit: 'day'
-                                }
-                            }]
-                        }
-                    }
-                }
-            )
-        }
-
-        $('.counter').fadeTo(0, 0).fadeTo(1000, 1).each(function () {
-            const $this = $(this), countTo = $this.attr('data-count');
-            $({finalNumber: $this.text()}).animate({
-                    finalNumber: countTo
+        Plotly.newPlot('time-chart', [{
+                x: {{ time_info_times|safe }},
+                y: {{ time_info_counts|safe }},
+                type: 'scatter',
+                line: {
+                    shape: 'spline',
+                    color: 'rgba(54, 162, 235, 1)'
                 },
-                {
-                    duration: 1500,
-                    easing: 'swing',
-                    step: function () {
-                        $this.text(Math.floor(this.finalNumber).toLocaleString());
-                    },
-                    complete: function () {
-                        $this.text(this.finalNumber.toLocaleString());
-                    }
-                });
+                fill: 'tozeroy',
+                fillcolor: 'rgba(54, 162, 235, 0.2)'
+            }], {
+                title: 'Accesses over time',
+                xaxis: {
+                    title: 'Timestamp'
+                }, yaxis: {
+                    title: 'Request count'
+                }
+            }
+        );
+
+        $('.fade-in-header').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
+        $('.chart').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
+
+        $('#most-queried-chart')[0].on('plotly_click', function (data) {
+            const item_name = data.points[0].x;
+            const button_id = 'btn-' + item_name;
+            document.getElementById(button_id).click()
         });
 
-        $('#requests-made-text').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
-        const $mostQueriedChart = $('#most-queried-chart');
-        $mostQueriedChart.fadeTo(0, 0).finish().fadeTo(1000, 1);
-        const mostQueriedChart = makeBarChart($mostQueriedChart, {{ most_queried_labels|safe }}, {{ most_queried_data|safe }}),
-            {#mostUsingChart = makeBarChart($('#most-using-chart'), {{ most_using_labels|safe }}, {{ most_using_data|safe }}),#}
-            timeChart = makeTimeChart($('#time-chart'), {{ time_info_times|safe }}, {{ time_info_counts|safe }});
+        {#const#}
+        {#    mostQueriedChart = makeBarChart($mostQueriedChart, {{ most_queried_labels|safe }}, {{ most_queried_data|safe }}),#}
+        {#    mostUsingChart = makeBarChart($('#most-using-chart'), {{ most_using_labels|safe }}, {{ most_using_data|safe }}),#}
+        {#    timeChart = makeTimeChart($('#time-chart'), );#}
     </script>
 {% endblock %}

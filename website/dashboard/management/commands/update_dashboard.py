@@ -57,10 +57,12 @@ class Command(BaseCommand):
                     print(f'Created most queried with name {item.s3_key} with count {count}')
                     MostQueried.objects.create(item=item, count=count)
         print('Finished updating most queried items!')
+        # See which experiments are most valuable
+
         # See how many requests we got at different times of the year
-        start_time = datetime(2019, 5, 1, tzinfo=timezone.get_current_timezone())
+        start_time = datetime(2019, 3, 1, tzinfo=timezone.get_current_timezone())
         end_time = timezone.now()
-        interval = timedelta(5)
+        interval = timedelta(4)
         time = start_time
         with transaction.atomic():
             while time < end_time:

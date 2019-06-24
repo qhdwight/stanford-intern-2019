@@ -1,8 +1,9 @@
 import json
 
-from django.shortcuts import render
+from django.db.models import Avg, Count
+from django.shortcuts import render, get_object_or_404
 
-from .models import Log, MostQueried, IntervalQueryCount, get_file_name
+from .models import Log, Item, MostQueried, IntervalQueryCount, get_file_name
 
 
 def dashboard(request):
@@ -29,9 +30,11 @@ def dashboard(request):
 
     graph_most_queried = MostQueried.objects.all()[:6]
     time_info = IntervalQueryCount.objects.all()
+    average_object_size = Log.objects.values('s3_key').distinct().aggregate(average_size=Avg('object_size'))
 
     return render(request, 'dashboard.html', {
         'request_count': Log.objects.count(),
+        'average_object_size': int(average_object_size['average_size']),
         'most_queried_table': MostQueried.objects.all()[:50],
         'most_queried_labels': json.dumps(
             [get_file_name(most_queried.item.s3_key) for most_queried in graph_most_queried]),
@@ -40,4 +43,18 @@ def dashboard(request):
         # 'most_using_data': json.dumps(list(graph_most_using.values_list('count', flat=True))),
         'time_info_times': json.dumps([time.time.isoformat() for time in time_info]),
         'time_info_counts': json.dumps(list(time_info.values_list('count', flat=True)))
+    })
+
+
+def item_dashboard(request, item_name):
+    item = get_object_or_404(Item, s3_key__endswith=item_name)
+    requesters = Log.objects \
+        .filter(operation='REST.GET.OBJECT', s3_key=item.s3_key) \
+        .values('requester', 's3_key') \
+        .annotate(count=Count('requester')) \
+        .order_by('-count')
+    return render(request, 'item_dashboard.html', {
+        'item_name': item_name,
+        'request_breakdown_labels': json.dumps(list(requesters.values_list('requester', flat=True))),
+        'request_breakdown_data': json.dumps(list(requesters.values_list('count', flat=True)))
     })

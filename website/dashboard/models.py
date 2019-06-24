@@ -33,6 +33,10 @@ class MostQueried(models.Model):
     count = models.PositiveIntegerField()
 
 
+class MostQueriedExperiment(models.Model):
+    count = models.PositiveIntegerField()
+
+
 class IntervalQueryCount(models.Model):
     time = models.DateTimeField()
     count = models.PositiveIntegerField()
