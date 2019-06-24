@@ -20,6 +20,7 @@ def environment(**options):
         'url': reverse,
         'render_field_with_class': render_field_with_class,
         'render_s3_key': get_file_name,
-        'get_encode_url': get_encode_url
+        'get_encode_url': get_encode_url,
+        'zip': zip
     })
     return env

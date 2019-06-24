@@ -20,32 +20,20 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        Plotly.newPlot('request-breakdown-chart', [{
-                x: {{ request_breakdown_labels|safe }},
-                y: {{ request_breakdown_data|safe }},
+        Plotly.newPlot('request-breakdown-chart', [
+            {% for label, datum in zip(request_breakdown_labels, request_breakdown_data) %} {
+                x: ['Requester'],
+                y: ['{{ datum|safe }}'],
                 marker: {
-                    color: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
+                    color: getChartBackgroundColor({{ loop.index0 }}),
                     line: {
-                        color: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
+                        color: getChartLineColor({{ loop.index0 }}),
                         width: 1
                     }
                 },
+                name: '{{ label|safe }}',
                 type: 'bar'
-            }], {
+            }, {% endfor %}], {
                 title: 'Most requests by user',
                 barmode: 'stack',
                 xaxis: {

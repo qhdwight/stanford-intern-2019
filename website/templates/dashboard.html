@@ -19,17 +19,14 @@
             </div>
             <hr>
             <div class='row m-4'>
-                {#                <canvas class='m-4' id='time-chart' style='width: 100%; height: 60vh'></canvas>#}
                 <div class='m-4 chart' id='time-chart' style='width: 100%; height: 60vh'></div>
-                {#                <canvas class='m-4' id='most-queried-chart' style='width: 100%; height: 60vh'></canvas>#}
                 <div class='m-4 chart' id='most-queried-chart' style='width: 100%; height: 60vh'></div>
-                {#                <canvas class='m-2' id='most-using-chart' style='width: 100%; height: 60vh'></canvas>#}
             </div>
             <div class='row m-4'>
                 <div class='col text-center'>
                     <h1>Most accessed files</h1>
                 </div>
-                <table class='table'>
+                <table class='table mt-4'>
                     <tr>
                         <th scope='col'>Item</th>
                         <th scope='col'>Experiment</th>
@@ -65,59 +62,13 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        function formatBytes(bytes, decimals) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024,
-                dm = decimals <= 0 ? 0 : decimals || 2,
-                sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-                i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-        }
-
-        function formatCount(number, formatType) {
-            if (formatType === 'regular') {
-                return Math.floor(number).toLocaleString();
-            } else if (formatType === 'space') {
-                return formatBytes(number, 1);
-            }
-        }
-
-        $('.counter').fadeTo(0, 0).fadeTo(1000, 1).each(function () {
-            const $this = $(this), countTo = $this.attr('data-count'), formatType = $this.attr('format');
-            $({finalNumber: $this.text()}).animate({
-                    count: countTo
-                },
-                {
-                    duration: 1500,
-                    easing: 'swing',
-                    step: function () {
-                        $this.text(formatCount(this.count, formatType))
-                    },
-                    complete: this.step
-                });
-        });
-
         Plotly.newPlot('most-queried-chart', [{
                 x: {{ most_queried_labels|safe }},
                 y: {{ most_queried_data|safe }},
                 marker: {
-                    color: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
+                    color: chartBackgroundColors,
                     line: {
-                        color: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
+                        color: chartLineColors,
                         width: 1
                     }
                 },
@@ -138,10 +89,10 @@
                 type: 'scatter',
                 line: {
                     shape: 'spline',
-                    color: 'rgba(54, 162, 235, 1)'
+                    color: getChartLineColor(1)
                 },
                 fill: 'tozeroy',
-                fillcolor: 'rgba(54, 162, 235, 0.2)'
+                fillcolor: getChartBackgroundColor(1)
             }], {
                 title: 'Accesses over time',
                 xaxis: {
@@ -160,10 +111,5 @@
             const button_id = 'btn-' + item_name;
             document.getElementById(button_id).click()
         });
-
-        {#const#}
-        {#    mostQueriedChart = makeBarChart($mostQueriedChart, {{ most_queried_labels|safe }}, {{ most_queried_data|safe }}),#}
-        {#    mostUsingChart = makeBarChart($('#most-using-chart'), {{ most_using_labels|safe }}, {{ most_using_data|safe }}),#}
-        {#    timeChart = makeTimeChart($('#time-chart'), );#}
     </script>
 {% endblock %}

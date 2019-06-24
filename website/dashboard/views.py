@@ -52,9 +52,10 @@ def item_dashboard(request, item_name):
         .filter(operation='REST.GET.OBJECT', s3_key=item.s3_key) \
         .values('requester', 's3_key') \
         .annotate(count=Count('requester')) \
+        .exclude(count=0) \
         .order_by('-count')
     return render(request, 'item_dashboard.html', {
         'item_name': item_name,
-        'request_breakdown_labels': json.dumps(list(requesters.values_list('requester', flat=True))),
-        'request_breakdown_data': json.dumps(list(requesters.values_list('count', flat=True)))
+        'request_breakdown_labels': list(requesters.values_list('requester', flat=True)),
+        'request_breakdown_data': list(requesters.values_list('count', flat=True))
     })
