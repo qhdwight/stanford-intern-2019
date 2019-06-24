@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/activity_viewer/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/activity_viewer/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -88,8 +87,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/activity_viewer/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+            <state relative-caret-position="263">
+              <caret line="120" column="70" selection-start-line="120" selection-start-column="70" selection-end-line="120" selection-end-column="70" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -171,6 +170,7 @@
       <find>.distinct()</find>
       <find>=&gt;</find>
       <find>item_s3_ke</find>
+      <find>STATIC_FILES</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -353,12 +353,12 @@
       <workItem from="1561003192946" duration="1775000" />
       <workItem from="1561010397052" duration="2291000" />
       <workItem from="1561394336245" duration="1615000" />
-      <workItem from="1561395968612" duration="10384000" />
+      <workItem from="1561395968612" duration="10790000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43783000" />
+    <option name="totallyTimeSpent" value="44189000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="28" width="1920" height="1052" extended-state="6" />
@@ -663,8 +663,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/activity_viewer/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        <state relative-caret-position="263">
+          <caret line="120" column="70" selection-start-line="120" selection-start-column="70" selection-end-line="120" selection-end-column="70" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
