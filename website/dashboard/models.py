@@ -2,31 +2,31 @@ from django.db import models
 
 
 class Item(models.Model):
-    s3_key = models.CharField(max_length=128, unique=True)
+    s3_key = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=64, unique=True)
     experiment = models.CharField(max_length=64)
     assay_title = models.CharField(max_length=64)
 
 
 class Log(models.Model):
-    key_name = models.CharField(max_length=128, db_index=True)
-    bucket = models.CharField(max_length=64, null=True)
+    key_name = models.CharField(max_length=32, db_index=True)
+    bucket = models.CharField(max_length=16, null=True)
     time = models.DateTimeField(null=True)
     ip_address = models.GenericIPAddressField(null=True)
-    requester = models.CharField(max_length=512, null=True)
-    request_id = models.CharField(max_length=64, unique=True)
-    operation = models.CharField(max_length=64, null=True)
-    s3_key = models.CharField(max_length=256, null=True)
-    request_uri = models.CharField(max_length=4096, null=True)
+    requester = models.CharField(max_length=64, null=True)
+    request_id = models.CharField(max_length=16, unique=True)
+    operation = models.CharField(max_length=16, null=True)
+    s3_key = models.CharField(max_length=64, null=True)
+    request_uri = models.CharField(max_length=1024, null=True)
     http_status = models.PositiveSmallIntegerField(null=True)
-    error_code = models.CharField(max_length=64, null=True)
+    error_code = models.CharField(max_length=16, null=True)
     bytes_sent = models.BigIntegerField(null=True)
     object_size = models.BigIntegerField(null=True)
     total_time = models.PositiveIntegerField(null=True)
     turn_around_time = models.PositiveIntegerField(null=True)
     referrer = models.URLField(null=True)
-    user_agent = models.CharField(max_length=1024, null=True)
-    version_id = models.CharField(max_length=1024, null=True)
+    user_agent = models.CharField(max_length=128, null=True)
+    version_id = models.CharField(max_length=128, null=True)
     # host_id = models.CharField(max_length=1024)
     # UNAUTHENTICATED = 0
     # SIG_V2 = 1
