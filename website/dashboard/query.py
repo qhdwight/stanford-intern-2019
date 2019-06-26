@@ -2,11 +2,9 @@ from datetime import timedelta, datetime
 
 import requests
 from django.db.models import Count, Avg
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 from dashboard.models import Log, Item
-from dashboard.views import get_item_name, get_encode_url
 
 START_TIME = datetime(2019, 3, 1, tzinfo=timezone.get_current_timezone())
 END_TIME = timezone.now()
@@ -67,6 +65,7 @@ def get_or_create_item(item_name):
         if not first_log_with_item_name:
             return None
         s3_key = first_log_with_item_name.s3_key
+        from dashboard.views import get_encode_url
         url = f'{get_encode_url(item_name)}/?format=json'
         result = requests.get(url, headers=GET_JSON_HEADERS).json()
         experiment = result['dataset'].split('/')[2]

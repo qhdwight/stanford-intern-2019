@@ -37,7 +37,8 @@ def dashboard(request, start_time=START_TIME, end_time=END_TIME):
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
         if time_range_form.is_valid():
-            return redirect('dashboard:dashboard_range', start_time=time_range_form.start_time, end_time=time_range_form.end_time)
+            return redirect('dashboard:dashboard_range', start_time=time_range_form.start_time,
+                            end_time=time_range_form.end_time)
     time_range_form = SelectTimeRangeForm()
     # get_requests = Log.objects.filter(operation='REST.GET.OBJECT')
     #

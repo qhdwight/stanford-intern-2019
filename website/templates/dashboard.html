@@ -38,8 +38,8 @@
             </div>
             <hr>
             <div class='row m-4'>
-                <div class='m-4 chart' id='time-chart' style='width: 100%; height: 60vh'></div>
-                <div class='m-4 chart' id='most-queried-chart' style='width: 100%; height: 60vh'></div>
+                <canvas class='m-4 chart' id='time-chart' style='width: 100%; height: 60vh'></canvas>
+                <canvas class='m-4 chart' id='most-queried-chart' style='width: 100%; height: 60vh'></canvas>
             </div>
             <div class='row m-4'>
                 <div class='col text-center'>
@@ -81,54 +81,39 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        Plotly.newPlot('most-queried-chart', [{
-                x: {{ most_queried_labels|safe }},
-                y: {{ most_queried_data|safe }},
-                marker: {
-                    color: chartBackgroundColors,
-                    line: {
-                        color: chartLineColors,
-                        width: 1
-                    }
-                },
-                type: 'bar'
-            }], {
-                title: 'Most accessed files',
-                xaxis: {
-                    title: 'File'
-                }, yaxis: {
-                    title: 'Request count'
+        new Chart($('#most-queried-chart')[0].canvas, {
+            type: 'bar',
+            data: {
+                label: {{ most_queried_labels|safe }},
+                dataset: [{
+                    label: '# of hits',
+                    data: {{ most_queried_data|safe }},
+                    backgroundColor: chartBackgroundColors,
+                    borderColor: chartLineColors
+                }]
+            },
+            options: {
+                onClick: function(a, b) {
+                    console.log(a);
+                    console.log(b);
                 }
             }
-        );
+        });
 
-        Plotly.newPlot('time-chart', [{
-                x: {{ time_info_times|safe }},
-                y: {{ time_info_counts|safe }},
-                type: 'scatter',
-                line: {
-                    shape: 'spline',
-                    color: getChartLineColor(1)
-                },
-                fill: 'tozeroy',
-                fillcolor: getChartBackgroundColor(1)
-            }], {
-                title: 'Accesses over time',
-                xaxis: {
-                    title: 'Timestamp'
-                }, yaxis: {
-                    title: 'Request count'
-                }
+        new Chart($('#time-chart')[0].canvas, {
+            type: 'line',
+            data: {
+                label: {{ time_info_times|safe }},
+                dataset: [{
+                    label: '# of hits',
+                    data: {{ time_info_counts|safe }},
+                    backgroundColor: getChartBackgroundColor(0),
+                    borderColor: getChartLineColor(0)
+                }]
             }
-        );
+        });
 
         $('.fade-in-header').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
         $('.chart').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
-
-        $('#most-queried-chart')[0].on('plotly_click', function (data) {
-            const item_name = data.points[0].x;
-            const button_id = 'btn-' + item_name;
-            document.getElementById(button_id).click()
-        });
     </script>
 {% endblock %}
