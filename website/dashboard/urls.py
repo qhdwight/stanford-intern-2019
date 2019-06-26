@@ -21,6 +21,7 @@ register_converter(DateRangeConverter, 'datetime')
 app_name = 'dashboard'
 
 urlpatterns = [
-    path('<datetime:start>/<datetime:end>', views.dashboard, name='dashboard'),
+    path('', views.dashboard, name='dashboard'),
+    path('<datetime:start>/to/<datetime:end>', views.dashboard, name='dashboard_range'),
     path('items/<str:item_name>', views.item_dashboard, name='item_dashboard')
 ]

@@ -1,10 +1,29 @@
 {% extends 'base.html' %}
 {% set page_name = 'dashboard' %}
 {% block title %}Dashboard{% endblock %}
+{% from "render_form_macro.html" import render_form with context %}
 {% block content %}
     {% include 'navbar.html' %}
     <div class='container'>
         <div class='col m-4'>
+            <div class='row'>
+                <p>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse"
+                            data-target="#timeRangeCollapse"
+                            aria-expanded="false" aria-controls="collapseExample">
+                        Select Time Range
+                    </button>
+                </p>
+                <div class="collapse" id="timeRangeCollapse">
+                    <div class="card card-body">
+                        <form action='{{ url('dashboard:dashboard') }}' method='post'>
+                            {{ csrf_input }}
+                            {{ render_form(time_range_form) }}
+                            <input type='submit' value='Go'>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class='row'>
                 <div class='col text-center m-4'>
                     <p class='counter display-2' data-count='{{ request_count }}' format='regular'>0</p>
