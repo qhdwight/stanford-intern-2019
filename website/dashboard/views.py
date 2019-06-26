@@ -82,6 +82,8 @@ def dashboard(request, start_time=START_TIME, end_time=END_TIME):
 @cache_page(60 * 60)
 def item_dashboard(request, item_name):
     requesters = get_requesters_for_item(item_name)
+    if not requesters:
+        return redirect('dashboard:dashboard')
     return render(request, 'item_dashboard.html', {
         'item_name': item_name,
         'request_breakdown_labels': list(requesters.values_list('requester', flat=True)),
