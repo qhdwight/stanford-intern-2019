@@ -5,6 +5,8 @@ from django.shortcuts import render
 from .query import get_most_queried_s3_keys, get_query_count_intervals, get_average_object_size, \
     get_total_request_count, get_requesters_for_item
 
+from .query import START_TIME, END_TIME
+
 ENCODE_URL_BASE = 'https://www.encodeproject.org'
 
 
@@ -27,7 +29,7 @@ def get_encode_url_from_s3(s3_key):
     return get_encode_url(get_item_name(s3_key))
 
 
-def dashboard(request):
+def dashboard(request, start_time=START_TIME, end_time=END_TIME):
     # get_requests = Log.objects.filter(operation='REST.GET.OBJECT')
     #
     # most_queried_s3_keys = get_requests \
@@ -49,13 +51,13 @@ def dashboard(request):
     # graph_most_using = most_using[:10]
     # print(graph_most_using)
 
-    most_queried = get_most_queried_s3_keys()
+    most_queried = get_most_queried_s3_keys(start_time, end_time)
     graph_most_queried = most_queried[:6]
-    time_info = get_query_count_intervals()
+    time_info = get_query_count_intervals(start_time, end_time)
 
     return render(request, 'dashboard.html', {
-        'request_count': get_total_request_count(),
-        'average_object_size': int(get_average_object_size()['average_size']),
+        'request_count': get_total_request_count(start_time, end_time),
+        'average_object_size': int(get_average_object_size(start_time, end_time)['average_size']),
         'most_queried_table': most_queried[:50],
         'most_queried_labels': json.dumps(
             [get_file_name(most_queried.item.s3_key) for most_queried in graph_most_queried]),
