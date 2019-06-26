@@ -2,7 +2,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from jinja2 import Environment
 
-from dashboard.models import get_file_name, get_encode_url
+from dashboard.views import get_file_name, get_encode_url
 
 
 def render_field_with_class(field, css_class_name):

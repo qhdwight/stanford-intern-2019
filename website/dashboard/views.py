@@ -1,9 +1,30 @@
 import json
 
-from django.db.models import Avg, Count
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 
-from .models import Log, Item, MostQueried, IntervalQueryCount, get_file_name
+from .query import get_most_queried_s3_keys, get_query_count_intervals, get_average_object_size, \
+    get_total_request_count, get_requesters_for_item
+
+ENCODE_URL_BASE = 'https://www.encodeproject.org'
+
+
+def get_file_name(s3_key):
+    return s3_key.split('/')[-1] if s3_key.count('/') > 1 else s3_key
+
+
+def get_item_name(s3_key):
+    name = get_file_name(s3_key)
+    if '.' in name:
+        name = name.split('.')[0]
+    return name
+
+
+def get_encode_url(name):
+    return f'{ENCODE_URL_BASE}/{name}'
+
+
+def get_encode_url_from_s3(s3_key):
+    return get_encode_url(get_item_name(s3_key))
 
 
 def dashboard(request):
@@ -28,14 +49,14 @@ def dashboard(request):
     # graph_most_using = most_using[:10]
     # print(graph_most_using)
 
-    graph_most_queried = MostQueried.objects.all()[:6]
-    time_info = IntervalQueryCount.objects.all()
-    average_object_size = Log.objects.values('s3_key').distinct().aggregate(average_size=Avg('object_size'))
+    most_queried = get_most_queried_s3_keys()
+    graph_most_queried = most_queried[:6]
+    time_info = get_query_count_intervals()
 
     return render(request, 'dashboard.html', {
-        'request_count': Log.objects.count(),
-        'average_object_size': int(average_object_size['average_size']),
-        'most_queried_table': MostQueried.objects.all()[:50],
+        'request_count': get_total_request_count(),
+        'average_object_size': int(get_average_object_size()['average_size']),
+        'most_queried_table': most_queried[:50],
         'most_queried_labels': json.dumps(
             [get_file_name(most_queried.item.s3_key) for most_queried in graph_most_queried]),
         'most_queried_data': json.dumps(list(graph_most_queried.values_list('count', flat=True))),
@@ -47,13 +68,7 @@ def dashboard(request):
 
 
 def item_dashboard(request, item_name):
-    item = get_object_or_404(Item, s3_key__endswith=item_name)
-    requesters = Log.objects \
-        .filter(operation='REST.GET.OBJECT', s3_key=item.s3_key) \
-        .values('requester', 's3_key') \
-        .annotate(count=Count('requester')) \
-        .exclude(count=0) \
-        .order_by('-count')
+    requesters = get_requesters_for_item(item_name)
     return render(request, 'item_dashboard.html', {
         'item_name': item_name,
         'request_breakdown_labels': list(requesters.values_list('requester', flat=True)),
