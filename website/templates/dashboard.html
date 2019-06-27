@@ -19,7 +19,7 @@
                         <form action='{{ url('dashboard:dashboard') }}' method='post'>
                             {{ csrf_input }}
                             {{ render_form(time_range_form) }}
-                            <input type='submit' value='Go'>
+                            <button type='submit' class='btn btn-primary'>Go</button>
                         </form>
                     </div>
                 </div>
@@ -55,16 +55,17 @@
                     </tr>
                     {% for most_queried in most_queried_table %}
                         <tr>
-                            {% set name = render_s3_key(most_queried.item.s3_key) %}
-                            <td><a target='_blank' href='{{ get_encode_url(name.split('.')[0]) }}'>{{ name }}</a></td>
+                            {% set name = render_s3_key(most_queried['s3_key']) %}
+                            <td><a target='_blank'
+                                   href='{{ get_encode_url('files/' + name.split('.')[0]) }}'>{{ name }}</a></td>
                             <td>
                                 <a target='_blank'
-                                   href='{{ get_encode_url('experiments/' + most_queried.item.experiment) }}'>
-                                    {{ most_queried.item.experiment }}
+                                   href='{{ get_encode_url('experiments/' + most_queried.experiment) }}'>
+                                    {{ most_queried.experiment }}
                                 </a>
                             </td>
-                            <td>{{ most_queried.item.assay_title }}</td>
-                            <td>{{ most_queried.count }}</td>
+                            <td>{{ most_queried.assay_title }}</td>
+                            <td>{{ most_queried.query_count }}</td>
                             <td>
                                 <a id='btn-{{ name }}'
                                    href='{{ url('dashboard:item_dashboard', kwargs={'item_name':name}) }}'>
@@ -81,35 +82,50 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        new Chart($('#most-queried-chart')[0].canvas, {
+        new Chart($('#most-queried-chart')[0].getContext('2d'), {
             type: 'bar',
             data: {
-                label: {{ most_queried_labels|safe }},
-                dataset: [{
+                labels: {{ most_queried_labels|safe }},
+                datasets: [{
                     label: '# of hits',
                     data: {{ most_queried_data|safe }},
                     backgroundColor: chartBackgroundColors,
-                    borderColor: chartLineColors
+                    borderColor: chartLineColors,
+                    borderWidth: 1
                 }]
             },
             options: {
-                onClick: function(a, b) {
-                    console.log(a);
-                    console.log(b);
+                onClick: function (event, b) {
+                    const index = b[0]._index;
+                    if (index !== undefined) {
+                        label = this.config.data.labels[index];
+                        document.getElementById('btn-' + label).click();
+                    }
                 }
             }
         });
 
-        new Chart($('#time-chart')[0].canvas, {
+        new Chart($('#time-chart')[0].getContext('2d'), {
             type: 'line',
             data: {
-                label: {{ time_info_times|safe }},
-                dataset: [{
+                labels: {{ time_info_times|safe }},
+                datasets: [{
                     label: '# of hits',
                     data: {{ time_info_counts|safe }},
                     backgroundColor: getChartBackgroundColor(0),
-                    borderColor: getChartLineColor(0)
+                    borderColor: getChartLineColor(0),
+                    borderWidth: 1
                 }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        }
+                    }]
+                }
             }
         });
 

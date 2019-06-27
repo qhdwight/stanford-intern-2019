@@ -2,7 +2,8 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from jinja2 import Environment
 
-from dashboard.views import get_file_name, get_encode_url
+from dashboard.models import get_item_name
+from dashboard.query import get_encode_url
 
 
 def render_field_with_class(field, css_class_name):
@@ -19,7 +20,7 @@ def environment(**options):
         'static': staticfiles_storage.url,
         'url': reverse,
         'render_field_with_class': render_field_with_class,
-        'render_s3_key': get_file_name,
+        'render_s3_key': get_item_name,
         'get_encode_url': get_encode_url,
         'zip': zip
     })

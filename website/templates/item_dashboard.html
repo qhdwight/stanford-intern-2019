@@ -12,7 +12,7 @@
             </div>
             <div class='row'>
                 <div class='col'>
-                    <div class='m-4 chart' id='request-breakdown-chart' style='width: 100%; height: 60vh'></div>
+                    <canvas class='m-4 chart' id='request-breakdown-chart' style='width: 100%; height: 60vh'></canvas>
                 </div>
             </div>
         </div>
@@ -20,16 +20,20 @@
 {% endblock %}
 {% block scripts %}
     <script>
-        new Chart($('#request-breakdown-chart')[0].canvas, {
+        new Chart($('#request-breakdown-chart')[0].getContext('2d'), {
             type: 'bar',
             data: {
-                label: {{ request_breakdown_labels|safe }},
-                dataset: [{
-                    label: 'Requester',
-                    data: {{ request_breakdown_data|safe }},
-                    backgroundColor: chartBackgroundColors,
-                    borderColor: chartLineColors
-                }]
+                datasets: [
+                    {% for label, datum in zip(request_breakdown_labels, request_breakdown_data) %}
+                        {
+                            label: ['{{ label|safe }}'],
+                            data: ['{{ datum|safe }}'],
+                            backgroundColor: getChartBackgroundColor({{ loop.index0 }}),
+                            borderColor: getChartLineColor({{ loop.index0 }}),
+                            borderWidth: 1
+                        },
+                    {% endfor %}
+                ]
             },
             options: {
                 scales: {

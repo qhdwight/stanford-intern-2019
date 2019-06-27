@@ -1,11 +1,21 @@
 from django.db import models
 
 
+def get_item_name(s3_key):
+    return s3_key.split('/')[-1] if s3_key.count('/') > 0 else s3_key
+
+
+class QueryCountAtTime(models.Model):
+    time = models.DateTimeField(unique=True)
+    count = models.PositiveIntegerField()
+
+
 class Item(models.Model):
     s3_key = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=64, unique=True)
     experiment = models.CharField(max_length=64)
     assay_title = models.CharField(max_length=64)
+    query_count = models.PositiveIntegerField()
 
 
 class Log(models.Model):
