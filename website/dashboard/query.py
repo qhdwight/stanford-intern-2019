@@ -1,3 +1,4 @@
+import sys
 from datetime import timedelta, datetime
 
 import requests
@@ -15,6 +16,18 @@ ENCODE_URL_BASE = 'https://www.encodeproject.org'
 
 GET_REQUESTS = Log.objects.filter(operation='REST.GET.OBJECT')
 GET_JSON_HEADERS = {'accept': 'application/json'}
+
+
+def time_this(method):
+    def timed(*args, **kw):
+        start = datetime.now()
+        result = method(*args, **kw)
+        end = datetime.now()
+        print(f'{method.__name__} took {end - start}')
+        sys.stdout.flush()
+        return result
+
+    return timed
 
 
 def get_header(s3_key):
@@ -45,6 +58,7 @@ def get_most_queried_s3_keys(start_time=START_TIME, end_time=END_TIME):
         .order_by('-count')
 
 
+@time_this
 def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_TIME):
     items = []
     with transaction.atomic():
@@ -54,6 +68,7 @@ def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_T
     return items
 
 
+@time_this
 def get_query_count_intervals(start_time=START_TIME, end_time=END_TIME):
     return QueryCountAtTime.objects.filter(time__range=(start_time, end_time))
     # readings = []
@@ -65,20 +80,22 @@ def get_query_count_intervals(start_time=START_TIME, end_time=END_TIME):
     # return readings
 
 
+@time_this
 def get_average_object_size(start_time=START_TIME, end_time=END_TIME):
     return get_in_time_range(start_time, end_time) \
         .values('s3_key') \
         .distinct() \
-        .aggregate(average_size=Avg('object_size'))
+        .aggregate(average_size=Avg('object_size'))['average_size']
 
 
+@time_this
 def get_total_request_count(start_time=START_TIME, end_time=END_TIME):
     return get_in_time_range(start_time, end_time).count()
 
 
-def get_requesters_for_item(item_name):
-    item = get_or_create_item(item_name)
-    return GET_REQUESTS \
+@time_this
+def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
+    return get_in_time_range(start_time, end_time) \
         .filter(s3_key=item.s3_key) \
         .values('requester', 's3_key') \
         .annotate(count=Count('requester')) \
@@ -86,6 +103,7 @@ def get_requesters_for_item(item_name):
         .order_by('-count')
 
 
+@time_this
 def get_or_create_item(item_name):
     if Item.objects.filter(name=item_name).exists():
         return Item.objects.get(name=item_name)

@@ -24,5 +24,8 @@ app_name = 'dashboard'
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     path('<datetime:start_time>/to/<datetime:end_time>', views.dashboard, name='dashboard_range'),
-    path('items/<str:item_name>', views.item_dashboard, name='item_dashboard')
+    path('items/<str:item_name>', views.item_dashboard, name='item_dashboard'),
+    path('items/<str:item_name>/<datetime:start_time>/to/<datetime:end_time>', views.item_dashboard, name='item_dashboard_range'),
 ]
+
+

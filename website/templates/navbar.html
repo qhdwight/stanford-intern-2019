@@ -1,8 +1,9 @@
 {% from 'render_form_macro.html' import render_form with context %}
 <nav class='navbar navbar-expand-lg navbar-light bg-light'>
     <a class='navbar-brand' href={{ url('root') }}>S3 Activity Viewer</a>
-    <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown'
-        aria-expanded='false' aria-label='Toggle navigation'>
+    <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNavDropdown'
+            aria-controls='navbarNavDropdown'
+            aria-expanded='false' aria-label='Toggle navigation'>
         <span class='navbar-toggler-icon'></span>
     </button>
     <div class='collapse navbar-collapse' id='navbarNavDropdown'>
@@ -12,6 +13,19 @@
                     <span class='mr-2 oi oi-wrench' aria-hidden='true'></span>
                     Dashboard
                 </a>
+            </li>
+            <li class='nav-item dropdown'>
+                <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown'
+                   aria-haspopup='true' aria-expanded='false'>
+                    Select Time Range
+                </a>
+                <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
+                    <form class='m-4' method='post'>
+                        {{ csrf_input }}
+                        {{ render_form(time_range_form) }}
+                        <button type='submit' class='btn btn-block btn-primary'>Go</button>
+                    </form>
+                </div>
             </li>
         </ul>
     </div>
