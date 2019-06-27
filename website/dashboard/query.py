@@ -50,6 +50,7 @@ def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_T
     with transaction.atomic():
         for queried in get_most_queried_s3_keys(start_time, end_time)[:amount]:
             items.append(get_or_create_item(get_item_name(queried['s3_key'])))
+    items.sort(key=lambda x: x.query_count, reverse=True)
     return items
 
 
@@ -98,9 +99,10 @@ def get_or_create_item(item_name):
         experiment = result['dataset'].split('/')[2]
         experiment_url = f'{get_encode_url(experiment)}/?format=json'
         experiment_result = requests.get(experiment_url, headers=GET_JSON_HEADERS).json()
-        assay_title = experiment_result['assay_title']
+        assay_title = experiment_result['assay_title'] if 'assay_title' in experiment_result else None
         query_count = GET_REQUESTS.filter(s3_key=s3_key).count()
-        print(f'Creating item {item_name}, query count: {query_count}, key {s3_key}, experiment {experiment}, and assay {assay_title}')
+        print(
+            f'Creating item {item_name}, query count: {query_count}, key {s3_key}, experiment {experiment}, and assay {assay_title}')
         return Item.objects.create(
             name=item_name,
             s3_key=s3_key,

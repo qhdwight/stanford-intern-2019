@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.urls import path, register_converter
+from django.utils import timezone
 
 from . import views
 
@@ -10,7 +11,7 @@ class DateRangeConverter:
     regex = '[0-9\-]+'
 
     def to_python(self, value):
-        return datetime.strptime(value, self.FORMAT)
+        return datetime.strptime(value, self.FORMAT).astimezone(timezone.get_current_timezone())
 
     def to_url(self, value):
         return value.strftime(self.FORMAT)

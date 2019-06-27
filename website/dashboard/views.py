@@ -26,14 +26,15 @@ def dashboard(request, start_time=START_TIME, end_time=END_TIME):
     # graph_most_using = most_using[:10]`z
     # print(graph_most_using)
 
-    most_queried = query.get_most_queried_items_limited(50, start_time, end_time)
+    most_queried = query.get_most_queried_items_limited(10, start_time, end_time)
     graph_most_queried = most_queried[:6]
     time_info = query.get_query_count_intervals(start_time, end_time)
+    average_object_size = query.get_average_object_size(start_time, end_time)['average_size']
 
     return render(request, 'dashboard.html', {
         'time_range_form': time_range_form,
         'request_count': query.get_total_request_count(start_time, end_time),
-        'average_object_size': int(query.get_average_object_size(start_time, end_time)['average_size']),
+        'average_object_size': int(average_object_size) if average_object_size else 0,
         'most_queried_table': most_queried,
         'most_queried_labels': json.dumps([most_queried.name for most_queried in graph_most_queried]),
         'most_queried_data': json.dumps([most_queried.query_count for most_queried in graph_most_queried]),
