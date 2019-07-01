@@ -9,20 +9,32 @@
             <div class='row'>
                 <div class='col text-center m-4'>
                     {% if request_count is not none %}
-                        <p class='counter display-2' data-count='{{ request_count }}' format='regular'>0</p>
+                        <p class='counter display-2' format='regular'
+                           {% if is_default %}data-count='{{ request_count }}'>
+                               0
+                           {% else %}>
+                               {{ request_count }}
+                           {% endif %}
+                        </p>
                     {% else %}
                         <p class='display-2'>None</p>
                     {% endif %}
-                    <h3 class='fade-in-header'>Requests Made to S3 Server</h3>
+                    <h3 class='fade-in-header'>Total GET Requests Made to S3 Server</h3>
                 </div>
                 <div class='col'>
                     <div class='text-center m-4'>
                         {% if average_object_size is not none %}
-                            <p class='counter display-2' data-count='{{ average_object_size }}' format='space'>0</p>
+                            <p class='counter display-2' format='space'
+                               {% if is_default %}data-count='{{ average_object_size }}'>
+                                   0
+                               {% else %}>
+                                   {{ average_object_size }}
+                               {% endif %}
+                            </p>
                         {% else %}
                             <p class='display-2'>None</p>
                         {% endif %}
-                        <h3 class='fade-in-header'>Average object size</h3>
+                        <h3 class='fade-in-header'>Average Object Size</h3>
                     </div>
                 </div>
             </div>
@@ -47,7 +59,7 @@
             {% if most_queried_table is not none %}
                 <div class='row m-4'>
                     <div class='col text-center'>
-                        <h1>Most accessed files</h1>
+                        <h1>Most uniquely accessed files</h1>
                     </div>
                     <table class='table table-striped mt-4'>
                         <tr>
@@ -55,28 +67,28 @@
                             <th scope='col'>Item</th>
                             <th scope='col'>Experiment</th>
                             <th scope='col'>Assay Type</th>
-                            <th scope='col'>Count</th>
+                            <th scope='col'>Unique Hits</th>
                             <th scope='col'>Details</th>
                         </tr>
-                        {% for most_queried in most_queried_table %}
+                        {% for most_queried, count in most_queried_table %}
                             <tr>
-                                {% set name = render_s3_key(most_queried['s3_key']) %}
+                                {% set name = render_s3_key(most_queried.s3_key) %}
                                 <th scope='row'>{{ loop.index }}</th>
                                 <td>
                                     <a target='_blank'
                                        href='{{ get_encode_url('files/' + name.split('.')[0]) }}'>{{ name }}
-                                        <span class='ml-2 oi oi-external-link' aria-hidden='true'></span>
+                                        <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
                                     </a>
                                 </td>
                                 <td>
                                     <a target='_blank'
                                        href='{{ get_encode_url('experiments/' + most_queried.experiment) }}'>
                                         {{ most_queried.experiment }}
-                                        <span class='ml-2 oi oi-external-link' aria-hidden='true'></span>
+                                        <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
                                     </a>
                                 </td>
                                 <td>{{ most_queried.assay_title }}</td>
-                                <td>{{ most_queried.query_count }}</td>
+                                <td>{{ count }}</td>
                                 <td>
                                     <a id='btn-{{ name }}'
                                             {% if is_default %}
@@ -106,7 +118,7 @@
                     data: {
                         labels: {{ most_queried_labels|safe }},
                         datasets: [{
-                            label: '# of hits',
+                            label: '# of unique hits',
                             data: {{ most_queried_data|safe }},
                             backgroundColor: chartBackgroundColors,
                             borderColor: chartLineColors,
@@ -134,7 +146,7 @@
                     data: {
                         labels: {{ time_info_times|safe }},
                         datasets: [{
-                            label: '# of hits',
+                            label: '# of server hits',
                             data: {{ time_info_counts|safe }},
                             backgroundColor: getChartBackgroundColor(0),
                             borderColor: getChartLineColor(0),
@@ -157,8 +169,14 @@
                 });
             {% endif %}
 
-            $('.fade-in-header').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
-            $('.chart').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
+            {% if is_default %}
+                $('.fade-in-header').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
+                $('.chart').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
+            {% else %}
+                $('.counter').each(function() {
+                    $(this).text(formatCount($(this).text(), $(this).attr('format')))
+                });
+            {% endif %}
         });
     </script>
 {% endblock %}

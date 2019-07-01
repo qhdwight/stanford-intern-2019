@@ -50,12 +50,23 @@ def get_in_time_range(start_time=START_TIME, end_time=END_TIME):
 
 
 def get_most_queried_s3_keys(start_time=START_TIME, end_time=END_TIME):
-    # See which objects are queried the most
-    return get_in_time_range(start_time, end_time) \
-        .values('s3_key', 'ip_address') \
-        .distinct() \
-        .annotate(count=Count('s3_key')) \
-        .order_by('-count')
+    # bet = (get_in_time_range(start_time, end_time)
+    #        .values('s3_key', 'ip_address').order_by('s3_key'))
+    # print(bet
+    #       .values('s3_key', 'ip_address')
+    #       .distinct()
+    #       .values('s3_key')
+    #       .annotate(count=Count('s3_key'))
+    #       .order_by('-count'))
+    # print(bet
+    #       .values('s3_key')
+    #       .annotate(count=Count('s3_key'))
+    #       .order_by('-count'))
+    return (get_in_time_range(start_time, end_time)
+            .values('s3_key', 'ip_address')
+            .distinct()
+            .annotate(count=Count('s3_key'))
+            .order_by('-count'))
 
 
 @time_this
@@ -63,8 +74,8 @@ def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_T
     items = []
     with transaction.atomic():
         for queried in get_most_queried_s3_keys(start_time, end_time)[:amount]:
-            items.append(get_or_create_item(get_item_name(queried['s3_key'])))
-    items.sort(key=lambda x: x.query_count, reverse=True)
+            items.append((get_or_create_item(get_item_name(queried['s3_key'])), queried['count']))
+    items.sort(key=lambda x: x[1], reverse=True)
     return items
 
 
@@ -82,10 +93,10 @@ def get_query_count_intervals(start_time=START_TIME, end_time=END_TIME):
 
 @time_this
 def get_average_object_size(start_time=START_TIME, end_time=END_TIME):
-    return get_in_time_range(start_time, end_time) \
-        .values('s3_key') \
-        .distinct() \
-        .aggregate(average_size=Avg('object_size'))['average_size']
+    return (get_in_time_range(start_time, end_time)
+        .values('s3_key')
+        .distinct()
+        .aggregate(average_size=Avg('object_size'))['average_size'])
 
 
 @time_this
@@ -95,12 +106,12 @@ def get_total_request_count(start_time=START_TIME, end_time=END_TIME):
 
 @time_this
 def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
-    return get_in_time_range(start_time, end_time) \
-        .filter(s3_key=item.s3_key) \
-        .values('requester', 's3_key') \
-        .annotate(count=Count('requester')) \
-        .exclude(count=0) \
-        .order_by('-count')
+    return (get_in_time_range(start_time, end_time)
+            .filter(s3_key=item.s3_key)
+            .values('requester', 's3_key')
+            .annotate(count=Count('requester'))
+            .exclude(count=0)
+            .order_by('-count'))
 
 
 @time_this

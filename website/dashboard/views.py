@@ -46,15 +46,14 @@ def dashboard(request, start_time=START_TIME, end_time=END_TIME):
         'average_object_size': average_object_size,
         'most_queried_table': most_queried,
         'most_queried_labels': json.dumps(
-            [most_queried.name for most_queried in graph_most_queried]) if most_queried else None,
+            [item.name for (item, _) in graph_most_queried]) if most_queried else None,
         'most_queried_data': json.dumps(
-            [most_queried.query_count for most_queried in graph_most_queried]) if most_queried else None,
+            [count for (_, count) in graph_most_queried]) if most_queried else None,
         # 'most_using_labels': json.dumps(list(graph_most_using.values_list('requester', flat=True))),
         # 'most_using_data': json.dumps(list(graph_most_using.values_list('count', flat=True))),
         'time_info_times': json.dumps([reading.time.isoformat() for reading in time_info]) if time_info else None,
         'time_info_counts': json.dumps([reading.count for reading in time_info] if time_info else None)
     })
-
 
 @cache_page(3600)
 def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME):
@@ -74,6 +73,5 @@ def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME)
         'end_time': end_time,
         'time_range_form': time_range_form,
         'item': item,
-        'request_breakdown_labels': list(requesters.values_list('requester', flat=True)) if requesters else None,
-        'request_breakdown_data': list(requesters.values_list('count', flat=True)) if requesters else None
+        'request_breakdown': requesters
     })

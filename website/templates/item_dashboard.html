@@ -55,7 +55,7 @@
                         <td class='text-right'>
                             <a target='_blank'
                                href='{{ get_encode_url('files/' + item.name.split('.')[0]) }}'>{{ item.name }}
-                                <span class='ml-2 oi oi-external-link' aria-hidden='true'></span>
+                                <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
                             </a>
                         </td>
                     </tr>
@@ -65,7 +65,7 @@
                             <a target='_blank'
                                href='{{ get_encode_url('experiments/' + item.experiment) }}'>
                                 {{ item.experiment }}
-                                <span class='ml-2 oi oi-external-link' aria-hidden='true'></span>
+                                <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
                             </a>
                         </td>
                     </tr>
@@ -87,10 +87,10 @@
                     data: {
                         labels: ['Requester'],
                         datasets: [
-                            {% for label, datum in zip(request_breakdown_labels, request_breakdown_data) %}
+                            {% for value in request_breakdown %}
                                 {
-                                    label: ['{{ label|safe }}'],
-                                    data: ['{{ datum|safe }}'],
+                                    label: ['{{ value['requester']|safe }}'],
+                                    data: ['{{ value['count']|safe }}'],
                                     backgroundColor: getChartBackgroundColor({{ loop.index0 }}),
                                     borderColor: getChartLineColor({{ loop.index0 }}),
                                     borderWidth: 1

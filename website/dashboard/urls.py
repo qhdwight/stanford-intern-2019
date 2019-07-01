@@ -7,7 +7,7 @@ from . import views
 
 
 class DateRangeConverter:
-    FORMAT = '%Y-%m-%d-%H-%M-%S-%f'
+    FORMAT = '%Y-%m-%d'
     regex = '[0-9\-]+'
 
     def to_python(self, value):
