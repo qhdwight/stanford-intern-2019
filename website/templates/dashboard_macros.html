@@ -1,0 +1,12 @@
+{% macro render_back_button() %}
+    <a class='mx-4 btn btn-primary text-light align-self-center' role='button'
+            {% if is_default %}
+       href='{{ url('dashboard:dashboard') }}'
+            {% else %}
+       href='{{ url('dashboard:dashboard_range', kwargs={'start_time':start_time, 'end_time':end_time}) }}'
+            {% endif %}
+    >
+        <span class='oi oi-arrow-left' aria-hidden='true'></span>
+        Back
+    </a>
+{% endmacro %}

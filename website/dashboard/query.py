@@ -50,33 +50,31 @@ def get_in_time_range(start_time=START_TIME, end_time=END_TIME):
 
 
 def get_most_queried_s3_keys(start_time=START_TIME, end_time=END_TIME):
-    # bet = (get_in_time_range(start_time, end_time)
-    #        .values('s3_key', 'ip_address').order_by('s3_key'))
-    # print(bet
-    #       .values('s3_key', 'ip_address')
-    #       .distinct()
-    #       .values('s3_key')
-    #       .annotate(count=Count('s3_key'))
-    #       .order_by('-count'))
-    # print(bet
-    #       .values('s3_key')
-    #       .annotate(count=Count('s3_key'))
-    #       .order_by('-count'))
+    # print(query.query)
     return (get_in_time_range(start_time, end_time)
-            .values('s3_key', 'ip_address')
-            .distinct()
-            .annotate(count=Count('s3_key'))
+            .values('s3_key')
+            .annotate(count=Count('ip_address', distinct=True))
+            .values('s3_key', 'count')
             .order_by('-count'))
 
 
 @time_this
 def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_TIME):
-    items = []
     with transaction.atomic():
-        for queried in get_most_queried_s3_keys(start_time, end_time)[:amount]:
-            items.append((get_or_create_item(get_item_name(queried['s3_key'])), queried['count']))
-    items.sort(key=lambda x: x[1], reverse=True)
+        items = [(get_or_create_item(get_item_name(queried['s3_key'])), queried['count']) for queried in
+                 get_most_queried_s3_keys(start_time, end_time)[:amount].iterator()]
     return items
+
+
+@time_this
+def get_most_active_users_limited(amount, start_time=START_TIME, end_time=END_TIME):
+    return (get_in_time_range(start_time, end_time)
+                .exclude(requester__contains='encoded-instance')
+                # .filter(requester__isnull=False)
+                .values('ip_address')
+                .annotate(count=Count('ip_address'))
+                .values('requester', 'count', 'ip_address')
+                .order_by('-count')[:amount])
 
 
 @time_this
@@ -106,15 +104,31 @@ def get_total_request_count(start_time=START_TIME, end_time=END_TIME):
 
 @time_this
 def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
-    return (get_in_time_range(start_time, end_time)
-            .filter(s3_key=item.s3_key)
-            .values('requester', 's3_key')
+    keys = (get_in_time_range(start_time, end_time)
+            .filter(s3_key=item.s3_key))
+    return (keys.values('requester')
             .annotate(count=Count('requester'))
+            .values('requester', 'count')
             .exclude(count=0)
+            .order_by('-count'),
+            keys.values('ip_address')
+            .annotate(count=Count('ip_address'))
+            .values('ip_address', 'count')
             .order_by('-count'))
 
 
-@time_this
+def get_items_for_requester(requester, start_time=START_TIME, end_time=END_TIME):
+    keys = (get_in_time_range(start_time, end_time)
+            .filter(requester=requester)
+            .values('s3_key')
+            .annotate(count=Count('s3_key'))
+            .values('s3_key', 'count')
+            .order_by('-count'))[:50]
+    with transaction.atomic():
+        items = [(get_or_create_item(get_item_name(log['s3_key'])), log['count']) for log in keys.iterator()]
+    return items
+
+
 def get_or_create_item(item_name):
     if Item.objects.filter(name=item_name).exists():
         return Item.objects.get(name=item_name)
@@ -123,7 +137,7 @@ def get_or_create_item(item_name):
         if not first_log_with_item_name:
             return None
         s3_key = first_log_with_item_name.s3_key
-        url = f'{get_encode_url(get_header(item_name))}/?format=json'
+        url = f'{get_encode_url(s3_key.split("/")[3])}/?format=json'
         result = requests.get(url, headers=GET_JSON_HEADERS).json()
         experiment = result['dataset'].split('/')[2]
         experiment_url = f'{get_encode_url(experiment)}/?format=json'

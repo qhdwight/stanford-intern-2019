@@ -1,22 +1,14 @@
 {% extends 'base.html' %}
 {% set page_name = 'dashboard' %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Item Dashboard{% endblock %}
+{% from 'dashboard_macros.html' import render_back_button with context %}
 {% block content %}
     {% include 'navbar.html' %}
     <div class='container'>
         <div class='row'>
             <div class='col'>
                 <div class='d-flex flex-row justify-content-center m-4'>
-                    <a class='mx-4 btn btn-primary text-light align-self-center' role='button'
-                            {% if is_default %}
-                       href='{{ url('dashboard:dashboard') }}'
-                            {% else %}
-                       href='{{ url('dashboard:dashboard_range', kwargs={'start_time':start_time, 'end_time':end_time}) }}'
-                            {% endif %}
-                    >
-                        <span class='oi oi-arrow-left' aria-hidden='true'></span>
-                        Back
-                    </a>
+                    {{ render_back_button() }}
                     <h1 class='mx-4 mb-0 align-self-center'>
                         {{ item.name }}
                     </h1>
@@ -85,12 +77,18 @@
                 new Chart($('#request-breakdown-chart')[0].getContext('2d'), {
                     type: 'bar',
                     data: {
-                        labels: ['Requester'],
+                        labels: ['IP Address', 'Requester'],
                         datasets: [
-                            {% for value in request_breakdown %}
+                            {% for request_data, ip_data in zip_longest(request_breakdown, ip_breakdown) %}
                                 {
-                                    label: ['{{ value['requester']|safe }}'],
-                                    data: ['{{ value['count']|safe }}'],
+                                    label: [
+                                        '{{ ip_data['ip_address']|safe if ip_data else 'N/A' }}',
+                                        '{{ request_data['requester']|safe if request_data else 'N/A' }}'
+                                    ],
+                                    data: [
+                                        '{{ ip_data['count']|safe if ip_data else 0 }}',
+                                        '{{ request_data['count']|safe if request_data else 0 }}'
+                                    ],
                                     backgroundColor: getChartBackgroundColor({{ loop.index0 }}),
                                     borderColor: getChartLineColor({{ loop.index0 }}),
                                     borderWidth: 1

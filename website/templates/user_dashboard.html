@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% set page_name = 'dashboard' %}
+{% block title %}Item Dashboard{% endblock %}
+{% from 'dashboard_macros.html' import render_back_button with context %}
+{% block content %}
+    {% include 'navbar.html' %}
+    <div class='container'>
+        {# Render title and back button #}
+        <div class='row'>
+            <div class='col'>
+                <div class='d-flex flex-row justify-content-center m-4'>
+                    {{ render_back_button() }}
+                    <h4 class='mx-4 mb-0 align-self-center'>
+                        {{ requester }}
+                    </h4>
+                </div>
+            </div>
+        </div>
+        {# Render time range #}
+        {% if not is_default %}
+            <div class='row'>
+                <div class='col text-center'>
+                    <hr>
+                    <p class='lead mb-0'>From {{ start_time.strftime('%m/%d/%Y') }}
+                        to {{ end_time.strftime('%m/%d/%Y') }}</p>
+                </div>
+            </div>
+        {% endif %}
+        {# Table #}
+        <hr>
+        <div class='row mt-5'>
+            <div class='col'>
+                <div class='text-center'>
+                    <h4>Most Accessed Files</h4>
+                </div>
+                <table class='table table-striped mt-4'>
+                    <tr>
+                        <th scope='col'>#</th>
+                        <th scope='col'>Item</th>
+                        <th scope='col'>Experiment</th>
+                        <th scope='col'>Assay Type</th>
+                        <th scope='col'>Total Hits</th>
+                        <th scope='col'>Details</th>
+                    </tr>
+                    {% for most_queried, count in most_queried_table %}
+                        <tr>
+                            {% set name = render_s3_key(most_queried.s3_key) %}
+                            <th scope='row'>{{ loop.index }}</th>
+                            <td>
+                                <a target='_blank'
+                                   href='{{ get_encode_url('files/' + name.split('.')[0]) }}'>{{ name }}
+                                    <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
+                                </a>
+                            </td>
+                            <td>
+                                <a target='_blank'
+                                   href='{{ get_encode_url('experiments/' + most_queried.experiment) }}'>
+                                    {{ most_queried.experiment }}
+                                    <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
+                                </a>
+                            </td>
+                            <td>{{ most_queried.assay_title }}</td>
+                            <td>{{ locale_format(count) }}</td>
+                            <td>
+                                <a id='btn-{{ name }}'
+                                        {% if is_default %}
+                                   href='{{ url('dashboard:item_dashboard', kwargs={'item_name':name}) }}'
+                                        {% else %}
+                                   href='{{ url('dashboard:item_dashboard_range', kwargs={'item_name':name, 'start_time':start_time, 'end_time':end_time}) }}'
+                                        {% endif %}
+                                >
+                                    Details
+                                    <span class='ml-2 oi oi-bar-chart' aria-hidden='true'></span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{#{% block scripts %}#}
+{#    <script>#}
+{#        $(document).ready(function () {#}
+{#            {% if request_breakdown_data is not none %}#}
+{#                new Chart($('#request-breakdown-chart')[0].getContext('2d'), {#}
+{#                    type: 'bar',#}
+{#                    data: {#}
+{#                        labels: ['IP Address', 'Requester'],#}
+{#                        datasets: [#}
+{#                            {% for request_data, ip_data in zip_longest(request_breakdown, ip_breakdown) %}#}
+{#                                {#}
+{#                                    label: [#}
+{#                                        '{{ ip_data['ip_address']|safe if ip_data else 'N/A' }}',#}
+{#                                        '{{ request_data['requester']|safe if request_data else 'N/A' }}'#}
+{#                                    ],#}
+{#                                    data: [#}
+{#                                        '{{ ip_data['count']|safe if ip_data else 0 }}',#}
+{#                                        '{{ request_data['count']|safe if request_data else 0 }}'#}
+{#                                    ],#}
+{#                                    backgroundColor: getChartBackgroundColor({{ loop.index0 }}),#}
+{#                                    borderColor: getChartLineColor({{ loop.index0 }}),#}
+{#                                    borderWidth: 1#}
+{#                                },#}
+{#                            {% endfor %}#}
+{#                        ]#}
+{#                    },#}
+{#                    options: {#}
+{#                        scales: {#}
+{#                            xAxes: [{#}
+{#                                stacked: true#}
+{#                            }],#}
+{#                            yAxes: [{#}
+{#                                stacked: true#}
+{#                            }]#}
+{#                        }#}
+{#                    }#}
+{#                });#}
+{#            {% endif %}#}
+{#        });#}
+{#    </script>#}
+{#{% endblock %}#}

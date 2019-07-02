@@ -56,6 +56,47 @@
                     <canvas class='m-4 chart' id='most-queried-chart' style='width: 100%; height: 50vh'></canvas>
                 {% endif %}
             </div>
+            {% if biggest_users is not none %}
+                <div class='row m-4'>
+                    <div class='col text-center'>
+                        <h1>Biggest Users</h1>
+                    </div>
+                    <table class='table table-striped mt-4'>
+                        <tr>
+                            <th scope='col'>#</th>
+                            <th scope='col'>IP Address</th>
+                            <th scope='col'>Requester</th>
+                            <th scope='col'>Count</th>
+                            <th scope='col'>Details</th>
+                        </tr>
+                        {% for biggest_user in biggest_users %}
+                            {% set requester = biggest_user['requester'] %}
+                            <tr>
+                                <th scope='row'>{{ loop.index }}</th>
+                                <td>{{ biggest_user['ip_address'] }}</td>
+                                <td>{{ requester }}</td>
+                                <td>{{ locale_format(biggest_user['count']) }}</td>
+                                <td>
+                                    {% if requester is not none %}
+                                        <a
+                                                {% if is_default %}
+                                                    href='{{ url('dashboard:requester_dashboard', kwargs={'requester':requester}) }}'
+                                                {% else %}
+                                                    href='{{ url('dashboard:requester_dashboard_range', kwargs={'requester':requester, 'start_time':start_time, 'end_time':end_time}) }}'
+                                                {% endif %}
+                                        >
+                                            Details
+                                            <span class='ml-2 oi oi-bar-chart' aria-hidden='true'></span>
+                                        </a>
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
             {% if most_queried_table is not none %}
                 <div class='row m-4'>
                     <div class='col text-center'>
@@ -126,6 +167,13 @@
                         }]
                     },
                     options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
                         animation: {
                             duration: 5000
                         },
@@ -173,7 +221,7 @@
                 $('.fade-in-header').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
                 $('.chart').fadeTo(0, 0).delay(1000).fadeTo(500, 1);
             {% else %}
-                $('.counter').each(function() {
+                $('.counter').each(function () {
                     $(this).text(formatCount($(this).text(), $(this).attr('format')))
                 });
             {% endif %}

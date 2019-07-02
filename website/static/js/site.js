@@ -17,16 +17,12 @@ const chartBackgroundColors = [
 ];
 
 function getChartLineColor(index) {
-    if (index >= chartLineColors.length) {
-        index = 0;
-    }
+    index %= chartLineColors.length;
     return chartLineColors[index];
 }
 
 function getChartBackgroundColor(index) {
-    if (index >= chartBackgroundColors.length) {
-        index = 0;
-    }
+    index %= chartBackgroundColors.length;
     return chartBackgroundColors[index];
 }
 
