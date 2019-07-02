@@ -82,7 +82,9 @@ def requester_dashboard(request, requester, start_time=START_TIME, end_time=END_
                             end_time=time_range_form.cleaned_data['end_time'])
     time_range_form = SelectTimeRangeForm()
     items = query.get_items_for_requester(requester, start_time, end_time)
+    stats = query.get_stats_for_requester(requester)
     return render(request, 'user_dashboard.html', add_default_context({
+        'unique_downloads': stats,
         'requester': requester,
         'most_queried_table': items
     }, time_range_form, start_time, end_time))

@@ -60,9 +60,8 @@ def get_most_queried_s3_keys(start_time=START_TIME, end_time=END_TIME):
 
 @time_this
 def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_TIME):
-    with transaction.atomic():
-        items = [(get_or_create_item(get_item_name(queried['s3_key'])), queried['count']) for queried in
-                 get_most_queried_s3_keys(start_time, end_time)[:amount].iterator()]
+    items = [(get_or_create_item(get_item_name(queried['s3_key'])), queried['count']) for queried in
+             get_most_queried_s3_keys(start_time, end_time)[:amount].iterator()]
     return items
 
 
@@ -117,6 +116,16 @@ def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
             .order_by('-count'))
 
 
+def get_stats_for_requester(requster, start_time=START_TIME, end_time=END_TIME):
+    return (get_in_time_range(start_time, end_time)
+            .values('requester')
+            .filter(requster=requster)
+            .annotate(count=Count('s3_key', distinct=True))
+            .values('requester', 'count')
+            .count())
+
+
+@time_this
 def get_items_for_requester(requester, start_time=START_TIME, end_time=END_TIME):
     keys = (get_in_time_range(start_time, end_time)
             .filter(requester=requester)
@@ -124,8 +133,7 @@ def get_items_for_requester(requester, start_time=START_TIME, end_time=END_TIME)
             .annotate(count=Count('s3_key'))
             .values('s3_key', 'count')
             .order_by('-count'))[:50]
-    with transaction.atomic():
-        items = [(get_or_create_item(get_item_name(log['s3_key'])), log['count']) for log in keys.iterator()]
+    items = [(get_or_create_item(get_item_name(log['s3_key'])), log['count']) for log in keys.iterator()]
     return items
 
 
