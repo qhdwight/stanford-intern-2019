@@ -122,13 +122,17 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a target='_blank'
-                                       href='{{ get_encode_url('experiments/' + most_queried.experiment) }}'>
-                                        {{ most_queried.experiment }}
-                                        <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
-                                    </a>
+                                    {% if most_queried.experiment is not none %}
+                                        <a target='_blank'
+                                           href='{{ get_encode_url('experiments/' + most_queried.experiment) }}'>
+                                            {{ most_queried.experiment }}
+                                            <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
+                                        </a>
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
                                 </td>
-                                <td>{{ most_queried.assay_title }}</td>
+                                <td>{{ most_queried.assay_title or 'N/A' }}</td>
                                 <td>{{ count }}</td>
                                 <td>
                                     <a id='btn-{{ name }}'

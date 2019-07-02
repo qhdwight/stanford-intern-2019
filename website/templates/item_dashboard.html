@@ -54,16 +54,20 @@
                     <tr>
                         <td>Experiment</td>
                         <td class='text-right'>
-                            <a target='_blank'
-                               href='{{ get_encode_url('experiments/' + item.experiment) }}'>
-                                {{ item.experiment }}
-                                <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
-                            </a>
+                            {% if item.experiment is not none %}
+                                <a target='_blank'
+                                   href='{{ get_encode_url('experiments/' + item.experiment) }}'>
+                                    {{ item.experiment }}
+                                    <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
+                                </a>
+                            {% else %}
+                                N/A
+                            {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <td>Assay Type</td>
-                        <td class='text-right'>{{ item.assay_title }}</td>
+                        <td class='text-right'>{{ item.assay_title or 'N/A' }}</td>
                     </tr>
                 </table>
             </div>
