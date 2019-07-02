@@ -116,10 +116,10 @@ def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
             .order_by('-count'))
 
 
-def get_stats_for_requester(requster, start_time=START_TIME, end_time=END_TIME):
+def get_stats_for_requester(requester, start_time=START_TIME, end_time=END_TIME):
     return (get_in_time_range(start_time, end_time)
             .values('requester')
-            .filter(requster=requster)
+            .filter(requester=requester)
             .annotate(count=Count('s3_key', distinct=True))
             .values('requester', 'count')
             .count())
@@ -145,12 +145,17 @@ def get_or_create_item(item_name):
         if not first_log_with_item_name:
             return None
         s3_key = first_log_with_item_name.s3_key
-        url = f'{get_encode_url(s3_key.split("/")[3])}/?format=json'
-        result = requests.get(url, headers=GET_JSON_HEADERS).json()
-        experiment = result['dataset'].split('/')[2]
-        experiment_url = f'{get_encode_url(experiment)}/?format=json'
-        experiment_result = requests.get(experiment_url, headers=GET_JSON_HEADERS).json()
-        assay_title = experiment_result['assay_title'] if 'assay_title' in experiment_result else None
+        is_manifest = s3_key == 'encode_file_manifest.tsv'
+        if is_manifest:
+            experiment = None
+            assay_title = None
+        else:
+            url = f'{get_encode_url(s3_key.split("/")[3])}/?format=json'
+            result = requests.get(url, headers=GET_JSON_HEADERS).json()
+            experiment = result['dataset'].split('/')[2]
+            experiment_url = f'{get_encode_url(experiment)}/?format=json'
+            experiment_result = requests.get(experiment_url, headers=GET_JSON_HEADERS).json()
+            assay_title = experiment_result['assay_title'] if 'assay_title' in experiment_result else None
         query_count = GET_REQUESTS.filter(s3_key=s3_key).count()
         print(
             f'Creating item {item_name}, query count: {query_count}, key {s3_key}, experiment {experiment}, and assay {assay_title}')

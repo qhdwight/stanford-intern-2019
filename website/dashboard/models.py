@@ -13,7 +13,7 @@ class QueryCountAtTime(models.Model):
 class Item(models.Model):
     s3_key = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=64, unique=True)
-    experiment = models.CharField(max_length=64)
+    experiment = models.CharField(max_length=64, null=True)
     assay_title = models.CharField(max_length=64, null=True)
     query_count = models.PositiveIntegerField()
 
