@@ -128,7 +128,7 @@ def get_items_for_source(start_time=START_TIME, end_time=END_TIME, **kwargs):
             .values('s3_key')
             .annotate(count=Count('s3_key'))
             .values('s3_key', 'count')
-            .order_by('-count'))[:10]
+            .order_by('-count'))[:20]
     items = [(get_or_create_item(get_item_name(log['s3_key'])), log['count']) for log in keys.iterator()]
     return items
 

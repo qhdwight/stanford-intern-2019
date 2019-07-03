@@ -7,7 +7,7 @@ from . import query
 from .forms import SelectTimeRangeForm
 from .query import START_TIME, END_TIME
 
-CACHE_TIME = 0
+from settings import CACHE_TIME
 
 
 def add_default_context(context, time_range_form, start_time, end_time):
@@ -28,8 +28,9 @@ def dashboard(request, start_time=START_TIME, end_time=END_TIME):
             return redirect('dashboard:dashboard_range',
                             start_time=time_range_form.cleaned_data['start_time'],
                             end_time=time_range_form.cleaned_data['end_time'])
-    time_range_form = SelectTimeRangeForm()
-    most_queried = query.get_most_queried_items_limited(50, start_time, end_time)
+    else:
+        time_range_form = SelectTimeRangeForm()
+    most_queried = query.get_most_queried_items_limited(20, start_time, end_time)
     biggest_requesters = query.get_most_active_users_limited(100, start_time, end_time)
     graph_most_queried = most_queried[:6]
     time_info = query.get_query_count_intervals(start_time, end_time)
@@ -64,7 +65,8 @@ def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME)
                             item_name=item_name,
                             start_time=time_range_form.cleaned_data['start_time'],
                             end_time=time_range_form.cleaned_data['end_time'])
-    time_range_form = SelectTimeRangeForm()
+    else:
+        time_range_form = SelectTimeRangeForm()
     item = query.get_or_create_item(item_name)
     (request_breakdown, ip_breakdown) = query.get_requesters_for_item(item, start_time, end_time)
     return render(request, 'item_dashboard.html', add_default_context({
@@ -83,7 +85,8 @@ def requester_dashboard(request, requester, start_time=START_TIME, end_time=END_
                             requester=requester,
                             start_time=time_range_form.cleaned_data['start_time'],
                             end_time=time_range_form.cleaned_data['end_time'])
-    time_range_form = SelectTimeRangeForm()
+    else:
+        time_range_form = SelectTimeRangeForm()
     items = query.get_items_for_source(start_time, end_time, requester=requester)
     total_downloads, unique_downloads = query.get_stats_for_source(requester=requester)
     return render(request, 'user_dashboard.html', add_default_context({
@@ -103,7 +106,8 @@ def ip_address_dashboard(request, ip_address, start_time=START_TIME, end_time=EN
                             ip_address=ip_address,
                             start_time=time_range_form.cleaned_data['start_time'],
                             end_time=time_range_form.cleaned_data['end_time'])
-    time_range_form = SelectTimeRangeForm()
+    else:
+        time_range_form = SelectTimeRangeForm()
     items = query.get_items_for_source(start_time, end_time, ip_address=ip_address)
     total_downloads, unique_downloads = query.get_stats_for_source(start_time, end_time, ip_address=ip_address)
     return render(request, 'ip_address_dashboard.html', add_default_context({

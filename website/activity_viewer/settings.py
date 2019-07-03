@@ -11,6 +11,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+CACHE_TIME = config('CACHE_TIME', default=3600, cast=int)
+
 ALLOWED_HOSTS = [
     'localhost',
     '171.67.205.36'

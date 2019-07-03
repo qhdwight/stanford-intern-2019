@@ -2,19 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/ip_address_dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/qhdwi.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/qhdwi.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity_viewer/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/activity_viewer/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dashboard/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/query.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dashboard/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dashboard/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/site.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard_macros.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard_macros.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/item_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/item_dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user_dashboard.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,8 +39,8 @@
             <file pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/dashboard/views.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="454">
-                    <caret line="106" column="34" lean-forward="true" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
+                  <state relative-caret-position="118">
+                    <caret line="27" column="56" lean-forward="true" selection-start-line="27" selection-start-column="56" selection-end-line="27" selection-end-column="56" />
                     <folding>
                       <element signature="e#0#11#0" expanded="true" />
                     </folding>
@@ -59,7 +51,7 @@
             <file pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/dashboard/forms.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="144">
+                  <state relative-caret-position="168">
                     <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
                   </state>
                 </provider>
@@ -68,11 +60,20 @@
             <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/dashboard/query.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="238">
-                    <caret line="130" column="33" selection-start-line="130" selection-start-column="33" selection-end-line="130" selection-end-column="33" />
+                  <state relative-caret-position="214">
+                    <caret line="84" column="40" lean-forward="true" selection-start-line="84" selection-start-column="40" selection-end-line="84" selection-end-column="40" />
                     <folding>
                       <element signature="e#0#10#0" expanded="true" />
                     </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/dashboard/urls.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="312">
+                    <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
                   </state>
                 </provider>
               </entry>
@@ -86,15 +87,6 @@
                 </provider>
               </entry>
             </file>
-            <file pinned="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/dashboard/urls.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="546">
-                    <caret line="44" column="56" lean-forward="true" selection-start-line="44" selection-start-column="56" selection-end-line="44" selection-end-column="56" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
           </leaf>
         </state>
       </content>
@@ -102,47 +94,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/ip_address_dashboard.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="3" column="61" lean-forward="true" selection-start-line="3" selection-start-column="61" selection-end-line="3" selection-end-column="61" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/dashboard_macros.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="52">
-              <caret line="92" column="33" lean-forward="true" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/dashboard/models.py">
+        <entry file="file://$PROJECT_DIR$/dashboard/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="792">
-              <caret line="33" column="65" selection-start-line="33" selection-start-column="65" selection-end-line="33" selection-end-column="65" />
+            <state relative-caret-position="83">
+              <caret line="30" column="9" lean-forward="true" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard/forms.py">
+        <entry file="file://$PROJECT_DIR$/activity_viewer/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="5" column="38" lean-forward="true" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="36" column="48" lean-forward="true" selection-start-line="36" selection-start-column="48" selection-end-line="36" selection-end-column="48" />
+            <state relative-caret-position="192">
+              <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -159,10 +130,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Some User</find>
-      <find>import render_form</find>
-      <find>item.name</find>
-      <find>requester_dashboard_range</find>
       <find>:5</find>
       <find>exclude</find>
       <find>get_</find>
@@ -175,7 +142,6 @@
       <find>assay_title</find>
       <find>distinct=True</find>
       <find>get_items_from_query</find>
-      <find>table</find>
       <find>render_item_table</find>
       <find>oncl</find>
       <find>on_cl</find>
@@ -189,6 +155,11 @@
       <find>N/A</find>
       <find>kwargs</find>
       <find>:10</find>
+      <find>[:</find>
+      <find>table</find>
+      <find>:6</find>
+      <find>50</find>
+      <find>return 0</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -220,7 +191,6 @@
         <option value="$PROJECT_DIR$/manage.py" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/templates/base.html" />
-        <option value="$PROJECT_DIR$/activity_viewer/settings.py" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/update_after_logs.py" />
         <option value="$PROJECT_DIR$/templates/navbar.html" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/fc259004-002d-459d-bed9-7777503d9b81/console.sql" />
@@ -231,12 +201,13 @@
         <option value="$PROJECT_DIR$/templates/dashboard.html" />
         <option value="$PROJECT_DIR$/templates/user_dashboard.html" />
         <option value="$PROJECT_DIR$/templates/ip_address_dashboard.html" />
-        <option value="$PROJECT_DIR$/dashboard/views.py" />
         <option value="$PROJECT_DIR$/dashboard/forms.py" />
         <option value="$PROJECT_DIR$/templates/dashboard_macros.html" />
-        <option value="$PROJECT_DIR$/dashboard/urls.py" />
-        <option value="$PROJECT_DIR$/dashboard/query.py" />
         <option value="$PROJECT_DIR$/dashboard/models.py" />
+        <option value="$PROJECT_DIR$/activity_viewer/settings.py" />
+        <option value="$PROJECT_DIR$/dashboard/urls.py" />
+        <option value="$PROJECT_DIR$/dashboard/views.py" />
+        <option value="$PROJECT_DIR$/dashboard/query.py" />
       </list>
     </option>
   </component>
@@ -429,12 +400,12 @@
       <workItem from="1561598751322" duration="17562000" />
       <workItem from="1561668329653" duration="5498000" />
       <workItem from="1561999051994" duration="19680000" />
-      <workItem from="1562019064865" duration="25043000" />
+      <workItem from="1562019064865" duration="27309000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="144198000" />
+    <option name="totallyTimeSpent" value="146464000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
@@ -446,7 +417,7 @@
       <window_info anchor="bottom" id="Messages" order="0" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32871014" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.86260056" visible="true" weight="0.36754507" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.86260056" weight="0.36754507" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.40221915" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -480,7 +451,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/dashboard/migrations/0002_auto_20190618_1203.py" />
     <entry file="file://$PROJECT_DIR$/dashboard/migrations/0002_auto_20190626_1753.py" />
     <entry file="file://$PROJECT_DIR$/dashboard/migrations/0003_auto_20190618_1215.py" />
     <entry file="file://$PROJECT_DIR$/dashboard/migrations/0004_auto_20190618_1217.py" />
@@ -584,16 +554,6 @@
     <entry file="file://$PROJECT_DIR$/activity_viewer/wsgi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/activity_viewer/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2736">
-          <caret line="114" column="23" lean-forward="true" selection-start-line="114" selection-start-column="23" selection-end-line="114" selection-end-column="23" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -755,10 +715,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="33" column="15" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard_macros.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="97" column="114" lean-forward="true" selection-start-line="97" selection-start-column="114" selection-end-line="97" selection-end-column="114" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/botocore/vendored/requests/packages/urllib3/util/url.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activity_viewer/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dashboard/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="454">
-          <caret line="106" column="34" lean-forward="true" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
+        <state relative-caret-position="118">
+          <caret line="27" column="56" lean-forward="true" selection-start-line="27" selection-start-column="56" selection-end-line="27" selection-end-column="56" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
@@ -767,39 +774,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dashboard/query.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="130" column="33" selection-start-line="130" selection-start-column="33" selection-end-line="130" selection-end-column="33" />
+        <state relative-caret-position="214">
+          <caret line="84" column="40" lean-forward="true" selection-start-line="84" selection-start-column="40" selection-end-line="84" selection-end-column="40" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="5" column="38" lean-forward="true" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="36" column="48" lean-forward="true" selection-start-line="36" selection-start-column="48" selection-end-line="36" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard_macros.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="92" column="33" lean-forward="true" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="792">
-          <caret line="33" column="65" selection-start-line="33" selection-start-column="65" selection-end-line="33" selection-end-column="65" />
         </state>
       </provider>
     </entry>

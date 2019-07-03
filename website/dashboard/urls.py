@@ -33,15 +33,16 @@ register_converter(RequesterConverter, 'requester')
 
 app_name = 'dashboard'
 
-urlpatterns = [
-    path('', views.dashboard, name='dashboard'),
-    path('<datetime:start_time>/to/<datetime:end_time>', views.dashboard, name='dashboard_range'),
-    path('item/<str:item_name>', views.item_dashboard, name='item_dashboard'),
-    path('item/<str:item_name>/<datetime:start_time>/to/<datetime:end_time>', views.item_dashboard,
-         name='item_dashboard_range'),
-    path('requester/<requester:requester>', views.requester_dashboard, name='requester_dashboard'),
-    path('requester/<requester:requester>/<datetime:start_time>/to/<datetime:end_time>', views.requester_dashboard,
-         name='requester_dashboard_range'),
-    path('ip_address/<str:ip_address>', views.ip_address_dashboard, name='ip_address_dashboard'),
-    path('ip_address/<str:ip_address>/<datetime:start_time>/to/<datetime:end_time>', views.ip_address_dashboard, name='ip_address_dashboard_range')
-]
+urlpatterns = []
+
+
+def add_ranged(base_path, view, name):
+    urlpatterns.extend((path(base_path, view, name=name),
+                        path(f'{base_path}<datetime:start_time>/to/<datetime:end_time>/', view, name=f'{name}_range')))
+
+
+add_ranged('', views.dashboard, name='dashboard')
+add_ranged('requester/<requester:requester>/', views.requester_dashboard, name='requester_dashboard')
+add_ranged('ip_address/<str:ip_address>/', views.ip_address_dashboard, name='ip_address_dashboard')
+add_ranged('item/<str:item_name>/', views.item_dashboard, name='item_dashboard')
+# add_ranged('item/data_table/<str:item_name>', views.item_data_table, name='item_data_table')
