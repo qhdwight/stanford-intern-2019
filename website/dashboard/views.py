@@ -7,7 +7,7 @@ from . import query
 from .forms import SelectTimeRangeForm
 from .query import START_TIME, END_TIME
 
-from settings import CACHE_TIME
+from django.conf import settings
 
 
 def add_default_context(context, time_range_form, start_time, end_time):
@@ -20,7 +20,7 @@ def add_default_context(context, time_range_form, start_time, end_time):
     return context
 
 
-@cache_page(CACHE_TIME)
+@cache_page(settings.CACHE_TIME)
 def dashboard(request, start_time=START_TIME, end_time=END_TIME):
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
@@ -56,7 +56,7 @@ def dashboard(request, start_time=START_TIME, end_time=END_TIME):
     }, time_range_form, start_time, end_time))
 
 
-@cache_page(CACHE_TIME)
+@cache_page(settings.CACHE_TIME)
 def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME):
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
@@ -76,7 +76,7 @@ def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME)
     }, time_range_form, start_time, end_time))
 
 
-@cache_page(CACHE_TIME)
+@cache_page(settings.CACHE_TIME)
 def requester_dashboard(request, requester, start_time=START_TIME, end_time=END_TIME):
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
@@ -97,7 +97,7 @@ def requester_dashboard(request, requester, start_time=START_TIME, end_time=END_
     }, time_range_form, start_time, end_time))
 
 
-@cache_page(CACHE_TIME)
+@cache_page(settings.CACHE_TIME)
 def ip_address_dashboard(request, ip_address, start_time=START_TIME, end_time=END_TIME):
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
