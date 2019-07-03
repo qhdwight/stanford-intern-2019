@@ -1,156 +1,50 @@
 {% extends 'base.html' %}
 {% set page_name = 'dashboard' %}
 {% block title %}Dashboard{% endblock %}
-{% from "render_form_macro.html" import render_form with context %}
+{% from 'render_form_macro.html' import render_form with context %}
+{% from 'dashboard_macros.html' import render_item_table, render_user_table, render_table_row, render_time_range with context %}
+{% macro render_stat(stat, display_name, format='regular') %}
+    <div class='col text-center m-4'>
+        {% if stat is not none %}
+            <p class='counter display-3' format='{{ format }}'
+               {% if is_default %}data-count='{{ stat }}'>
+                   0
+               {% else %}>
+                   {{ stat }}
+               {% endif %}
+            </p>
+        {% else %}
+            <p class='display-2'>None</p>
+        {% endif %}
+        <h3 class='fade-in-header'>{{ display_name }}</h3>
+    </div>
+{% endmacro %}
 {% block content %}
     {% include 'navbar.html' %}
     <div class='container'>
         <div class='col m-4'>
             <div class='row'>
-                <div class='col text-center m-4'>
-                    {% if request_count is not none %}
-                        <p class='counter display-2' format='regular'
-                           {% if is_default %}data-count='{{ request_count }}'>
-                               0
-                           {% else %}>
-                               {{ request_count }}
-                           {% endif %}
-                        </p>
-                    {% else %}
-                        <p class='display-2'>None</p>
-                    {% endif %}
-                    <h3 class='fade-in-header'>Total GET Requests Made to S3 Server</h3>
-                </div>
-                <div class='col'>
-                    <div class='text-center m-4'>
-                        {% if average_object_size is not none %}
-                            <p class='counter display-2' format='space'
-                               {% if is_default %}data-count='{{ average_object_size }}'>
-                                   0
-                               {% else %}>
-                                   {{ average_object_size }}
-                               {% endif %}
-                            </p>
-                        {% else %}
-                            <p class='display-2'>None</p>
-                        {% endif %}
-                        <h3 class='fade-in-header'>Average Object Size</h3>
-                    </div>
-                </div>
+                {{ render_stat(total_request_count, 'Total Downloads') }}
+                {{ render_stat(unique_request_count, 'Unique Downloads') }}
+                {{ render_stat(average_file_size, 'Average File Size', 'space') }}
             </div>
-            {% if not is_default %}
-                <hr>
-                <div class='row'>
-                    <div class='col text-center'>
-                        <p class='lead mb-0'>From {{ start_time.strftime('%m/%d/%Y') }}
-                            to {{ end_time.strftime('%m/%d/%Y') }}</p>
-                    </div>
-                </div>
-            {% endif %}
+            <div class='row'>
+                {{ render_stat(unique_ips, 'Unique IPs') }}
+                {{ render_stat(unique_files, 'Unique Files') }}
+                {{ render_stat(unique_requesters, 'Unique Requesters') }}
+            </div>
+            {{ render_time_range() }}
             <hr>
             <div class='row m-4'>
                 {% if time_info_counts is not none %}
-                    <canvas class='m-4 chart' id='time-chart' style='width: 100%; height: 50vh'></canvas>
+                    <canvas class='m-4 chart' id='time-chart'></canvas>
                 {% endif %}
                 {% if most_queried_data is not none %}
-                    <canvas class='m-4 chart' id='most-queried-chart' style='width: 100%; height: 50vh'></canvas>
+                    <canvas class='m-4 chart' id='most-queried-chart'></canvas>
                 {% endif %}
             </div>
-            {% if biggest_users is not none %}
-                <div class='row m-4'>
-                    <div class='col text-center'>
-                        <h1>Biggest Users</h1>
-                    </div>
-                    <table class='table table-striped mt-4'>
-                        <tr>
-                            <th scope='col'>#</th>
-                            <th scope='col'>IP Address</th>
-                            <th scope='col'>Requester</th>
-                            <th scope='col'>Count</th>
-                            <th scope='col'>Details</th>
-                        </tr>
-                        {% for biggest_user in biggest_users %}
-                            {% set requester = biggest_user['requester'] %}
-                            <tr>
-                                <th scope='row'>{{ loop.index }}</th>
-                                <td>{{ biggest_user['ip_address'] }}</td>
-                                <td>{{ requester }}</td>
-                                <td>{{ locale_format(biggest_user['count']) }}</td>
-                                <td>
-                                    {% if requester is not none %}
-                                        <a
-                                                {% if is_default %}
-                                                    href='{{ url('dashboard:requester_dashboard', kwargs={'requester':requester}) }}'
-                                                {% else %}
-                                                    href='{{ url('dashboard:requester_dashboard_range', kwargs={'requester':requester, 'start_time':start_time, 'end_time':end_time}) }}'
-                                                {% endif %}
-                                        >
-                                            Details
-                                            <span class='ml-2 oi oi-bar-chart' aria-hidden='true'></span>
-                                        </a>
-                                    {% else %}
-                                        N/A
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            {% endif %}
-            {% if most_queried_table is not none %}
-                <div class='row m-4'>
-                    <div class='col text-center'>
-                        <h1>Most uniquely accessed files</h1>
-                    </div>
-                    <table class='table table-striped mt-4'>
-                        <tr>
-                            <th scope='col'>#</th>
-                            <th scope='col'>Item</th>
-                            <th scope='col'>Experiment</th>
-                            <th scope='col'>Assay Type</th>
-                            <th scope='col'>Unique Hits</th>
-                            <th scope='col'>Details</th>
-                        </tr>
-                        {% for most_queried, count in most_queried_table %}
-                            <tr>
-                                {% set name = render_s3_key(most_queried.s3_key) %}
-                                <th scope='row'>{{ loop.index }}</th>
-                                <td>
-                                    <a target='_blank'
-                                       href='{{ get_encode_url('files/' + name.split('.')[0]) }}'>{{ name }}
-                                        <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
-                                    </a>
-                                </td>
-                                <td>
-                                    {% if most_queried.experiment is not none %}
-                                        <a target='_blank'
-                                           href='{{ get_encode_url('experiments/' + most_queried.experiment) }}'>
-                                            {{ most_queried.experiment }}
-                                            <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
-                                        </a>
-                                    {% else %}
-                                        N/A
-                                    {% endif %}
-                                </td>
-                                <td>{{ most_queried.assay_title or 'N/A' }}</td>
-                                <td>{{ count }}</td>
-                                <td>
-                                    <a id='btn-{{ name }}'
-                                            {% if is_default %}
-                                       href='{{ url('dashboard:item_dashboard', kwargs={'item_name':name}) }}'
-                                            {% else %}
-                                       href='{{ url('dashboard:item_dashboard_range', kwargs={'item_name':name, 'start_time':start_time, 'end_time':end_time}) }}'
-                                            {% endif %}
-                                    >
-                                        Details
-                                        <span class='ml-2 oi oi-bar-chart' aria-hidden='true'></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            {% endif %}
+            {{ render_table_row(render_item_table, most_queried_table, 'Most Uniquely Downloaded') }}
+            {{ render_table_row(render_user_table, biggest_users, 'Most Active Downloaders') }}
         </div>
     </div>
 {% endblock %}
@@ -181,17 +75,15 @@
                         animation: {
                             duration: 5000
                         },
-                        onClick: function (event, otherEvent) {
-                            const index = otherEvent[0]._index;
-                            if (index !== undefined) {
-                                label = this.config.data.labels[index];
-                                document.getElementById('btn-' + label).click();
+                        onClick: function (event, elements) {
+                            const element = this.getElementAtEvent(event)[0];
+                            if (element !== undefined && element._index !== undefined) {
+                                document.getElementById('btn-item-' + element._index).click();
                             }
                         }
                     }
                 });
             {% endif %}
-
             {% if time_info_counts is not none %}
                 new Chart($('#time-chart')[0].getContext('2d'), {
                     type: 'line',

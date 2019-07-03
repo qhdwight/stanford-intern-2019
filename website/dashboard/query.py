@@ -79,26 +79,20 @@ def get_most_active_users_limited(amount, start_time=START_TIME, end_time=END_TI
 @time_this
 def get_query_count_intervals(start_time=START_TIME, end_time=END_TIME):
     return QueryCountAtTime.objects.filter(time__range=(start_time, end_time))
-    # readings = []
-    # time = start_time
-    # while time < end_time:
-    #     count = GET_REQUESTS.filter(time__range=(time - interval_delta / 2, time + interval_delta / 2)).count()
-    #     time += interval_delta
-    #     readings.append((time, count))
-    # return readings
 
 
 @time_this
-def get_average_object_size(start_time=START_TIME, end_time=END_TIME):
-    return (get_in_time_range(start_time, end_time)
-        .values('s3_key')
-        .distinct()
-        .aggregate(average_size=Avg('object_size'))['average_size'])
-
-
-@time_this
-def get_total_request_count(start_time=START_TIME, end_time=END_TIME):
-    return get_in_time_range(start_time, end_time).count()
+def get_general_stats(start_time=START_TIME, end_time=END_TIME):
+    log_range = get_in_time_range(start_time, end_time)
+    # Total requests, unique requests, unique ips, unique files
+    key_and_ip = log_range.values('s3_key', 'ip_address')
+    distinct_keys = key_and_ip.values('s3_key').distinct()
+    return (log_range.count(),
+            key_and_ip.distinct().count(),
+            key_and_ip.values('ip_address').distinct().count(),
+            distinct_keys.count(),
+            log_range.values('requester').distinct().count(),
+            int(distinct_keys.aggregate(average_size=Avg('object_size'))['average_size']))
 
 
 @time_this
@@ -116,23 +110,25 @@ def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
             .order_by('-count'))
 
 
-def get_stats_for_requester(requester, start_time=START_TIME, end_time=END_TIME):
-    return (get_in_time_range(start_time, end_time)
-            .values('requester')
-            .filter(requester=requester)
-            .annotate(count=Count('s3_key', distinct=True))
-            .values('requester', 'count')
+def get_stats_for_source(start_time=START_TIME, end_time=END_TIME, **kwargs):
+    reqs = (get_in_time_range(start_time, end_time)
+            .filter(**kwargs))
+    return (reqs
+            .count(),
+            reqs
+            .values('s3_key')
+            .distinct()
             .count())
 
 
 @time_this
-def get_items_for_requester(requester, start_time=START_TIME, end_time=END_TIME):
+def get_items_for_source(start_time=START_TIME, end_time=END_TIME, **kwargs):
     keys = (get_in_time_range(start_time, end_time)
-            .filter(requester=requester)
+            .filter(**kwargs)
             .values('s3_key')
             .annotate(count=Count('s3_key'))
             .values('s3_key', 'count')
-            .order_by('-count'))[:50]
+            .order_by('-count'))[:10]
     items = [(get_or_create_item(get_item_name(log['s3_key'])), log['count']) for log in keys.iterator()]
     return items
 

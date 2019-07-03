@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% set page_name = 'dashboard' %}
 {% block title %}Item Dashboard{% endblock %}
-{% from 'dashboard_macros.html' import render_back_button with context %}
+{% from 'dashboard_macros.html' import render_back_button, render_time_range, render_table_row, render_user_table with context %}
 {% block content %}
     {% include 'navbar.html' %}
     <div class='container'>
@@ -15,21 +15,12 @@
                 </div>
             </div>
         </div>
-        {% if not is_default %}
-            <div class='row'>
-                <div class='col text-center'>
-                    <hr>
-                    <p class='lead mb-0'>From {{ start_time.strftime('%m/%d/%Y') }}
-                        to {{ end_time.strftime('%m/%d/%Y') }}</p>
-                </div>
-            </div>
-        {% endif %}
+        {{ render_time_range() }}
         <div class='row'>
             <div class='col'>
                 {% if request_breakdown_data is not none %}
                     <hr>
-                    <canvas class='m-4 chart' id='request-breakdown-chart'
-                            style='width: 100%; height: 50vh'></canvas>
+                    <canvas class='m-4 chart' id='request-breakdown-chart'></canvas>
                 {% else %}
                     <hr>
                     <p class='text-center'>Looks like there were no requesters in this time range!</p>
@@ -72,6 +63,7 @@
                 </table>
             </div>
         </div>
+        {{ render_table_row(render_user_table, ip_breakdown.values('ip_address', 'requester', 'count'), 'Downloaders') }}
     </div>
 {% endblock %}
 {% block scripts %}
@@ -108,6 +100,14 @@
                             yAxes: [{
                                 stacked: true
                             }]
+                        },
+                        onClick: function (event, elements) {
+                            const element = this.getElementAtEvent(event)[0];
+                            if (element !== undefined) {
+                                if (element._index === 1 && element._datasetIndex !== undefined) {
+                                    document.getElementById('btn-requester-' + element._datasetIndex).click();
+                                }
+                            }
                         }
                     }
                 });

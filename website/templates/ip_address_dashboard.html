@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% set page_name = 'dashboard' %}
-{% block title %}Item Dashboard{% endblock %}
+{% block title %}IP Dashboard{% endblock %}
 {% from 'dashboard_macros.html' import render_back_button, render_table_row, render_item_table, render_time_range with context %}
 {% block content %}
     {% include 'navbar.html' %}
@@ -10,7 +10,7 @@
                 <div class='d-flex flex-row justify-content-center m-4'>
                     {{ render_back_button() }}
                     <h4 class='mx-4 mb-0 align-self-center'>
-                        {{ requester }}
+                        {{ ip_address }}
                     </h4>
                 </div>
             </div>

@@ -41,5 +41,7 @@ urlpatterns = [
          name='item_dashboard_range'),
     path('requester/<requester:requester>', views.requester_dashboard, name='requester_dashboard'),
     path('requester/<requester:requester>/<datetime:start_time>/to/<datetime:end_time>', views.requester_dashboard,
-         name='requester_dashboard_range')
+         name='requester_dashboard_range'),
+    path('ip_address/<str:ip_address>', views.ip_address_dashboard, name='ip_address_dashboard'),
+    path('ip_address/<str:ip_address>/<datetime:start_time>/to/<datetime:end_time>', views.ip_address_dashboard, name='ip_address_dashboard_range')
 ]

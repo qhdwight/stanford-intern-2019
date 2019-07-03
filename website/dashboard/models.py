@@ -31,7 +31,7 @@ class Log(models.Model):
     http_status = models.PositiveSmallIntegerField(null=True)
     error_code = models.CharField(max_length=16, null=True)
     bytes_sent = models.BigIntegerField(null=True)
-    object_size = models.BigIntegerField(null=True)
+    object_size = models.BigIntegerField(null=True, db_index=True)
     total_time = models.PositiveIntegerField(null=True)
     turn_around_time = models.PositiveIntegerField(null=True)
     referrer = models.URLField(null=True)
