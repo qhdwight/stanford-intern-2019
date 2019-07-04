@@ -2,7 +2,7 @@
 {% set page_name = 'dashboard' %}
 {% block title %}Dashboard{% endblock %}
 {% from 'render_form_macro.html' import render_form with context %}
-{% from 'dashboard_macros.html' import render_item_table, render_user_table, render_table_row, render_time_range with context %}
+{% from 'dashboard_macros.html' import render_time_range, ajax_table with context %}
 {% macro render_stat(stat, display_name, format='regular') %}
     <div class='col text-center m-4'>
         {% if stat is not none %}
@@ -43,14 +43,20 @@
                     <canvas class='m-4 chart' id='most-queried-chart'></canvas>
                 {% endif %}
             </div>
-            {{ render_table_row(render_item_table, most_queried_table, 'Most Uniquely Downloaded') }}
-            {{ render_table_row(render_user_table, biggest_users, 'Most Active Downloaders') }}
+            <div id='most-queried-table'>
+
+            </div>
+            <div id='biggest-users-table'>
+
+            </div>
         </div>
     </div>
 {% endblock %}
 {% block scripts %}
     <script>
         $(document).ready(function () {
+            {{ ajax_table('dashboard:most_queried_data_table', 'most-queried-table') }}
+            {{ ajax_table('dashboard:biggest_users_data_table', 'biggest-users-table') }}
             {% if most_queried_data is not none %}
                 new Chart($('#most-queried-chart')[0].getContext('2d'), {
                     type: 'bar',

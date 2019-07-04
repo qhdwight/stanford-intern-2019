@@ -30,12 +30,10 @@ def dashboard(request, start_time=START_TIME, end_time=END_TIME):
                             end_time=time_range_form.cleaned_data['end_time'])
     else:
         time_range_form = SelectTimeRangeForm()
-    most_queried = query.get_most_queried_items_limited(20, start_time, end_time)
-    biggest_requesters = query.get_most_active_users_limited(100, start_time, end_time)
-    graph_most_queried = most_queried[:6]
+    graph_most_queried = query.get_most_queried_items_limited(6, start_time, end_time)
     time_info = query.get_query_count_intervals(start_time, end_time)
-    total_requests, unique_requests, unique_ips, unique_files, unique_requesters, average_file_size = query.get_general_stats(
-        start_time, end_time)
+    total_requests, unique_requests, unique_ips, unique_files, unique_requesters, average_file_size \
+        = query.get_general_stats(start_time, end_time)
     return render(request, 'dashboard.html', add_default_context({
         'total_request_count': total_requests,
         'unique_request_count': unique_requests,
@@ -43,12 +41,10 @@ def dashboard(request, start_time=START_TIME, end_time=END_TIME):
         'unique_files': unique_files,
         'unique_requesters': unique_requesters,
         'average_file_size': average_file_size,
-        'most_queried_table': most_queried,
-        'biggest_users': biggest_requesters,
         'most_queried_labels': json.dumps(
-            [item.name for (item, _) in graph_most_queried]) if most_queried else None,
+            [item.name for (item, _) in graph_most_queried]) if graph_most_queried else None,
         'most_queried_data': json.dumps(
-            [count for (_, count) in graph_most_queried]) if most_queried else None,
+            [count for (_, count) in graph_most_queried]) if graph_most_queried else None,
         # 'most_using_labels': json.dumps(list(graph_most_using.values_list('requester', flat=True))),
         # 'most_using_data': json.dumps(list(graph_most_using.values_list('count', flat=True))),
         'time_info_times': json.dumps([reading.time.isoformat() for reading in time_info]) if time_info else None,
@@ -87,7 +83,7 @@ def requester_dashboard(request, requester, start_time=START_TIME, end_time=END_
                             end_time=time_range_form.cleaned_data['end_time'])
     else:
         time_range_form = SelectTimeRangeForm()
-    items = query.get_items_for_source(start_time, end_time, requester=requester)
+    items = query.get_items_for_source_limited(6, start_time, end_time, requester=requester)
     total_downloads, unique_downloads = query.get_stats_for_source(requester=requester)
     return render(request, 'user_dashboard.html', add_default_context({
         'unique_downloads': unique_downloads,
@@ -108,7 +104,7 @@ def ip_address_dashboard(request, ip_address, start_time=START_TIME, end_time=EN
                             end_time=time_range_form.cleaned_data['end_time'])
     else:
         time_range_form = SelectTimeRangeForm()
-    items = query.get_items_for_source(start_time, end_time, ip_address=ip_address)
+    items = query.get_items_for_source_limited(25, start_time, end_time, ip_address=ip_address)
     total_downloads, unique_downloads = query.get_stats_for_source(start_time, end_time, ip_address=ip_address)
     return render(request, 'ip_address_dashboard.html', add_default_context({
         'unique_downloads': unique_downloads,
@@ -116,3 +112,33 @@ def ip_address_dashboard(request, ip_address, start_time=START_TIME, end_time=EN
         'ip_address': ip_address,
         'most_queried_table': items
     }, time_range_form, start_time, end_time))
+
+
+@cache_page(settings.CACHE_TIME)
+def most_queried_data_table(request, start_time=START_TIME, end_time=END_TIME, page=0):
+    most_queried = query.get_most_queried_items_limited(25, start_time, end_time, page)
+    return render(request, 'item_table.html', add_default_context({
+        'table_data': most_queried,
+        'table_name': 'Most Uniquely Downloaded',
+        'table_page': page
+    }, None, start_time, end_time))
+
+
+# @cache_page(settings.CACHE_TIME)
+# def item_data_table(request, item_name, start_time=START_TIME, end_time=END_TIME):
+#     item = query.get_or_create_item(item_name)
+#     (request_breakdown, ip_breakdown) = query.get_requesters_for_item(item, start_time, end_time)
+#     return render(request, 'most_queried_table', add_default_context({
+#         'table_data': ip_breakdown.values('ip_address', 'requester', 'count'),
+#         'table_name': 'Downloaders',
+#     }, None, start_time, end_time))
+
+@cache_page(settings.CACHE_TIME)
+def biggest_users_data_table(request, start_time=START_TIME, end_time=END_TIME, page=0):
+    print(page)
+    biggest_requesters = query.get_most_active_users_limited(25, start_time, end_time, page)
+    return render(request, 'user_table.html', add_default_context({
+        'table_data': biggest_requesters,
+        'table_name': 'Most Active Downloaders',
+        'table_page': page
+    }, None, start_time, end_time))

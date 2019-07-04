@@ -104,7 +104,7 @@
                         onClick: function (event, elements) {
                             const element = this.getElementAtEvent(event)[0];
                             if (element !== undefined) {
-                                if (element._index === 1 && element._datasetIndex !== undefined) {
+                                if (element._index === 0 && element._datasetIndex !== undefined) {
                                     document.getElementById('btn-requester-' + element._datasetIndex).click();
                                 }
                             }

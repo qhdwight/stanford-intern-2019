@@ -1,0 +1,20 @@
+{% block table %}
+{% endblock %}
+<div class='row d-flex justify-content-center mb-5'>
+    {% set table_page_nice = table_page + 1 %}
+    <div class='btn-group' role='group' aria-label='Options'>
+        <button page='{{ table_page }}' info-source='{{ request.get_full_path() }}' id='table-previous' role='button'
+                class='btn btn-secondary'>
+            <span class='mr-2 oi oi-arrow-circle-left' aria-hidden='true'></span>
+            Previous
+            <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' hidden></span>
+        </button>
+        <div class='btn btn-secondary'>{{ table_page_nice }}</div>
+        <button page='{{ table_page }}' info-source='{{ request.get_full_path() }}' id='table-next' role='button'
+                class='btn btn-secondary'>
+            <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' hidden></span>
+            Next
+            <span class='ml-2 oi oi-arrow-circle-right' aria-hidden='true'></span>
+        </button>
+    </div>
+</div>

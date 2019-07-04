@@ -37,12 +37,16 @@ urlpatterns = []
 
 
 def add_ranged(base_path, view, name):
-    urlpatterns.extend((path(base_path, view, name=name),
-                        path(f'{base_path}<datetime:start_time>/to/<datetime:end_time>/', view, name=f'{name}_range')))
+    ranged_path = base_path.replace('<range>', '<datetime:start_time>/to/<datetime:end_time>')
+    default_path = base_path.replace('<range>/', '')
+    urlpatterns.extend((path(default_path, view, name=name),
+                        path(ranged_path, view, name=f'{name}_range')))
 
 
-add_ranged('', views.dashboard, name='dashboard')
-add_ranged('requester/<requester:requester>/', views.requester_dashboard, name='requester_dashboard')
-add_ranged('ip_address/<str:ip_address>/', views.ip_address_dashboard, name='ip_address_dashboard')
-add_ranged('item/<str:item_name>/', views.item_dashboard, name='item_dashboard')
-# add_ranged('item/data_table/<str:item_name>', views.item_data_table, name='item_data_table')
+add_ranged('<range>/', views.dashboard, name='dashboard')
+add_ranged('requester/<requester:requester>/<range>/', views.requester_dashboard, name='requester_dashboard')
+add_ranged('ip_address/<str:ip_address>/<range>/', views.ip_address_dashboard, name='ip_address_dashboard')
+add_ranged('item/<str:item_name>/<range>/', views.item_dashboard, name='item_dashboard')
+add_ranged('most_queried_data_table/<range>/<int:page>/', views.most_queried_data_table, name='most_queried_data_table')
+add_ranged('most_queried_data_table/<range>/', views.most_queried_data_table, name='most_queried_data_table')
+add_ranged('biggest_users_data_table/<range>/<int:page>/', views.biggest_users_data_table, name='biggest_users_data_table')

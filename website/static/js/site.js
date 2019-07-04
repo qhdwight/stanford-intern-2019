@@ -58,4 +58,36 @@ $(document).ready(function () {
                 complete: this.step
             });
     });
+
+    $(document).on('click', '#table-next', function () {
+        const $this = $(this);
+        const nextPage = parseInt($this.attr('page')) + 1;
+        let url = $this.attr('info-source');
+        url = url.substring(0, url.lastIndexOf('/') - 1) + nextPage.toLocaleString();
+        $this.prop('disabled', true);
+        $this.children('.spinner-border').removeAttr('hidden');
+        $.ajax({
+            url: url,
+            success: function(result) {
+                console.log('Got response for page: ' + nextPage.toString());
+                $this.parent().parent().parent().html(result)
+            }
+        })
+    });
+        $(document).on('click', '#table-previous', function () {
+        const $this = $(this);
+        let previousPage = parseInt($this.attr('page')) - 1;
+        if (previousPage < 0) return;
+        let url = $this.attr('info-source');
+        url = url.substring(0, url.lastIndexOf('/') - 1) + previousPage.toLocaleString();
+        $this.prop('disabled', true);
+        $this.children('.spinner-border').removeAttr('hidden');
+        $.ajax({
+            url: url,
+            success: function(result) {
+                console.log('Got response for page: ' + previousPage.toString());
+                $this.parent().parent().parent().html(result)
+            }
+        })
+    });
 });

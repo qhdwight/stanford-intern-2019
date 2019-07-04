@@ -1,0 +1,5 @@
+{% extends 'ajax_table.html' %}
+{% block table %}
+{% from 'dashboard_macros.html' import render_table_row, render_item_table with context %}
+{{ render_table_row(render_item_table, table_data, table_name) }}
+{% endblock table %}

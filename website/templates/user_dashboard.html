@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% set page_name = 'dashboard' %}
 {% block title %}Item Dashboard{% endblock %}
-{% from 'dashboard_macros.html' import render_back_button, render_table_row, render_item_table, render_time_range with context %}
+{% from 'dashboard_macros.html' import render_back_button, render_table_row, render_item_table, render_time_range, ajax_table with context %}
 {% block content %}
     {% include 'navbar.html' %}
     <div class='container'>
