@@ -2,7 +2,6 @@ import sys
 from datetime import timedelta, datetime
 
 import requests
-from django.db import transaction
 from django.db.models import Count, Avg
 from django.utils import timezone
 
@@ -61,19 +60,22 @@ def get_most_queried_s3_keys(start_time=START_TIME, end_time=END_TIME):
 @time_this
 def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_TIME, page=0):
     items = [(get_or_create_item(get_item_name(queried['s3_key'])), queried['count']) for queried in
-             get_most_queried_s3_keys(start_time, end_time)[amount * page:amount * (page + 1)].iterator()]
+             take_page(get_most_queried_s3_keys(start_time, end_time), amount, page).iterator()]
     return items
+
+
+def take_page(query_set, page_size, page):
+    return query_set[page_size * page:page_size * (page + 1)]
 
 
 @time_this
 def get_most_active_users_limited(amount, start_time=START_TIME, end_time=END_TIME, page=0):
-    return (get_in_time_range(start_time, end_time)
-                .exclude(requester__contains='encoded-instance')
-                # .filter(requester__isnull=False)
-                .values('ip_address')
-                .annotate(count=Count('ip_address'))
-                .values('requester', 'count', 'ip_address')
-                .order_by('-count')[amount * page:amount * (page + 1)])
+    return take_page(get_in_time_range(start_time, end_time)
+                     .exclude(requester__contains='encoded-instance')
+                     .values('ip_address')
+                     .annotate(count=Count('ip_address'))
+                     .values('requester', 'count', 'ip_address')
+                     .order_by('-count'), amount, page)
 
 
 @time_this
@@ -122,13 +124,13 @@ def get_stats_for_source(start_time=START_TIME, end_time=END_TIME, **kwargs):
 
 
 @time_this
-def get_items_for_source_limited(amount, start_time=START_TIME, end_time=END_TIME, **kwargs):
-    keys = (get_in_time_range(start_time, end_time)
-            .filter(**kwargs)
-            .values('s3_key')
-            .annotate(count=Count('s3_key'))
-            .values('s3_key', 'count')
-            .order_by('-count'))[:amount]
+def get_items_for_source_limited(amount, start_time=START_TIME, end_time=END_TIME, page=0, **kwargs):
+    keys = take_page(get_in_time_range(start_time, end_time)
+                     .filter(**kwargs)
+                     .values('s3_key')
+                     .annotate(count=Count('s3_key'))
+                     .values('s3_key', 'count')
+                     .order_by('-count'), amount, page)
     items = [(get_or_create_item(get_item_name(log['s3_key'])), log['count']) for log in keys.iterator()]
     return items
 

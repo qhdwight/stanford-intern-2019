@@ -20,12 +20,21 @@ def add_default_context(context, time_range_form, start_time, end_time):
     return context
 
 
+def add_table_context(context, start_time, end_time, page, page_size):
+    context = add_default_context(context, None, start_time, end_time)
+    context.update({
+        'table_page': page,
+        'table_page_size': page_size
+    })
+    return context
+
+
 @cache_page(settings.CACHE_TIME)
 def dashboard(request, start_time=START_TIME, end_time=END_TIME):
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
         if time_range_form.is_valid():
-            return redirect('dashboard:dashboard_range',
+            return redirect(request.resolver_match.view_name,
                             start_time=time_range_form.cleaned_data['start_time'],
                             end_time=time_range_form.cleaned_data['end_time'])
     else:
@@ -57,7 +66,7 @@ def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME)
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
         if time_range_form.is_valid():
-            return redirect('dashboard:item_dashboard_range',
+            return redirect(request.resolver_match.view_name,
                             item_name=item_name,
                             start_time=time_range_form.cleaned_data['start_time'],
                             end_time=time_range_form.cleaned_data['end_time'])
@@ -77,19 +86,17 @@ def requester_dashboard(request, requester, start_time=START_TIME, end_time=END_
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
         if time_range_form.is_valid():
-            return redirect('dashboard:requester_dashboard_range',
+            return redirect(request.resolver_match.view_name,
                             requester=requester,
                             start_time=time_range_form.cleaned_data['start_time'],
                             end_time=time_range_form.cleaned_data['end_time'])
     else:
         time_range_form = SelectTimeRangeForm()
-    items = query.get_items_for_source_limited(6, start_time, end_time, requester=requester)
     total_downloads, unique_downloads = query.get_stats_for_source(requester=requester)
     return render(request, 'user_dashboard.html', add_default_context({
         'unique_downloads': unique_downloads,
         'total_downloads': total_downloads,
-        'requester': requester,
-        'most_queried_table': items
+        'requester': requester
     }, time_range_form, start_time, end_time))
 
 
@@ -98,47 +105,61 @@ def ip_address_dashboard(request, ip_address, start_time=START_TIME, end_time=EN
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
         if time_range_form.is_valid():
-            return redirect('dashboard:ip_address_dashboard_range',
+            return redirect(request.resolver_match.view_name,
                             ip_address=ip_address,
                             start_time=time_range_form.cleaned_data['start_time'],
                             end_time=time_range_form.cleaned_data['end_time'])
     else:
         time_range_form = SelectTimeRangeForm()
-    items = query.get_items_for_source_limited(25, start_time, end_time, ip_address=ip_address)
     total_downloads, unique_downloads = query.get_stats_for_source(start_time, end_time, ip_address=ip_address)
     return render(request, 'ip_address_dashboard.html', add_default_context({
         'unique_downloads': unique_downloads,
         'total_downloads': total_downloads,
-        'ip_address': ip_address,
-        'most_queried_table': items
+        'ip_address': ip_address
     }, time_range_form, start_time, end_time))
 
 
 @cache_page(settings.CACHE_TIME)
 def most_queried_data_table(request, start_time=START_TIME, end_time=END_TIME, page=0):
-    most_queried = query.get_most_queried_items_limited(25, start_time, end_time, page)
-    return render(request, 'item_table.html', add_default_context({
+    page_size = 25
+    most_queried = query.get_most_queried_items_limited(page_size, start_time, end_time, page)
+    return render(request, 'item_table.html', add_table_context({
         'table_data': most_queried,
         'table_name': 'Most Uniquely Downloaded',
-        'table_page': page
-    }, None, start_time, end_time))
+    }, start_time, end_time, page, page_size))
 
-
-# @cache_page(settings.CACHE_TIME)
-# def item_data_table(request, item_name, start_time=START_TIME, end_time=END_TIME):
-#     item = query.get_or_create_item(item_name)
-#     (request_breakdown, ip_breakdown) = query.get_requesters_for_item(item, start_time, end_time)
-#     return render(request, 'most_queried_table', add_default_context({
-#         'table_data': ip_breakdown.values('ip_address', 'requester', 'count'),
-#         'table_name': 'Downloaders',
-#     }, None, start_time, end_time))
 
 @cache_page(settings.CACHE_TIME)
 def biggest_users_data_table(request, start_time=START_TIME, end_time=END_TIME, page=0):
-    print(page)
-    biggest_requesters = query.get_most_active_users_limited(25, start_time, end_time, page)
-    return render(request, 'user_table.html', add_default_context({
+    page_size = 25
+    biggest_requesters = query.get_most_active_users_limited(page_size, start_time, end_time, page)
+    return render(request, 'user_table.html', add_table_context({
         'table_data': biggest_requesters,
         'table_name': 'Most Active Downloaders',
-        'table_page': page
-    }, None, start_time, end_time))
+    }, start_time, end_time, page, page_size))
+
+
+@cache_page(settings.CACHE_TIME)
+def items_for_requester_data_table(request, requester, start_time=START_TIME, end_time=END_TIME, page=0):
+    page_size = 25
+    items = query.get_items_for_source_limited(page_size, start_time, end_time, page, requester=requester)
+    return render(request, 'item_table.html', add_table_context({
+        'table_data': items,
+        'table_name': 'Most Downloaded',
+        'kwargs': {
+            'requester': requester
+        }
+    }, start_time, end_time, page, page_size))
+
+
+@cache_page(settings.CACHE_TIME)
+def items_for_ip_address_data_table(request, ip_address, start_time=START_TIME, end_time=END_TIME, page=0):
+    page_size = 25
+    items = query.get_items_for_source_limited(page_size, start_time, end_time, page, ip_address=ip_address)
+    return render(request, 'item_table.html', add_table_context({
+        'table_data': items,
+        'table_name': 'Most Downloaded',
+        'kwargs': {
+            'ip_address': ip_address
+        }
+    }, start_time, end_time, page, page_size))

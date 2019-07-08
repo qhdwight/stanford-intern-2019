@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% set page_name = 'dashboard' %}
 {% block title %}IP Dashboard{% endblock %}
-{% from 'dashboard_macros.html' import render_back_button, render_table_row, render_item_table, render_time_range with context %}
+{% from 'dashboard_macros.html' import render_back_button, render_time_range, ajax_table with context %}
 {% block content %}
     {% include 'navbar.html' %}
     <div class='container'>
@@ -24,6 +24,18 @@
             </div>
         </div>
         <hr>
-        {{ render_table_row(render_item_table, most_queried_table, 'Download Totals') }}
+        <div id='most-downloaded-table'>
+            <div class='text-center m-4'>
+                <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>
+                Loading Most Downloaded Table...
+            </div>
+        </div>
     </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            {{ ajax_table('dashboard:items_for_ip_address_data_table', 'most-downloaded-table', kwargs={'ip_address':ip_address}) }}
+        });
+    </script>
 {% endblock %}

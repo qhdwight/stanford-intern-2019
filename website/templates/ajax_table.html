@@ -2,15 +2,20 @@
 {% endblock %}
 <div class='row d-flex justify-content-center mb-5'>
     {% set table_page_nice = table_page + 1 %}
-    <div class='btn-group' role='group' aria-label='Options'>
-        <button page='{{ table_page }}' info-source='{{ request.get_full_path() }}' id='table-previous' role='button'
+    <div id='table-buttons' page='{{ table_page }}' class='btn-group' role='group' aria-label='Options'
+         info-source='{{ url_range_aware(request.resolver_match.view_name, start_time, end_time, kwargs or None) }}'>
+        <button id='table-previous' role='button'
                 class='btn btn-secondary'>
             <span class='mr-2 oi oi-arrow-circle-left' aria-hidden='true'></span>
             Previous
             <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' hidden></span>
         </button>
-        <div class='btn btn-secondary'>{{ table_page_nice }}</div>
-        <button page='{{ table_page }}' info-source='{{ request.get_full_path() }}' id='table-next' role='button'
+        <input id='table-go-input' type='number' value='{{ table_page_nice }}' class='btn btn-secondary'>
+        <button id='table-go' type='button' class='btn btn-primary' style='display: none;'>
+            Go
+            <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' hidden></span>
+        </button>
+        <button id='table-next' role='button'
                 class='btn btn-secondary'>
             <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' hidden></span>
             Next

@@ -6,7 +6,7 @@
     </a>
 {% endmacro %}
 
-{% macro render_item_table(table_data) %}
+{% macro render_item_table(table_data, page=0, page_size=0) %}
     <table class='table table-striped mt-4'>
         <tr>
             <th scope='col'>#</th>
@@ -17,9 +17,10 @@
             <th scope='col'>Details</th>
         </tr>
         {% for item, count in table_data %}
+            {% set name = render_s3_key(item.s3_key) %}
             <tr>
-                {% set name = render_s3_key(item.s3_key) %}
-                <th scope='row'>{{ loop.index }}</th>
+                {% set count_label = page_size * page + loop.index %}
+                <th scope='row'>{{ count_label }}</th>
                 <td>
                     <a target='_blank'
                        href='{{ get_encode_url('files/' + name.split('.')[0]) }}'>{{ name }}
@@ -51,7 +52,7 @@
     </table>
 {% endmacro %}
 
-{% macro render_user_table(users) %}
+{% macro render_user_table(users, page=0, page_size=0) %}
     <table class='table table-striped mt-4'>
         <tr>
             <th scope='col'>#</th>
@@ -63,7 +64,8 @@
             {% set requester = user['requester'] %}
             {% set ip_address = user['ip_address'] %}
             <tr>
-                <th scope='row'>{{ loop.index }}</th>
+                {% set count_label = page_size * page + loop.index %}
+                <th scope='row'>{{ count_label }}</th>
                 <td>
                     {% if ip_address is not none %}
                         <a id='btn-requester-{{ loop.index0 }}'
@@ -90,13 +92,13 @@
     </table>
 {% endmacro %}
 
-{% macro render_table_row(table_render, data, header) %}
+{% macro render_table_row(table_render, data, header, page=0, page_size=0) %}
     {% if data is not none %}
         <div class='row mt-4 mx-4'>
             <div class='col text-center'>
                 <h1>{{ header }}</h1>
             </div>
-            {{ table_render(data) }}
+            {{ table_render(data, page, page_size) }}
         </div>
     {% endif %}
 {% endmacro %}
@@ -114,11 +116,14 @@
     {% endif %}
 {% endmacro %}
 
-{% macro ajax_table(link, table_id) %}
+{% macro ajax_table(view_name, table_id, kwargs=None) %}
     $.ajax({
-    url: '{{ url_range_aware(link, start_time, end_time, kwargs={'page':0}) }}',
-    success: function (result) {
-    $('#{{ table_id }}').fadeTo(0, 0).html(result).fadeTo(500, 1);
-    }
+        url: '{{ url_range_aware(view_name, start_time, end_time, kwargs) }}',
+        success: function (result) {
+            $('#{{ table_id }}').fadeTo(0, 0).html(result).fadeTo(500, 1);
+        },
+        error: function (error) {
+            $('#{{ table_id }}').children().first().html('Error loading table data')
+        }
     });
 {% endmacro %}

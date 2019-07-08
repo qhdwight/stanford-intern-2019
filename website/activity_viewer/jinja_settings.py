@@ -23,17 +23,15 @@ def locale_format(string):
     return f'{string:n}'
 
 
-def url_range_aware(link, start_time, end_time, kwargs=None):
-    if start_time is START_TIME and end_time is END_TIME:
-        return reverse(link, kwargs=kwargs)
-    else:
+def url_range_aware(view_name, start_time, end_time, kwargs=None):
+    if start_time is not START_TIME or end_time is not END_TIME:
         if kwargs is None:
             kwargs = {}
         kwargs.update({
             'start_time': start_time,
             'end_time': end_time
         })
-        return reverse(f'{link}_range', kwargs=kwargs)
+    return reverse(view_name, kwargs=kwargs)
 
 
 def environment(**options):

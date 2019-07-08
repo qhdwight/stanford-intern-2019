@@ -59,35 +59,44 @@ $(document).ready(function () {
             });
     });
 
+    function getCurrentPage(tableControlElement) {
+        return parseInt(tableControlElement.parent('#table-buttons').attr('page'));
+    }
+
+    function makeRequest(tableControlElement, page) {
+        if (page < 0) return;
+        const tableButtons = tableControlElement.parent('#table-buttons');
+        let url = tableButtons.attr('info-source') + page.toString();
+        tableControlElement.siblings().addBack().attr('disabled', true);
+        tableControlElement.children('.spinner-border').removeAttr('hidden');
+        $.ajax({
+            url: url,
+            success: function (result) {
+                console.log('Got response for page: ' + page.toString());
+                tableButtons.parent().parent().html(result);
+            }
+        })
+    }
+
     $(document).on('click', '#table-next', function () {
-        const $this = $(this);
-        const nextPage = parseInt($this.attr('page')) + 1;
-        let url = $this.attr('info-source');
-        url = url.substring(0, url.lastIndexOf('/') - 1) + nextPage.toLocaleString();
-        $this.prop('disabled', true);
-        $this.children('.spinner-border').removeAttr('hidden');
-        $.ajax({
-            url: url,
-            success: function(result) {
-                console.log('Got response for page: ' + nextPage.toString());
-                $this.parent().parent().parent().html(result)
-            }
-        })
+        makeRequest($(this), getCurrentPage($(this)) + 1);
     });
-        $(document).on('click', '#table-previous', function () {
-        const $this = $(this);
-        let previousPage = parseInt($this.attr('page')) - 1;
-        if (previousPage < 0) return;
-        let url = $this.attr('info-source');
-        url = url.substring(0, url.lastIndexOf('/') - 1) + previousPage.toLocaleString();
-        $this.prop('disabled', true);
-        $this.children('.spinner-border').removeAttr('hidden');
-        $.ajax({
-            url: url,
-            success: function(result) {
-                console.log('Got response for page: ' + previousPage.toString());
-                $this.parent().parent().parent().html(result)
-            }
-        })
+    $(document).on('click', '#table-previous', function () {
+        makeRequest($(this), getCurrentPage($(this)) - 1);
     });
+    $(document).on('click', '#table-go', function () {
+        const input = $(this).siblings('#table-go-input'), goPage = parseInt(input.val()) - 1;
+        makeRequest($(this), goPage);
+    });
+    $(document).on('focus', '#table-go-input', function () {
+        $(this).siblings('#table-go').animate({width: 'show'}, 50);
+    });
+    // $(document).on('blur', '#table-go-input', function () {
+    //     const $tableGo = $(this).siblings('#table-go');
+    //     $tableGo.delay(50).queue(function () {
+    //         if (!$tableGo.get(0).hasAttribute('disabled')) {
+    //             $tableGo.animate({width: 'hide'}, 50).finish();
+    //         }
+    //     })
+    // });
 });
