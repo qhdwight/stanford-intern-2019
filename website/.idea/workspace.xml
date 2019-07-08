@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/activity_viewer/jinja_settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/activity_viewer/jinja_settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dashboard/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/query.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/site.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/site.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ajax_table.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ajax_table.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard_macros.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard_macros.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ip_address_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ip_address_dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/item_table.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/item_table.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user_dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user_table.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user_table.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +33,7 @@
       <content type="file-editors">
         <state>
           <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file pinned="false" current-in-tab="true">
+            <file pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/dashboard/views.py">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="330">
@@ -65,11 +54,11 @@
                 </provider>
               </entry>
             </file>
-            <file pinned="false" current-in-tab="false">
+            <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/dashboard/query.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="94">
-                    <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
+                  <state relative-caret-position="166">
+                    <caret line="93" column="63" lean-forward="true" selection-start-line="93" selection-start-column="63" selection-end-line="93" selection-end-column="63" />
                     <folding>
                       <element signature="e#0#10#0" expanded="true" />
                     </folding>
@@ -97,7 +86,7 @@
         <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="72">
-              <caret line="3" column="46" lean-forward="true" selection-start-line="3" selection-start-column="46" selection-end-line="4" selection-end-column="35" />
+              <caret line="3" column="36" lean-forward="true" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -141,7 +130,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>url_range_aw</find>
       <find>ok</find>
       <find>limit</find>
       <find>'ok'</find>
@@ -171,6 +159,7 @@
       <find>render_item_table</find>
       <find>p</find>
       <find>$.ajax</find>
+      <find>int(</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -178,8 +167,8 @@
     <dirStrings>
       <dir>C:\Users\qhdwi\Projects\Programming\Stanford Internship\stanford-intern-2019\website\dashboard</dir>
       <dir>C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website</dir>
-      <dir>C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website\dashboard</dir>
       <dir>C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website\templates</dir>
+      <dir>C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website\dashboard</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -213,7 +202,6 @@
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/activity_viewer/jinja_settings.py" />
         <option value="$PROJECT_DIR$/static/js/site.js" />
-        <option value="$PROJECT_DIR$/dashboard/query.py" />
         <option value="$PROJECT_DIR$/dashboard/urls.py" />
         <option value="$PROJECT_DIR$/templates/user_dashboard.html" />
         <option value="$PROJECT_DIR$/templates/ip_address_dashboard.html" />
@@ -224,6 +212,7 @@
         <option value="$PROJECT_DIR$/dashboard/views.py" />
         <option value="$PROJECT_DIR$/templates/dashboard_macros.html" />
         <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/dashboard/query.py" />
       </list>
     </option>
   </component>
@@ -418,12 +407,12 @@
       <workItem from="1561668329653" duration="5498000" />
       <workItem from="1561999051994" duration="19680000" />
       <workItem from="1562019064865" duration="39599000" />
-      <workItem from="1562603958090" duration="13387000" />
+      <workItem from="1562603958090" duration="14073000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="172141000" />
+    <option name="totallyTimeSpent" value="172827000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
@@ -435,7 +424,7 @@
       <window_info anchor="bottom" id="Messages" order="0" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32871014" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.8619303" visible="true" weight="0.36754507" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.8619303" weight="0.36754507" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.40221915" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -444,7 +433,7 @@
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.1380697" side_tool="true" weight="0.36754507" />
-      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49946466" weight="0.6407767" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" sideWeight="0.49946466" visible="true" weight="0.6407767" />
       <window_info anchor="bottom" id="Python Console" order="13" weight="0.32732317" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="14" weight="0.32871014" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
@@ -738,16 +727,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/query.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/activity_viewer/jinja_settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="203">
@@ -827,7 +806,17 @@
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
-          <caret line="3" column="46" lean-forward="true" selection-start-line="3" selection-start-column="46" selection-end-line="4" selection-end-column="35" />
+          <caret line="3" column="36" lean-forward="true" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/query.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="93" column="63" lean-forward="true" selection-start-line="93" selection-start-column="63" selection-end-line="93" selection-end-column="63" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

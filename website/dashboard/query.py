@@ -94,7 +94,7 @@ def get_general_stats(start_time=START_TIME, end_time=END_TIME):
             key_and_ip.values('ip_address').distinct().count(),
             distinct_keys.count(),
             log_range.values('requester').distinct().count(),
-            int(distinct_keys.aggregate(average_size=Avg('object_size'))['average_size']))
+            int(distinct_keys.aggregate(average_size=Avg('object_size'))['average_size'] or 0))
 
 
 @time_this
