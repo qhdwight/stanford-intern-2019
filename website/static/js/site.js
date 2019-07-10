@@ -66,7 +66,7 @@ $(document).ready(function () {
     function makeRequest(tableControlElement, page) {
         if (page < 0) return;
         const tableButtons = tableControlElement.parent('#table-buttons');
-        let url = tableButtons.attr('info-source') + page.toString();
+        let url = tableButtons.attr('info-source') + 'page/' + page.toString();
         tableControlElement.siblings().addBack().attr('disabled', true);
         tableControlElement.children('.spinner-border').removeAttr('hidden');
         $.ajax({

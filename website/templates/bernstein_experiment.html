@@ -1,28 +1,17 @@
 {% extends 'base.html' %}
-{% set page_name = 'dashboard' %}
-{% block title %}Dashboard{% endblock %}
+{% set page_name = 'bernstein_experiment' %}
+{% block title %}Bernstein{% endblock %}
 {% from 'render_form_macro.html' import render_form with context %}
 {% from 'dashboard_macros.html' import render_time_range, ajax_table, render_stat with context %}
-{% macro render_stat(stat, display_name, format='regular') %}
-    <div class='col text-center m-4'>
-        {% if stat is not none %}
-            <p class='counter display-3' format='{{ format }}'
-               {% if is_default %}data-count='{{ stat }}'>
-                   0
-               {% else %}>
-                   {{ stat }}
-               {% endif %}
-            </p>
-        {% else %}
-            <p class='display-2'>None</p>
-        {% endif %}
-        <h3 class='fade-in-header'>{{ display_name }}</h3>
-    </div>
-{% endmacro %}
 {% block content %}
     {% include 'navbar.html' %}
     <div class='container'>
         <div class='col m-4'>
+            <div class='row'>
+                <div class='col text-center'>
+                    <h2><u>Bernstein Lab</u></h2>
+                </div>
+            </div>
             <div class='row'>
                 {{ render_stat(total_request_count, 'Total Downloads') }}
                 {{ render_stat(unique_request_count, 'Unique Downloads') }}
@@ -39,8 +28,8 @@
                 {% if time_info_counts is not none %}
                     <canvas class='m-4 chart' id='time-chart'></canvas>
                 {% endif %}
-                {% if most_queried_data is not none %}
-                    <canvas class='m-4 chart' id='most-queried-chart'></canvas>
+                {% if relative_date_data is not none %}
+                    <canvas class='m-4 chart' id='relative-date-chart'></canvas>
                 {% endif %}
             </div>
             <div id='most-queried-table'>
@@ -61,10 +50,10 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            {{ ajax_table('dashboard:most_queried_data_table', 'most-queried-table', start_time, end_time) }}
-            {{ ajax_table('dashboard:biggest_users_data_table', 'biggest-users-table', start_time, end_time) }}
-            {% if most_queried_data is not none %}
-                new Chart($('#most-queried-chart')[0].getContext('2d'), {
+            {{ ajax_table('dashboard:bernstein_experiment_most_queried_data_table', 'most-queried-table', start_time, end_time) }}
+            {{ ajax_table('dashboard:bernstein_experiment_biggest_users_data_table', 'biggest-users-table', start_time, end_time) }}
+            {% if relative_date_data is not none %}
+                new Chart($('#relative-date-chart')[0].getContext('2d'), {
                     type: 'bar',
                     data: {
                         labels: {{ most_queried_labels|safe }},

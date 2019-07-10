@@ -35,7 +35,7 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            {{ ajax_table('dashboard:items_for_requester_data_table', 'most-downloaded-table', kwargs={'requester':requester}) }}
+            {{ ajax_table('dashboard:items_for_requester_data_table', 'most-downloaded-table', start_time, end_time, {'requester':requester}) }}
         })
     </script>
 {% endblock %}

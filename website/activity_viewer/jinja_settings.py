@@ -33,9 +33,9 @@ def locale_format(string):
     return f'{string:n}'
 
 
-def url_range_aware(view_name, start_time, end_time, kwargs=None):
+def url_range_aware(view_name, start_time=None, end_time=None, kwargs=None):
     """
-    Given a view name, return a url that has start and end times if not the default time range (all data).
+    Given a view name, return a url that has start and end times if present (all data).
     Default time ranges will not have times specified in URL to make them appear cleaner.
     :param view_name: Name of view, including app name as well
     :param start_time: Start time of query range in database
@@ -43,7 +43,7 @@ def url_range_aware(view_name, start_time, end_time, kwargs=None):
     :param kwargs: Keyword arguments that get passed to the url. This is useful if the view has unique parameters.
     :return: A URL that is properly shortened if default and still has URL parameters attached
     """
-    if start_time is not START_TIME or end_time is not END_TIME:
+    if start_time or end_time:
         # We are a specific range of time and must update the URL keyword arguments to resolve properly
         if kwargs is None:
             kwargs = {}

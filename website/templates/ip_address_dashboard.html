@@ -13,6 +13,11 @@
                         {{ ip_address }}
                     </h4>
                 </div>
+                <h3 class='text-center'>
+                    {% if ip_isp is not none %}
+                        Maybe: ({{ ip_isp }})?
+                    {% endif %}
+                </h3>
             </div>
         </div>
         {{ render_time_range() }}
@@ -35,7 +40,7 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            {{ ajax_table('dashboard:items_for_ip_address_data_table', 'most-downloaded-table', kwargs={'ip_address':ip_address}) }}
+            {{ ajax_table('dashboard:items_for_ip_address_data_table', 'most-downloaded-table', start_time, end_time, {'ip_address':ip_address}) }}
         });
     </script>
 {% endblock %}

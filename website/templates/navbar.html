@@ -14,17 +14,30 @@
                     Dashboard
                 </a>
             </li>
+            {% if time_range_form is defined and time_range_form is not none %}
+                <li class='nav-item dropdown'>
+                    <a class='nav-link dropdown-toggle' href='#' id='navFormDropdown' role='button'
+                       data-toggle='dropdown'
+                       aria-haspopup='true' aria-expanded='false'>
+                        Select Time Range
+                    </a>
+                    <div class='dropdown-menu' aria-labelledby='navFormDropdown'>
+                        <form class='m-4' method='post'>
+                            {{ csrf_input }}
+                            {{ render_form(time_range_form) }}
+                            <button type='submit' class='btn btn-block btn-primary'>Go</button>
+                        </form>
+                    </div>
+                </li>
+            {% endif %}
             <li class='nav-item dropdown'>
-                <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown'
+                <a class='nav-link dropdown-toggle' href='#' id='navExperimentDropdown' role='button'
+                   data-toggle='dropdown'
                    aria-haspopup='true' aria-expanded='false'>
-                    Select Time Range
+                    Experiment Case Studies
                 </a>
-                <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
-                    <form class='m-4' method='post'>
-                        {{ csrf_input }}
-                        {{ render_form(time_range_form) }}
-                        <button type='submit' class='btn btn-block btn-primary'>Go</button>
-                    </form>
+                <div class='dropdown-menu' aria-labelledby='navExperimentDropdown'>
+                    <a class='dropdown-item' href='{{ url('dashboard:bernstein_experiment') }}'>Bernstein Lab</a>
                 </div>
             </li>
             <li class='ml-5 nav-item'>

@@ -5,12 +5,22 @@ def get_item_name(s3_key):
     return s3_key.split('/')[-1] if s3_key.count('/') > 0 else s3_key
 
 
+class IpAddress(models.Model):
+    ip_address = models.GenericIPAddressField(unique=True)
+    isp = models.CharField(max_length=64)
+    country = models.CharField(max_length=32)
+    city = models.CharField(max_length=32)
+    latitude = models.DecimalField(decimal_places=6, max_digits=9)
+    longitude = models.DecimalField(decimal_places=6, max_digits=9)
+
+
 class QueryCountAtTime(models.Model):
     """
     How many queries to the server were present in a interval centered around a time.
     This creates sort of a midpoint approximation of requests over time.
     """
-    time = models.DateTimeField(unique=True)
+    data_set = models.CharField(max_length=16)
+    time = models.DateTimeField(db_index=True)
     count = models.PositiveIntegerField()
 
 
@@ -87,7 +97,3 @@ class Log(models.Model):
 
 class ExperimentItem(models.Model):
     name = models.CharField(max_length=16, unique=True)
-
-
-class UniqueExperimentItemAccess(models.Model):
-    log = models.ForeignKey(Log, on_delete=models.CASCADE)

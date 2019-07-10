@@ -116,7 +116,24 @@
     {% endif %}
 {% endmacro %}
 
-{% macro ajax_table(view_name, table_id, kwargs=None) %}
+{% macro render_stat(stat, display_name, format='regular') %}
+    <div class='col text-center m-4'>
+        {% if stat is not none %}
+            <p class='counter display-3' format='{{ format }}'
+               {% if is_default %}data-count='{{ stat }}'>
+                   0
+               {% else %}>
+                   {{ stat }}
+               {% endif %}
+            </p>
+        {% else %}
+            <p class='display-2'>None</p>
+        {% endif %}
+        <h3 class='fade-in-header'>{{ display_name }}</h3>
+    </div>
+{% endmacro %}
+
+{% macro ajax_table(view_name, table_id, start_time=None, end_time=None, kwargs=None) %}
     $.ajax({
         url: '{{ url_range_aware(view_name, start_time, end_time, kwargs) }}',
         success: function (result) {
