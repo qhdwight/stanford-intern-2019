@@ -72,5 +72,6 @@ class Command(BaseCommand):
         created_pd = log_pd[['created']]
         # Create bar chart where how many times files of different years created are downloaded.
         ax = created_pd.groupby(created_pd['created'].dt.year).count().plot(kind='bar')
-        ax.set(xlabel='Date File Uploaded', ylabel='Number of Total Downloads')
+        ax.set(xlabel='Date File Uploaded', ylabel='Number of Total Downloads',
+               title='Downloads Since April based on File Upload Time')
         plt.show()
