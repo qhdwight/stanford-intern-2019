@@ -101,6 +101,8 @@ ENV/
 .mypy_cache/
 
 s3_logs/
+access_creation_dates.csv
+analyze_files.txt
 
 .vscode/settings.json
 

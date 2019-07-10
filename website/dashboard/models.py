@@ -6,19 +6,31 @@ def get_item_name(s3_key):
 
 
 class QueryCountAtTime(models.Model):
+    """
+    How many queries to the server were present in a interval centered around a time.
+    This creates sort of a midpoint approximation of requests over time.
+    """
     time = models.DateTimeField(unique=True)
     count = models.PositiveIntegerField()
 
 
 class Item(models.Model):
+    """
+    An item that is represented as a file in the S3 server. They have a unique key.
+    Information other than just the key name must be queried directly from the encode server.
+    This takes time so it is done whenever necessary, not for all objects.
+    """
     s3_key = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=64, unique=True)
+    # Gathered from the encode website via REST call when needed
     experiment = models.CharField(max_length=64, null=True)
     assay_title = models.CharField(max_length=64, null=True)
+    # Total amount of times it has been accessed
     query_count = models.PositiveIntegerField()
 
 
 class Log(models.Model):
+    item_name = models.CharField(max_length=16, db_index=True, null=True)
     key_name = models.CharField(max_length=32)
     bucket = models.CharField(max_length=16, null=True)
     time = models.DateTimeField(null=True, db_index=True)
@@ -71,3 +83,11 @@ class Log(models.Model):
     #         (TLS_V1_2, 'TLSv1.2')
     #     ]
     # )
+
+
+class ExperimentItem(models.Model):
+    name = models.CharField(max_length=16, unique=True)
+
+
+class UniqueExperimentItemAccess(models.Model):
+    log = models.ForeignKey(Log, on_delete=models.CASCADE)

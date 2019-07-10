@@ -1,7 +1,4 @@
-{% macro render_field(field, class) %}
-    {{ render_field_with_class(field, class) }}
-{% endmacro %}
-
+{# Renders a form with each input nicely styled up according to Bootstrap #}
 {% macro render_form(form) %}
     {% for hidden_field in form.hidden_fields() %}
         {{ hidden_field }}
@@ -19,17 +16,17 @@
             {{ field.label_tag() }}
             {% if form.is_bound %}  
                 {% if field.errors|length > 0 %}
-                    {{ render_field(field, 'form-control form-control-sm is-invalid') }}
+                    {{ render_field_with_class(field, 'form-control form-control-sm is-invalid') }}
                     {% for error in field.errors %}
                         <div class='invalid-feedback'>
                             {{ error }}
                         </div>
                     {% endfor %}
                 {% else %}
-                    {{ render_field(field, 'form-control form-control-sm is-valid') }}
+                    {{ render_field_with_class(field, 'form-control form-control-sm is-valid') }}
                 {% endif %}
             {% else %}
-                {{ render_field(field, 'form-control form-control-sm') }}
+                {{ render_field_with_class(field, 'form-control form-control-sm') }}
             {% endif %}
             {% if field.help_text %}
                 <small class='form-text text-muted'>{{ field.help_text }}</small>

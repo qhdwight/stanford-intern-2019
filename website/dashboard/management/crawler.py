@@ -12,6 +12,11 @@ BUCKET_NAME = 'encode-public-logs'
 
 
 def crawl():
+    """
+    Do not use this, it is very slow and not used in the website.
+    It is faster to download all logs to local directory then use the extract script.
+    """
+
     # resource = boto3.resource(
     #     's3',
     #     aws_access_key_id=config('AWS_ACCESS_KEY'),

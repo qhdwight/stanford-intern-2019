@@ -1,7 +1,7 @@
 import os
 
-import dj_database_url
-import django_heroku
+# import dj_database_url
+# import django_heroku
 
 from decouple import config
 
@@ -15,6 +15,7 @@ CACHE_TIME = config('CACHE_TIME', default=3600, cast=int)
 
 ALLOWED_HOSTS = [
     'localhost',
+    # Jupyter hub server private IP on virtual network
     '171.67.205.36'
 ]
 
