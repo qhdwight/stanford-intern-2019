@@ -205,30 +205,28 @@ def get_or_create_item(item_name):
         if not first_log_with_item_name:
             return None
         s3_key = first_log_with_item_name.s3_key
-        # The manifest is a special file that does not have the experiment and assay data
-        is_manifest = s3_key == 'encode_file_manifest.tsv'
-        if is_manifest:
-            experiment = None
-            assay_title = None
-        else:
-            # Contact the encode server about this item to get additional information.
-            # The response is JSON.
+        # Contact the encode server about this item to get additional information.
+        # The response is JSON.
+        try:
+            # File information
             url = f'{get_encode_url(s3_key.split("/")[3])}/?format=json'
             result = requests.get(url, headers=GET_JSON_HEADERS).json()
-            experiment = result['dataset'].split('/')[2]
+            # Experiment information
+            raw_experiment = result.get('dataset')
+            experiment = raw_experiment.split('/')[2] if raw_experiment else None
             experiment_url = f'{get_encode_url(experiment)}/?format=json'
             experiment_result = requests.get(experiment_url, headers=GET_JSON_HEADERS).json()
-            assay_title = experiment_result['assay_title'] if 'assay_title' in experiment_result else None
-        query_count = GET_REQUESTS.filter(s3_key=s3_key).count()
-        print(
-            f'Creating item {item_name}, query count: {query_count}, key {s3_key}, experiment {experiment}, and assay {assay_title}')
-        return Item.objects.create(
-            name=item_name,
-            s3_key=s3_key,
-            experiment=experiment,
-            assay_title=assay_title,
-            query_count=query_count
-        )
+            assay_title = experiment_result.get('assay_title')
+            print(
+                f'Creating item {item_name}, key {s3_key}, experiment {experiment}, and assay {assay_title}')
+            return Item.objects.create(
+                name=item_name,
+                s3_key=s3_key,
+                experiment=experiment,
+                assay_title=assay_title,
+            )
+        except:
+            print(f'Error creating item {item_name}')
 
 
 DATES_DF = None

@@ -24,6 +24,25 @@ class QueryCountAtTime(models.Model):
     count = models.PositiveIntegerField()
 
 
+class Lab(models.Model):
+    name = models.CharField(max_length=16, unique=True)
+
+
+class Award(models.Model):
+    name = models.CharField(max_length=16, null=True, unique=True)
+    pi = models.CharField(max_length=16, null=True)
+    project = models.CharField(max_length=8, null=True)
+    rfa = models.CharField(max_length=8, null=True)
+    status = models.CharField(max_length=8, null=True)
+
+
+class Experiment(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+    date_released = models.DateField(null=True)
+    assay_title = models.CharField(max_length=8, null=True, db_index=True)
+    assay_term_name = models.CharField(max_length=8, null=True)
+
+
 class Item(models.Model):
     """
     An item that is represented as a file in the S3 server. They have a unique key.
@@ -31,12 +50,15 @@ class Item(models.Model):
     This takes time so it is done whenever necessary, not for all objects.
     """
     s3_key = models.CharField(max_length=64, unique=True)
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=16, unique=True)
     # Gathered from the encode website via REST call when needed
-    experiment = models.CharField(max_length=64, null=True)
-    assay_title = models.CharField(max_length=64, null=True)
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, null=True)
     # Total amount of times it has been accessed
-    query_count = models.PositiveIntegerField()
+    file_format = models.CharField(max_length=8, null=True)
+    file_type = models.CharField(max_length=8, null=True)
+    award = models.ForeignKey(Award, on_delete=models.CASCADE, null=True)
+    lab = models.ForeignKey(Lab, on_delete=models.CASCADE, null=True)
+    date_uploaded = models.DateField(null=True)
 
 
 class Log(models.Model):
