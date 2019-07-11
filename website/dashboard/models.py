@@ -95,5 +95,6 @@ class Log(models.Model):
     # )
 
 
-class ExperimentItem(models.Model):
+class AnalysisLabItem(models.Model):
+    data_set = models.CharField(max_length=16)
     name = models.CharField(max_length=16, unique=True)

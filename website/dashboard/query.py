@@ -1,12 +1,12 @@
 import sys
 from datetime import timedelta, datetime
 
+import pandas as pd
 import requests
 from django.db.models import Count, Avg
 from django.utils import timezone
-from tqdm import tqdm
 
-from dashboard.models import Log, Item, QueryCountAtTime, get_item_name, ExperimentItem, IpAddress
+from dashboard.models import Log, Item, QueryCountAtTime, get_item_name, AnalysisLabItem, IpAddress
 
 START_TIME = datetime(2019, 3, 1, tzinfo=timezone.get_current_timezone())
 END_TIME = timezone.now()
@@ -17,7 +17,7 @@ ENCODE_URL_BASE = 'https://www.encodeproject.org'
 GET_REQUESTS = Log.objects.filter(operation='REST.GET.OBJECT')
 GET_JSON_HEADERS = {'accept': 'application/json'}
 
-BERNSTEIN_EXPERIMENT_FILTER_KWARGS = {'item_name__in': ExperimentItem.objects.values_list('name', flat=True)}
+BERNSTEIN_EXPERIMENT_FILTER_KWARGS = {'item_name__in': AnalysisLabItem.objects.values_list('name', flat=True)}
 
 
 def time_this(method):
@@ -229,3 +229,13 @@ def get_or_create_item(item_name):
             assay_title=assay_title,
             query_count=query_count
         )
+
+
+DATES_DF = pd.read_csv('access_creation_dates.csv', parse_dates=['created', 'accessed'],
+                       date_parser=pd.to_datetime)
+
+
+def get_relative_access():
+    created_df = DATES_DF[['created']]
+    accessed_by_year = created_df.groupby(created_df['created'].dt.year).size()
+    return accessed_by_year

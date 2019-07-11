@@ -199,13 +199,15 @@ def items_for_ip_address_data_table(request, ip_address, start_time=START_TIME, 
 
 @cache_page(settings.CACHE_TIME)
 def bernstein_experiment(request, start_time=START_TIME, end_time=END_TIME):
+    relative_access = query.get_relative_access()
     time_range_form = get_time_range_form(request)
     if time_range_form.is_valid():
         return redirect_from_form(request, time_range_form)
     time_info = query.get_query_count_intervals(start_time, end_time, 'bernstein')
     stats = query.get_general_stats(start_time, end_time, **BERNSTEIN_EXPERIMENT_FILTER_KWARGS)
     context = {
-        'relative_date_data': None
+        'relative_date_labels': relative_access.axes[0].tolist(),
+        'relative_date_data': relative_access.to_json(orient='records')
     }
     add_statistics_context(context, stats)
     add_time_graph_context(context, time_info)

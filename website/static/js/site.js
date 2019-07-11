@@ -4,7 +4,8 @@ const chartLineColors = [
     'rgba(255, 206, 86, 1)',
     'rgba(75, 192, 192, 1)',
     'rgba(153, 102, 255, 1)',
-    'rgba(255, 159, 64, 1)'
+    'rgba(255, 159, 64, 1)',
+    'rgba(15, 50, 210, 1)'
 ];
 
 const chartBackgroundColors = [
@@ -13,7 +14,8 @@ const chartBackgroundColors = [
     'rgba(255, 206, 86, 0.2)',
     'rgba(75, 192, 192, 0.2)',
     'rgba(153, 102, 255, 0.2)',
-    'rgba(255, 159, 64, 0.2)'
+    'rgba(255, 159, 64, 0.2)',
+    'rgba(15, 50, 210, 0.2)'
 ];
 
 function getChartLineColor(index) {

@@ -107,3 +107,5 @@ analyze_files.txt
 .vscode/settings.json
 
 *.sqlite3
+
+staticfiles/

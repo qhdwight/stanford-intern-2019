@@ -20,16 +20,16 @@
             <div class='row'>
                 {{ render_stat(unique_ips, 'Unique IPs') }}
                 {{ render_stat(unique_files, 'Unique Files') }}
-                {{ render_stat(unique_requesters, 'Unique Requesters') }}
+                {{ render_stat(unique_requesters, 'Unique AWS Requesters') }}
             </div>
             {{ render_time_range() }}
             <hr>
             <div class='row m-4'>
-                {% if time_info_counts is not none %}
-                    <canvas class='m-4 chart' id='time-chart'></canvas>
-                {% endif %}
                 {% if relative_date_data is not none %}
                     <canvas class='m-4 chart' id='relative-date-chart'></canvas>
+                {% endif %}
+                {% if time_info_counts is not none %}
+                    <canvas class='m-4 chart' id='time-chart'></canvas>
                 {% endif %}
             </div>
             <div id='most-queried-table'>
@@ -56,20 +56,34 @@
                 new Chart($('#relative-date-chart')[0].getContext('2d'), {
                     type: 'bar',
                     data: {
-                        labels: {{ most_queried_labels|safe }},
+                        labels: {{ relative_date_labels|safe }},
                         datasets: [{
                             label: '# of unique hits',
-                            data: {{ most_queried_data|safe }},
+                            data: {{ relative_date_data|safe }},
                             backgroundColor: chartBackgroundColors,
                             borderColor: chartLineColors,
                             borderWidth: 1
                         }]
                     },
                     options: {
+                        title: {
+                            display: true,
+                            text: 'Relative Downloads of Files by Upload Time'
+                        },
                         scales: {
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: '# of Unique Downloads'
+                                }
+                            }],
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Date of when Downloaded File was Uploaded'
                                 }
                             }]
                         },
@@ -79,7 +93,7 @@
                         onClick: function (event, elements) {
                             const element = this.getElementAtEvent(event)[0];
                             if (element !== undefined && element._index !== undefined) {
-                                document.getElementById('btn-item-' + element._index).click();
+                                {#document.getElementById('btn-item-' + element._index).click();#}
                             }
                         }
                     }
@@ -91,7 +105,7 @@
                     data: {
                         labels: {{ time_info_times|safe }},
                         datasets: [{
-                            label: '# of server hits',
+                            label: '# of unique downloads',
                             data: {{ time_info_counts|safe }},
                             backgroundColor: getChartBackgroundColor(0),
                             borderColor: getChartLineColor(0),
@@ -99,6 +113,10 @@
                         }]
                     },
                     options: {
+                        title: {
+                            display: true,
+                            text: 'Downloads from Server by User Access Date'
+                        },
                         animation: {
                             duration: 4000
                         },
