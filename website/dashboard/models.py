@@ -52,6 +52,8 @@ class Item(models.Model):
     s3_key = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=16, unique=True)
     # Gathered from the encode website via REST call when needed
+    dataset = models.CharField(max_length=16, db_index=True)
+    dataset_type = models.CharField(max_length=16, db_index=True)
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, null=True)
     # Total amount of times it has been accessed
     file_format = models.CharField(max_length=8, null=True)
