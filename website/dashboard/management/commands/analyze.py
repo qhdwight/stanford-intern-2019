@@ -2,7 +2,6 @@ import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
-import requests
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
@@ -50,7 +49,7 @@ class Command(BaseCommand):
                 .exclude(requester='arn:aws:iam::265191883777:user/admin2'))
         rows = []
 
-        # Do not check for duplicates
+        # Do not check for distinct rows
         # for log in tqdm(logs.iterator(), total=logs.count()):
         #     created = pd.to_datetime('/'.join(log.s3_key.split('/')[:3]), format='%Y/%m/%d')
         #     accessed = pd.to_datetime(log.time.date())
@@ -85,7 +84,6 @@ class Command(BaseCommand):
                     # First line is a header so ignore. 6th index split item happens to be file name with extension.
                     item_names = [item_name.split('/')[6].replace('\n', '') for item_name in file.readlines()[1:]]
                     for item_name in tqdm(item_names):
-                        requests.get('')
                         experiment_items.append(AnalysisLabItem(name=item_name))
                     # Bulk create is key here, saves a lot of time by batching insertion into database.
                     AnalysisLabItem.objects.bulk_create(experiment_items, batch_size=500)

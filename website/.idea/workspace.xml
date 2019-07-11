@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/dashboard/management/commands/update_items.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/website.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/website.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dashboard/management/commands/analyze.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/management/commands/analyze.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dashboard/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/query.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -73,8 +69,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/dashboard/management/commands/analyze.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="161">
-                  <caret line="98" column="17" lean-forward="true" selection-start-line="98" selection-start-column="17" selection-end-line="98" selection-end-column="17" />
+                <state relative-caret-position="213">
+                  <caret line="51" column="40" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="40" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -109,6 +105,7 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+      <find>render_</find>
       <find>render_item_table</find>
       <find>time_range_form</find>
       <find>6</find>
@@ -138,7 +135,6 @@
       <find>to_csv</find>
       <find>get_general</find>
       <find>staticfiles</find>
-      <find>encode-public-logs</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -162,6 +158,7 @@
         <option value="$PROJECT_DIR$/venv/lib/python3.6/site-packages/pandas/io/formats/style.py" />
         <option value="$PROJECT_DIR$/dashboard/management/update_dashboard.py" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/update_dashboard.py" />
+        <option value="$PROJECT_DIR$/dashboard/management/commands/update_items.py" />
         <option value="$PROJECT_DIR$/manage.py" />
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/fc259004-002d-459d-bed9-7777503d9b81/console.sql" />
@@ -192,6 +189,7 @@
         <option value="$PROJECT_DIR$/activity_viewer/jinja_settings.py" />
         <option value="$PROJECT_DIR$/dashboard/urls.py" />
         <option value="$PROJECT_DIR$/templates/navbar.html" />
+        <option value="$PROJECT_DIR$/dashboard/models.py" />
         <option value="$PROJECT_DIR$/dashboard/views.py" />
         <option value="$PROJECT_DIR$/static/js/site.js" />
         <option value="$PROJECT_DIR$/templates/bernstein_experiment.html" />
@@ -200,9 +198,7 @@
         <option value="$PROJECT_DIR$/templates/404.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/dashboard/query.py" />
-        <option value="$PROJECT_DIR$/dashboard/management/commands/update_items.py" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/analyze.py" />
-        <option value="$PROJECT_DIR$/dashboard/models.py" />
       </list>
     </option>
   </component>
@@ -264,7 +260,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -416,14 +412,12 @@
       <workItem from="1562603958090" duration="26351000" />
       <workItem from="1562693837885" duration="14546000" />
       <workItem from="1562732026563" duration="6313000" />
-      <workItem from="1562794842762" duration="11120000" />
-      <workItem from="1562828514149" duration="2285000" />
-      <workItem from="1562863458439" duration="3538000" />
+      <workItem from="1562794842762" duration="13065000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="243469000" />
+    <option name="totallyTimeSpent" value="238289000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -444,7 +438,7 @@
       <window_info anchor="bottom" id="Messages" order="0" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32871014" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.8619303" weight="0.41302028" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.8619303" visible="true" weight="0.41302028" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.40221915" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -453,14 +447,14 @@
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.39072496" side_tool="true" weight="0.32977587" />
-      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.60927504" weight="0.32293987" />
-      <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49865952" weight="0.40868598" />
+      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.60927504" weight="0.32337245" />
+      <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49865952" weight="0.40875134" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="14" weight="0.32871014" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="4" weight="0.32922912" />
+      <window_info anchor="right" id="SciView" order="4" visible="true" weight="0.32942432" />
       <window_info anchor="right" id="Database" order="5" weight="0.12868632" />
     </layout>
     <layout-to-restore>
@@ -502,6 +496,18 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/dashboard/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="5" column="38" lean-forward="true" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/botocore/model.py" />
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/db/models/manager.py" />
     <entry file="file://$PROJECT_DIR$/dashboard/migrations/0009_log_name.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="64">
@@ -509,9 +515,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/management/crawler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="13" column="12" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/db/models/sql/compiler.py" />
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/tqdm/_tqdm.py" />
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/db/models/query.py" />
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/pandas/core/arrays/datetimes.py" />
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/pandas/core/tools/datetimes.py" />
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/core/management/base.py" />
@@ -519,6 +534,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="48">
           <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/management/extractor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="92" column="36" selection-start-line="92" selection-start-column="36" selection-end-line="92" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -540,10 +565,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="59" column="14" lean-forward="true" selection-start-line="59" selection-start-column="14" selection-end-line="59" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ip_address_dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="12" column="40" lean-forward="true" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/management/commands/extract.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="1" column="16" lean-forward="true" selection-end-line="20" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -586,6 +635,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/management/commands/update_times.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="12" column="24" lean-forward="true" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ajax_table.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="24">
@@ -611,6 +667,9 @@
     <entry file="file://$PROJECT_DIR$/Procfile">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/analyze_files.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/site.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
@@ -622,6 +681,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
           <caret line="31" column="23" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="197" selection-start-line="197" selection-end-line="197" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="40" column="47" selection-start-line="40" selection-start-column="47" selection-end-line="40" selection-end-column="47" />
         </state>
       </provider>
     </entry>
@@ -663,78 +736,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/access_creation_dates.csv" />
-    <entry file="file://$PROJECT_DIR$/dashboard/views.py">
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/db/models/query.py" />
+    <entry file="file://$PROJECT_DIR$/dashboard/management/commands/analyze.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1794">
-          <caret line="78" selection-start-line="78" selection-end-line="78" />
+        <state relative-caret-position="213">
+          <caret line="51" column="40" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="40" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="754">
-          <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/migrations/0001_initial.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/management/commands/extract.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="5" column="84" selection-start-line="5" selection-start-column="84" selection-end-line="5" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/render_form_macro.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="26" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/management/extractor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="46" column="42" lean-forward="true" selection-start-line="46" selection-start-column="42" selection-end-line="46" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/lib/python3.6/site-packages/django/contrib/contenttypes/fields.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="673" column="12" selection-start-line="673" selection-start-column="12" selection-end-line="673" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/management/crawler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analyze_files.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/management/commands/update_times.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -744,33 +753,6 @@
           <caret line="14" column="31" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="48" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/management/commands/update_items.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="59" column="40" lean-forward="true" selection-start-line="59" selection-start-column="40" selection-end-line="59" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="40" column="47" selection-start-line="40" selection-start-column="47" selection-end-line="40" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/management/commands/analyze.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="98" column="17" lean-forward="true" selection-start-line="98" selection-start-column="17" selection-end-line="98" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
