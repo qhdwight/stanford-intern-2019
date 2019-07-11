@@ -236,7 +236,7 @@ DATES_DF = None
 
 def get_relative_access():
     global DATES_DF
-    if DATES_DF:
+    if not DATES_DF:
         DATES_DF = pd.read_csv('access_creation_dates.csv', parse_dates=['created', 'accessed'],
                                date_parser=pd.to_datetime)
     created_df = DATES_DF[['created']]
