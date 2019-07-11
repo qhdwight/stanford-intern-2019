@@ -231,11 +231,14 @@ def get_or_create_item(item_name):
         )
 
 
-DATES_DF = pd.read_csv('access_creation_dates.csv', parse_dates=['created', 'accessed'],
-                       date_parser=pd.to_datetime)
+DATES_DF = None
 
 
 def get_relative_access():
+    global DATES_DF
+    if DATES_DF:
+        DATES_DF = pd.read_csv('access_creation_dates.csv', parse_dates=['created', 'accessed'],
+                               date_parser=pd.to_datetime)
     created_df = DATES_DF[['created']]
     accessed_by_year = created_df.groupby(created_df['created'].dt.year).size()
     return accessed_by_year
