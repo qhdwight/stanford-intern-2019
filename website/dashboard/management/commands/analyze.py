@@ -34,6 +34,10 @@ class Command(BaseCommand):
             type=str,
             help='Read from database and save to given CSV file'
         )
+        parser.add_argument(
+            '--noplot',
+            action='store_true'
+        )
 
     @staticmethod
     def get_df_from_db():
@@ -82,26 +86,27 @@ class Command(BaseCommand):
                     # Bulk create is key here, saves a lot of time by batching insertion into database.
                     AnalysisLabItem.objects.bulk_create(experiment_items, batch_size=500)
         if options['csv']:
-            print(options)
             log_df = pd.DataFrame()
-            for file_name in options['csv']:
-                if os.path.exists(file_name):
-                    print(f'Reading from CSV file {file_name}')
-                    read = pd.read_csv(file_name, parse_dates=['created', 'accessed'], date_parser=pd.to_datetime)
-                    log_df = log_df.append(read)
-                else:
-                    print(f'[Warning] File not found: {file_name}')
+            file_name = options['csv']
+            if os.path.exists(file_name):
+                print(f'Reading from CSV file {file_name}')
+                read = pd.read_csv(file_name, parse_dates=['created', 'accessed'], date_parser=pd.to_datetime)
+                log_df = log_df.append(read)
+            else:
+                print(f'[Warning] File not found: {file_name}')
         else:
             log_df = self.get_df_from_db()
         if options['save']:
             file_name = options['save']
             print(f'Saving to {file_name}')
             log_df.to_csv(file_name, index=False)
-        still_used = log_df.loc[log_df['created'].dt.year == 2010]
+        # still_used = log_df.loc[log_df['created'].dt.year == 2010]
         log_df = log_df.sort_values(by='accessed')
         # Takes the created column
         created_df = log_df[['created']]
         # Create bar chart where how many times files of different years created are downloaded.
+        if options['noplot']:
+            return
         ax = created_df.groupby(created_df['created'].dt.year).count().plot(kind='bar')
         ax.set(xlabel='Date File Uploaded', ylabel='Number of Total Downloads',
                title='Downloads Since April based on File Upload Time')
