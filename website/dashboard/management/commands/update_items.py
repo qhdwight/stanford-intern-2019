@@ -78,11 +78,12 @@ class Command(BaseCommand):
 
         db_items = []
         for item_json in tqdm(items_results):
-            item_name = item_json['@id'].split('/')[2]
             if 's3_uri' not in item_json:
-                tqdm.write(f'[Warning] No S3 key for {item_name}')
+                tqdm.write(f'[Warning] No S3 key for {item_json["@id"].split("/")[2]}')
                 continue
-            s3_key = '/'.join(item_json['s3_uri'].split('/')[3:])
+            s3_uri_split = item_json['s3_uri'].split('/')
+            item_name = s3_uri_split[-1]
+            s3_key = '/'.join(s3_uri_split[3:])
             file_format = item_json.get('file_format')
             file_type = item_json.get('file_format_type')
             date_uploaded = datetime.strptime(item_json['date_created'].split('T')[0], '%Y-%m-%d')
@@ -141,5 +142,6 @@ class Command(BaseCommand):
                 lab=db_lab,
                 date_uploaded=date_uploaded
             ))
+        Item.objects.all().delete()
         Item.objects.bulk_create(db_items, batch_size=50)
         print('Done! Hopefully...')
