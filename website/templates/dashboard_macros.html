@@ -30,7 +30,7 @@
                 <td>
                     {% if item.experiment is not none %}
                         <a target='_blank'
-                           href='{{ get_encode_url('experiments/' + item.experiment) }}'>
+                           href='{{ get_encode_url('experiments/' + item.experiment.name) }}'>
                             {{ item.experiment }}
                             <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
                         </a>

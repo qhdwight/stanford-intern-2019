@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/website.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/website.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/management/commands/update_items.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/management/commands/update_items.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard_macros.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard_macros.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/item_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/item_dashboard.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,11 +41,29 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/dashboard/management/commands/update_items.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="239">
                   <caret line="77" lean-forward="true" selection-start-line="77" selection-end-line="77" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/dashboard_macros.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="172">
+                  <caret line="34" column="91" lean-forward="true" selection-start-line="34" selection-start-column="91" selection-end-line="34" selection-end-column="91" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/templates/item_dashboard.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="42">
+                  <caret line="49" column="96" selection-start-line="49" selection-start-column="96" selection-end-line="49" selection-end-column="96" />
                 </state>
               </provider>
             </entry>
@@ -88,8 +104,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/dashboard/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="379">
-                  <caret line="94" column="11" lean-forward="true" selection-start-line="94" selection-start-column="11" selection-end-line="94" selection-end-column="11" />
+                <state relative-caret-position="177">
+                  <caret line="38" column="6" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
                 </state>
               </provider>
             </entry>
@@ -108,7 +124,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>6</find>
       <find>most_queried_data_table</find>
       <find>get_stats</find>
       <find>start_time</find>
@@ -138,6 +153,7 @@
       <find>.split</find>
       <find>print(</find>
       <find>all().delete</find>
+      <find>item.experiment</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -166,7 +182,6 @@
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/fc259004-002d-459d-bed9-7777503d9b81/console.sql" />
         <option value="$PROJECT_DIR$/static/css/site.css" />
         <option value="$PROJECT_DIR$/templates/item_table.py" />
-        <option value="$PROJECT_DIR$/templates/item_dashboard.html" />
         <option value="$PROJECT_DIR$/templates/ajax_table.html" />
         <option value="$PROJECT_DIR$/templates/item_table.html" />
         <option value="$PROJECT_DIR$/templates/user_table.html" />
@@ -186,7 +201,6 @@
         <option value="$PROJECT_DIR$/dashboard/management/commands/update_after_logs.py" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/update_times.py" />
         <option value="$PROJECT_DIR$/activity_viewer/urls.py" />
-        <option value="$PROJECT_DIR$/templates/dashboard_macros.html" />
         <option value="$PROJECT_DIR$/activity_viewer/jinja_settings.py" />
         <option value="$PROJECT_DIR$/dashboard/urls.py" />
         <option value="$PROJECT_DIR$/templates/navbar.html" />
@@ -202,6 +216,8 @@
         <option value="$PROJECT_DIR$/dashboard/admin.py" />
         <option value="$PROJECT_DIR$/dashboard/models.py" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/update_items.py" />
+        <option value="$PROJECT_DIR$/templates/dashboard_macros.html" />
+        <option value="$PROJECT_DIR$/templates/item_dashboard.html" />
       </list>
     </option>
   </component>
@@ -416,12 +432,12 @@
       <workItem from="1562693837885" duration="14546000" />
       <workItem from="1562732026563" duration="6313000" />
       <workItem from="1562794842762" duration="13065000" />
-      <workItem from="1562965771988" duration="591000" />
+      <workItem from="1562965771988" duration="1257000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="251900000" />
+    <option name="totallyTimeSpent" value="252566000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -436,7 +452,7 @@
     <frame x="0" y="28" width="1920" height="1052" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16970022" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16970022" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="0" />
@@ -451,7 +467,7 @@
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.3941019" side_tool="true" weight="0.38696256" />
-      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.60589814" weight="0.28987518" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" sideWeight="0.60589814" visible="true" weight="0.2895323" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49597856" weight="0.407767" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="14" weight="0.32871014" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
@@ -536,13 +552,6 @@
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/pandas/core/series.py" />
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/urls/conf.py" />
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/247667861/itertools.py" />
-    <entry file="file://$PROJECT_DIR$/templates/item_dashboard.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/user_dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
@@ -638,13 +647,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="18" selection-start-column="18" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard_macros.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2304">
-          <caret line="96" column="9" selection-start-line="96" selection-start-column="9" selection-end-line="96" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -745,13 +747,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1040">
-          <caret line="40" column="47" selection-start-line="40" selection-start-column="47" selection-end-line="40" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/analyze_files.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -759,6 +754,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="239">
           <caret line="77" lean-forward="true" selection-start-line="77" selection-end-line="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1040">
+          <caret line="40" column="47" selection-start-line="40" selection-start-column="47" selection-end-line="40" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard_macros.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="34" column="91" lean-forward="true" selection-start-line="34" selection-start-column="91" selection-end-line="34" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/item_dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="49" column="96" selection-start-line="49" selection-start-column="96" selection-end-line="49" selection-end-column="96" />
         </state>
       </provider>
     </entry>
