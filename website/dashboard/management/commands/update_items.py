@@ -142,6 +142,8 @@ class Command(BaseCommand):
                 lab=db_lab,
                 date_uploaded=date_uploaded
             ))
+        print('Deleting all items...')
         Item.objects.all().delete()
+        print('Deleted all items. Starting creation...')
         Item.objects.bulk_create(db_items, batch_size=50)
         print('Done! Hopefully...')

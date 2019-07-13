@@ -1,5 +1,14 @@
 {% block table %}
 {% endblock %}
+{% if table_data is not none %}
+    <div class='row mt-4 mx-4'>
+        <div class='col text-center'>
+            <h1>{{ table_name }}</h1>
+        </div>
+        {% block table_body %}
+        {% endblock %}
+    </div>
+{% endif %}
 <div class='row d-flex justify-content-center mb-5'>
     {% set table_page_nice = table_page + 1 %}
     <div id='table-buttons' page='{{ table_page }}' class='btn-group' role='group' aria-label='Options'

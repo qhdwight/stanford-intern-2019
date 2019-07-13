@@ -6,7 +6,7 @@ import requests
 from django.db.models import Count, Avg
 from django.utils import timezone
 
-from dashboard.models import Log, Item, QueryCountAtTime, get_item_name, AnalysisLabItem, IpAddress
+from dashboard.models import Log, QueryCountAtTime, get_item_name, AnalysisLabItem, IpAddress
 
 START_TIME = datetime(2019, 3, 1, tzinfo=timezone.get_current_timezone())
 END_TIME = timezone.now()
@@ -14,7 +14,7 @@ INTERVAL_DELTA = timedelta(4)
 
 ENCODE_URL_BASE = 'https://www.encodeproject.org'
 
-GET_REQUESTS = Log.objects.filter(operation='REST.GET.OBJECT')
+GET_REQUESTS = Log.objects.filter(operation='REST.GET.OBJECT').filter(error_code__isnull=True)
 GET_JSON_HEADERS = {'accept': 'application/json'}
 
 BERNSTEIN_EXPERIMENT_FILTER_KWARGS = {'item_name__in': AnalysisLabItem.objects.values_list('name', flat=True)}
@@ -52,20 +52,13 @@ def filter_from_time_range(start_time=START_TIME, end_time=END_TIME):
     return GET_REQUESTS if is_default else GET_REQUESTS.filter(time__range=(start_time, end_time))
 
 
-def get_most_queried_s3_keys(start_time=START_TIME, end_time=END_TIME, **kwargs):
-    return (filter_from_time_range(start_time, end_time)
+@time_this
+def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_TIME, page=0, **kwargs):
+    return take_page(filter_from_time_range(start_time, end_time)
             .filter(**kwargs)
             .values('s3_key')
             .annotate(count=Count('ip_address', distinct=True))
-            .values('s3_key', 'count')
-            .order_by('-count'))
-
-
-@time_this
-def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_TIME, page=0, **kwargs):
-    items = [(get_or_create_item(get_item_name(queried['s3_key'])), queried['count']) for queried in
-             take_page(get_most_queried_s3_keys(start_time, end_time, **kwargs), amount, page).iterator()]
-    return items
+            .order_by('-count'), amount, page)
 
 
 def take_page(query_set, page_size, page):
@@ -163,15 +156,12 @@ def get_items_for_source_limited(amount, start_time=START_TIME, end_time=END_TIM
     :param kwargs: Passed to Django filter of Log items
     :return: Database items that were most downloaded by this source
     """
-    keys = take_page(filter_from_time_range(start_time, end_time)
+    return take_page(filter_from_time_range(start_time, end_time)
                      .filter(**kwargs)
                      .values('s3_key')
                      # Group by S3 key and see how many total downloads there were
                      .annotate(count=Count('s3_key'))
-                     .values('s3_key', 'count')
                      .order_by('-count'), amount, page)
-    items = [(get_or_create_item(get_item_name(log['s3_key'])), log['count']) for log in keys.iterator()]
-    return items
 
 
 def get_or_create_ip_info(ip_address):
@@ -188,45 +178,6 @@ def get_or_create_ip_info(ip_address):
             latitude=result['lat'],
             longitude=result['lon']
         )
-
-
-def get_or_create_item(item_name):
-    """
-    Items have more additional data attached to them, and it takes time to get it from encode servers, so
-    they are only created when specifically requested. This is responsible for carrying out that if necessary.
-    :param item_name: Name of the item. This is not the full S# key
-    :return: The newly created or existing item in the database with additional information
-    """
-    if Item.objects.filter(name=item_name).exists():
-        return Item.objects.get(name=item_name)
-    else:
-        # Item name is a truncated version of the S3 key
-        first_log_with_item_name = Log.objects.filter(item_name=item_name).first()
-        if not first_log_with_item_name:
-            return None
-        s3_key = first_log_with_item_name.s3_key
-        # Contact the encode server about this item to get additional information.
-        # The response is JSON.
-        try:
-            # File information
-            url = f'{get_encode_url(s3_key.split("/")[3])}/?format=json'
-            result = requests.get(url, headers=GET_JSON_HEADERS).json()
-            # Experiment information
-            raw_experiment = result.get('dataset')
-            experiment = raw_experiment.split('/')[2] if raw_experiment else None
-            experiment_url = f'{get_encode_url(experiment)}/?format=json'
-            experiment_result = requests.get(experiment_url, headers=GET_JSON_HEADERS).json()
-            assay_title = experiment_result.get('assay_title')
-            print(
-                f'Creating item {item_name}, key {s3_key}, experiment {experiment}, and assay {assay_title}')
-            return Item.objects.create(
-                name=item_name,
-                s3_key=s3_key,
-                experiment=experiment,
-                assay_title=assay_title,
-            )
-        except:
-            print(f'Error creating item {item_name}')
 
 
 DATES_DF = None

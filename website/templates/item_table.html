@@ -1,5 +1,46 @@
 {% extends 'ajax_table.html' %}
-{% block table %}
-{% from 'dashboard_macros.html' import render_table_row, render_item_table with context %}
-{{ render_table_row(render_item_table, table_data, table_name, table_page, table_page_size) }}
+{% block table_body %}
+    <table class='table table-striped mt-4'>
+        <tr>
+            <th scope='col'>#</th>
+            <th scope='col'>Item</th>
+            <th scope='col'>Experiment</th>
+            <th scope='col'>Assay Type</th>
+            <th scope='col'>Hits</th>
+            <th scope='col'>Details</th>
+        </tr>
+        {% for item, count in table_data %}
+            {% set name = render_s3_key(item.s3_key) %}
+            <tr>
+                {% set count_label = page_size * page + loop.index %}
+                <th scope='row'>{{ count_label }}</th>
+                <td>
+                    <a target='_blank'
+                       href='{{ get_encode_url('files/' + name.split('.')[0]) }}'>{{ name }}
+                        <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
+                    </a>
+                </td>
+                <td>
+                    {% if item.experiment is not none %}
+                        <a target='_blank'
+                           href='{{ get_encode_url('experiments/' + item.experiment.name) }}'>
+                            {{ item.experiment.name }}
+                            <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
+                        </a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>{{ item.assay_title or 'N/A' }}</td>
+                <td>{{ count }}</td>
+                <td>
+                    <a id='btn-item-{{ loop.index0 }}'
+                       href='{{ url_range_aware('dashboard:item_dashboard', start_time, end_time, kwargs={'item_name': name}) }}'>
+                        Details
+                        <span class='ml-2 oi oi-bar-chart' aria-hidden='true'></span>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock table %}

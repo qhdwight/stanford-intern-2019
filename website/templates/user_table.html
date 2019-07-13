@@ -1,5 +1,40 @@
 {% extends 'ajax_table.html' %}
 {% block table %}
-{% from 'dashboard_macros.html' import render_table_row, render_user_table with context %}
-{{ render_table_row(render_user_table, table_data, table_name, table_page, table_page_size) }}
+    <table class='table table-striped mt-4'>
+        <tr>
+            <th scope='col'>#</th>
+            <th scope='col'>IP Address</th>
+            <th scope='col'>Requester</th>
+            <th scope='col'>Hits</th>
+        </tr>
+        {% for user in table_data %}
+            {% set requester = user['requester'] %}
+            {% set ip_address = user['ip_address'] %}
+            <tr>
+                {% set count_label = page_size * page + loop.index %}
+                <th scope='row'>{{ count_label }}</th>
+                <td>
+                    {% if ip_address is not none %}
+                        <a id='btn-requester-{{ loop.index0 }}'
+                           href='{{ url_range_aware('dashboard:ip_address_dashboard', start_time, end_time, kwargs={'ip_address': ip_address}) }}'>
+                            {{ ip_address }}
+                        </a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>
+                    {% if requester is not none %}
+                        <a id='btn-requester-{{ loop.index0 }}'
+                           href='{{ url_range_aware('dashboard:requester_dashboard', start_time, end_time, kwargs={'requester':requester}) }}'>
+                            {{ requester }}
+                        </a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>{{ locale_format(user['count']) }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock table %}

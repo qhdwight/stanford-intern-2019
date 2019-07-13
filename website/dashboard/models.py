@@ -64,7 +64,7 @@ class Item(models.Model):
 
 
 class Log(models.Model):
-    item_name = models.CharField(max_length=16, db_index=True, null=True)
+    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
     key_name = models.CharField(max_length=32)
     bucket = models.CharField(max_length=16, null=True)
     time = models.DateTimeField(null=True, db_index=True)
