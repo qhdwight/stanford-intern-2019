@@ -1,4 +1,3 @@
-import sys
 from datetime import timedelta, datetime
 
 import pandas as pd
@@ -7,6 +6,7 @@ from django.db.models import Count, Avg
 from django.utils import timezone
 
 from dashboard.models import Log, QueryCountAtTime, get_item_name, AnalysisLabItem, IpAddress
+from util import time_this
 
 START_TIME = datetime(2019, 3, 1, tzinfo=timezone.get_current_timezone())
 END_TIME = timezone.now()
@@ -18,18 +18,6 @@ GET_REQUESTS = Log.objects.filter(operation='REST.GET.OBJECT').filter(error_code
 GET_JSON_HEADERS = {'accept': 'application/json'}
 
 BERNSTEIN_EXPERIMENT_FILTER_KWARGS = {'item_name__in': AnalysisLabItem.objects.values_list('name', flat=True)}
-
-
-def time_this(method):
-    def timed(*args, **kw):
-        start = datetime.now()
-        result = method(*args, **kw)
-        end = datetime.now()
-        print(f'{method.__name__} took {end - start}')
-        sys.stdout.flush()
-        return result
-
-    return timed
 
 
 def get_header(s3_key):
@@ -52,27 +40,24 @@ def filter_from_time_range(start_time=START_TIME, end_time=END_TIME):
     return GET_REQUESTS if is_default else GET_REQUESTS.filter(time__range=(start_time, end_time))
 
 
-@time_this
 def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_TIME, page=0, **kwargs):
     return take_page(filter_from_time_range(start_time, end_time)
-            .filter(**kwargs)
-            .values('s3_key')
-            .annotate(count=Count('ip_address', distinct=True))
-            .order_by('-count'), amount, page)
+                     .filter(**kwargs)
+                     .values_list('s3_key')
+                     .annotate(count=Count('ip_address', distinct=True))
+                     .order_by('-count'), amount, page)
 
 
 def take_page(query_set, page_size, page):
     return query_set[page_size * page:page_size * (page + 1)]
 
 
-@time_this
 def get_most_active_users_limited(amount, start_time=START_TIME, end_time=END_TIME, page=0, **kwargs):
     return take_page(filter_from_time_range(start_time, end_time)
                      .filter(**kwargs)
                      .exclude(requester__contains='encoded-instance')
-                     .values('ip_address')
+                     .values_list('ip_address')
                      .annotate(count=Count('ip_address'))
-                     .values('requester', 'count', 'ip_address')
                      .order_by('-count'), amount, page)
 
 
@@ -90,7 +75,6 @@ def calculate_query_count_intervals(start_time=START_TIME, **kwargs):
     return readings
 
 
-@time_this
 def get_query_count_intervals(start_time=START_TIME, end_time=END_TIME, data_set='all'):
     return QueryCountAtTime.objects.filter(data_set=data_set, time__range=(start_time, end_time))
 
@@ -101,28 +85,25 @@ def get_general_stats(start_time=START_TIME, end_time=END_TIME, **kwargs):
                  .exclude(requester__contains='encoded-instance')
                  .filter(**kwargs))
     # Total requests, unique requests, unique ips, unique files
-    key_and_ip = log_range.values('s3_key', 'ip_address')
-    distinct_keys = key_and_ip.values('s3_key').distinct()
+    key_and_ip = log_range.values_list('s3_key', 'ip_address')
+    distinct_keys = key_and_ip.values_list('s3_key').distinct()
     return (log_range.count(),
             key_and_ip.distinct().count(),
-            key_and_ip.values('ip_address').distinct().count(),
+            key_and_ip.values_list('ip_address').distinct().count(),
             distinct_keys.count(),
-            log_range.values('requester').distinct().count(),
-            int(distinct_keys.aggregate(average_size=Avg('object_size'))['average_size'] or 0))
+            log_range.values_list('requester').distinct().count(),
+            int(distinct_keys.aggregate(average_size=Avg('object_size')).get('average_size', 0.0)))
 
 
-@time_this
 def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
     keys = (filter_from_time_range(start_time, end_time)
             .filter(s3_key=item.s3_key))
-    return (keys.values('requester')
+    return (keys.values_list('requester')
             .annotate(count=Count('requester'))
-            .values('requester', 'count')
             .exclude(count=0)
             .order_by('-count'),
-            keys.values('ip_address')
+            keys.values_list('ip_address')
             .annotate(count=Count('ip_address'))
-            .values('ip_address', 'count')
             .order_by('-count'))
 
 
@@ -139,12 +120,11 @@ def get_stats_for_source(start_time=START_TIME, end_time=END_TIME, **kwargs):
     return (reqs
             .count(),
             reqs
-            .values('s3_key')
+            .values_list('s3_key')
             .distinct()
             .count())
 
 
-@time_this
 def get_items_for_source_limited(amount, start_time=START_TIME, end_time=END_TIME, page=0, **kwargs):
     """
     Get the most downloaded items for a given source by totals.
@@ -158,7 +138,7 @@ def get_items_for_source_limited(amount, start_time=START_TIME, end_time=END_TIM
     """
     return take_page(filter_from_time_range(start_time, end_time)
                      .filter(**kwargs)
-                     .values('s3_key')
+                     .values_list('s3_key')
                      # Group by S3 key and see how many total downloads there were
                      .annotate(count=Count('s3_key'))
                      .order_by('-count'), amount, page)

@@ -1,13 +1,13 @@
 import json
 
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 
+from util import time_this
 from . import query
 from .forms import SelectTimeRangeForm
 from .query import START_TIME, END_TIME, BERNSTEIN_EXPERIMENT_FILTER_KWARGS
-
-from django.conf import settings
 
 DEFAULT_PAGE_SIZE = 25
 GRAPH_SIZE = 6
@@ -46,12 +46,12 @@ def add_time_graph_context(context, time_info):
     return context
 
 
+@time_this
 def add_most_queried_graph_context(context, graph_most_queried):
+    item_names, counts = tuple(zip(*graph_most_queried.values_list('item__name', 'count')))
     context.update({
-        'most_queried_labels': json.dumps(
-            [item.name for (item, _) in graph_most_queried]) if graph_most_queried else None,
-        'most_queried_data': json.dumps(
-            [count for (_, count) in graph_most_queried]) if graph_most_queried else None,
+        'most_queried_labels': json.dumps(item_names) if graph_most_queried else None,
+        'most_queried_data': json.dumps(counts) if graph_most_queried else None
     })
     return context
 
@@ -163,13 +163,18 @@ def render_table(request, data, name, template_name, page, start_time=None, end_
     return render(request, template_name, context)
 
 
+@time_this
 def render_item_table(request, data, page, start_time=None, end_time=None, page_size=DEFAULT_PAGE_SIZE, **kwargs):
-    return render_table(request, data, 'Most Uniquely Downloaded', 'item_table.html', page, start_time, end_time,
-                        page_size, **kwargs)
+    return render_table(request,
+                        data.values_list('item__name', 'item__experiment__name', 'item__experiment__assay_title',
+                                         'count'),
+                        'Most Uniquely Downloaded', 'item_table.html', page, start_time, end_time, page_size, **kwargs)
 
 
 def render_user_table(request, data, page, start_time=None, end_time=None, page_size=DEFAULT_PAGE_SIZE, **kwargs):
-    return render_table(request, data, 'Most Active Downloaders', 'user_table.html', page, start_time, end_time,
+    return render_table(request,
+                        data.values_list('requester', 'ip_address', 'count'),
+                        'Most Active Downloaders', 'user_table.html', page, start_time, end_time,
                         page_size, **kwargs)
 
 

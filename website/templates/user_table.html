@@ -7,11 +7,9 @@
             <th scope='col'>Requester</th>
             <th scope='col'>Hits</th>
         </tr>
-        {% for user in table_data %}
-            {% set requester = user['requester'] %}
-            {% set ip_address = user['ip_address'] %}
+        {% for requester, ip_address, count in table_data %}
             <tr>
-                {% set count_label = page_size * page + loop.index %}
+                {% set count_label = table_page_size * table_page + loop.index %}
                 <th scope='row'>{{ count_label }}</th>
                 <td>
                     {% if ip_address is not none %}
@@ -33,7 +31,7 @@
                         N/A
                     {% endif %}
                 </td>
-                <td>{{ locale_format(user['count']) }}</td>
+                <td>{{ locale_format(count) }}</td>
             </tr>
         {% endfor %}
     </table>
