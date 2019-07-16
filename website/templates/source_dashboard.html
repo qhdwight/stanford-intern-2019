@@ -1,0 +1,16 @@
+{% extends 'specific_dashboard.html' %}
+{% block dashboard_content %}
+    <div class='row'>
+        <div class='col text-center'>
+            <h4>Total Downloads: {{ locale_format(total_downloads) }}</h4>
+            <h4>Unique Downloads: {{ locale_format(unique_downloads) }}</h4>
+        </div>
+    </div>
+    <hr>
+    <div id='most-downloaded-table'>
+        <div class='text-center m-4'>
+            <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>
+            Loading Most Downloaded Table...
+        </div>
+    </div>
+{% endblock dashboard_content %}

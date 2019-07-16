@@ -1,38 +1,32 @@
-{% extends 'ajax_table.html' %}
-{% block table %}
-    <table class='table table-striped mt-4'>
+{% macro render_user_rows(table_data, table_page_size=None, table_page=None) %}
+    {% for requester, ip_address, count in table_data %}
         <tr>
-            <th scope='col'>#</th>
-            <th scope='col'>IP Address</th>
-            <th scope='col'>Requester</th>
-            <th scope='col'>Hits</th>
+            {% set count_label = loop.index %}
+            {% if table_page is not none %}
+                {% set count_label = table_page_size * table_page + count_label %}
+            {% endif %}
+            <th scope='row'>{{ count_label }}</th>
+            <td>
+                {% if ip_address is not none %}
+                    <a id='btn-requester-{{ loop.index0 }}'
+                       href='{{ url_range_aware('dashboard:ip_address_dashboard', start_time, end_time, kwargs={'ip_address': ip_address}) }}'>
+                        {{ ip_address }}
+                    </a>
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td>
+                {% if requester is not none %}
+                    <a id='btn-requester-{{ loop.index0 }}'
+                       href='{{ url_range_aware('dashboard:requester_dashboard', start_time, end_time, kwargs={'requester':requester}) }}'>
+                        {{ requester }}
+                    </a>
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td>{{ locale_format(count) }}</td>
         </tr>
-        {% for requester, ip_address, count in table_data %}
-            <tr>
-                {% set count_label = table_page_size * table_page + loop.index %}
-                <th scope='row'>{{ count_label }}</th>
-                <td>
-                    {% if ip_address is not none %}
-                        <a id='btn-requester-{{ loop.index0 }}'
-                           href='{{ url_range_aware('dashboard:ip_address_dashboard', start_time, end_time, kwargs={'ip_address': ip_address}) }}'>
-                            {{ ip_address }}
-                        </a>
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>
-                    {% if requester is not none %}
-                        <a id='btn-requester-{{ loop.index0 }}'
-                           href='{{ url_range_aware('dashboard:requester_dashboard', start_time, end_time, kwargs={'requester':requester}) }}'>
-                            {{ requester }}
-                        </a>
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>{{ locale_format(count) }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-{% endblock table %}
+    {% endfor %}
+{% endmacro %}

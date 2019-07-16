@@ -54,17 +54,17 @@ class Item(models.Model):
     # Gathered from the encode website via REST call when needed
     dataset = models.CharField(max_length=16, db_index=True)
     dataset_type = models.CharField(max_length=16, db_index=True)
-    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, null=True)
+    experiment = models.ForeignKey(Experiment, on_delete=models.PROTECT, null=True)
     # Total amount of times it has been accessed
     file_format = models.CharField(max_length=8, null=True)
     file_type = models.CharField(max_length=8, null=True)
-    award = models.ForeignKey(Award, on_delete=models.CASCADE, null=True)
-    lab = models.ForeignKey(Lab, on_delete=models.CASCADE, null=True)
+    award = models.ForeignKey(Award, on_delete=models.PROTECT, null=True)
+    lab = models.ForeignKey(Lab, on_delete=models.PROTECT, null=True)
     date_uploaded = models.DateField(null=True)
 
 
 class Log(models.Model):
-    item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, null=True, on_delete=models.PROTECT)
     key_name = models.CharField(max_length=32)
     bucket = models.CharField(max_length=16, null=True)
     time = models.DateTimeField(null=True, db_index=True)

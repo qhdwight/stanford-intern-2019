@@ -32,17 +32,18 @@ class Command(BaseCommand):
             'file_format',
             'file_format_type',
             'date_created',
-            'dataset'
+            'dataset',
+            'award.project',
+            'award.name',
+            'award.rfa',
+            'award.status',
+            'award.pi.title',
+            'award.pi.lab.name',
         ]
         experiment_fields = [
             'assay_title',
             'assay_term_name',
             'date_released',
-            'award.project',
-            'award.rfa',
-            'award.status',
-            'award.pi.title',
-            'award.pi.lab.name'
         ]
 
         def add_fields(base_url, fields):
@@ -121,29 +122,32 @@ class Command(BaseCommand):
                     'project': project,
                     'rfa': rfa,
                     'status': award_status
-                }) if award_name else None
+                })
+            else:
+                db_award = None
+            if lab_name:
                 # Lab
                 db_lab, _ = Lab.objects.get_or_create(name=lab_name, defaults={
                     'name': lab_name
                 })
             else:
-                db_award = None
                 db_lab = None
             # Item
-            db_items.append(Item(
-                s3_key=s3_key,
-                name=item_name,
-                dataset=data_set_name,
-                dataset_type=data_set_type,
-                experiment=experiment,
-                file_format=file_format,
-                file_type=file_type,
-                award=db_award,
-                lab=db_lab,
-                date_uploaded=date_uploaded
-            ))
-        print('Deleting all items...')
-        Item.objects.all().delete()
-        print('Deleted all items. Starting creation...')
-        Item.objects.bulk_create(db_items, batch_size=50)
+            db_item = Item.objects.get(s3_key=s3_key)
+            db_item.lab = db_lab
+            db_item.award = db_award
+            db_items.append(db_item)
+            # Item.objects.get(s3_key=s3_key).update(
+            #     name=item_name,
+            #     dataset=data_set_name,
+            #     dataset_type=data_set_type,
+            #     experiment=experiment,
+            #     file_format=file_format,
+            #     file_type=file_type,
+            #     award=db_award,
+            #     lab=db_lab,
+            #     date_uploaded=date_uploaded
+            # ))
+
+        Item.objects.bulk_update(db_items, ['lab', 'award'], batch_size=400)
         print('Done! Hopefully...')

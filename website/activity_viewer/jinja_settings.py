@@ -6,7 +6,7 @@ from django.urls import reverse
 from jinja2 import Environment
 
 from dashboard.models import get_item_name
-from dashboard.query import get_encode_url, START_TIME, END_TIME
+from dashboard.query import get_encode_url
 
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
@@ -60,12 +60,12 @@ def environment(**options):
     So, we can call the specified functions below by their key name in dictionary in any template.
     """
     env = Environment(**options)
+    # print(env.lstrip_blocks, env.trim_blocks)
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': reverse,
         'url_range_aware': url_range_aware,
         'render_field_with_class': render_field_with_class,
-        'render_s3_key': get_item_name,
         'get_encode_url': get_encode_url,
         'zip': zip,
         'zip_longest': zip_longest,

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 
-from util import time_this
+from activity_viewer.util import time_this
 from . import query
 from .forms import SelectTimeRangeForm
 from .query import START_TIME, END_TIME, BERNSTEIN_EXPERIMENT_FILTER_KWARGS
@@ -105,12 +105,12 @@ def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME)
     time_range_form = get_time_range_form(request)
     if time_range_form.is_valid():
         return redirect_from_form(request, time_range_form, item_name=item_name)
-    item = query.get_or_create_item(item_name)
+    item = query.get_item(item_name)
     request_breakdown, ip_breakdown = query.get_requesters_for_item(item, start_time, end_time)
     return render(request, 'item_dashboard.html', add_range_context({
         'item': item,
-        'request_breakdown': request_breakdown,
-        'ip_breakdown': ip_breakdown
+        'request_breakdown': request_breakdown.values_list('requester', 'count'),
+        'ip_breakdown': ip_breakdown.values_list('requester', 'ip_address', 'count')
     }, time_range_form, start_time, end_time))
 
 
@@ -168,13 +168,13 @@ def render_item_table(request, data, page, start_time=None, end_time=None, page_
     return render_table(request,
                         data.values_list('item__name', 'item__experiment__name', 'item__experiment__assay_title',
                                          'count'),
-                        'Most Uniquely Downloaded', 'item_table.html', page, start_time, end_time, page_size, **kwargs)
+                        'Most Uniquely Downloaded', 'ajax_item_table.html', page, start_time, end_time, page_size, **kwargs)
 
 
 def render_user_table(request, data, page, start_time=None, end_time=None, page_size=DEFAULT_PAGE_SIZE, **kwargs):
     return render_table(request,
                         data.values_list('requester', 'ip_address', 'count'),
-                        'Most Active Downloaders', 'user_table.html', page, start_time, end_time,
+                        'Most Active Downloaders', 'ajax_user_table.html', page, start_time, end_time,
                         page_size, **kwargs)
 
 

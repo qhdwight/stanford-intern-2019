@@ -1,69 +1,55 @@
-{% extends 'base.html' %}
+{% extends 'specific_dashboard.html' %}
 {% set page_name = 'dashboard' %}
+{% from 'user_table.html' import render_user_rows with context %}
 {% block title %}Item Dashboard{% endblock %}
-{% from 'dashboard_macros.html' import render_back_button, render_time_range, render_table_row, render_user_table with context %}
-{% block content %}
-    {% include 'navbar.html' %}
-    <div class='container'>
-        <div class='row'>
-            <div class='col'>
-                <div class='d-flex flex-row justify-content-center m-4'>
-                    {{ render_back_button() }}
-                    <h1 class='mx-4 mb-0 align-self-center'>
-                        {{ item.name }}
-                    </h1>
-                </div>
-            </div>
+{% block dashboard_content %}
+    <div class='row'>
+        <div class='col'>
+            {% if request_breakdown_data is not none %}
+                <hr>
+                <canvas class='m-4 chart' id='request-breakdown-chart'></canvas>
+            {% else %}
+                <hr>
+                <p class='text-center'>Looks like there were no requesters in this time range!</p>
+            {% endif %}
         </div>
-        {{ render_time_range() }}
-        <div class='row'>
-            <div class='col'>
-                {% if request_breakdown_data is not none %}
-                    <hr>
-                    <canvas class='m-4 chart' id='request-breakdown-chart'></canvas>
-                {% else %}
-                    <hr>
-                    <p class='text-center'>Looks like there were no requesters in this time range!</p>
-                {% endif %}
+    </div>
+    <div class='row mt-5'>
+        <div class='col'>
+            <div class='text-center'>
+                <h2>General Information</h2>
             </div>
-        </div>
-        <div class='row mt-5'>
-            <div class='col'>
-                <div class='text-center'>
-                    <h2>General Information</h2>
-                </div>
-                <table class='table table-striped mt-4'>
-                    <tr>
-                        <td>Name</td>
-                        <td class='text-right'>
+            <table class='table table-striped mt-4'>
+                <tr>
+                    <td>Name</td>
+                    <td class='text-right'>
+                        <a target='_blank'
+                           href='{{ get_encode_url('files/' + item.name.split('.')[0]) }}'>{{ item.name }}
+                            <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Experiment</td>
+                    <td class='text-right'>
+                        {% if item.experiment is not none %}
                             <a target='_blank'
-                               href='{{ get_encode_url('files/' + item.name.split('.')[0]) }}'>{{ item.name }}
+                               href='{{ get_encode_url('experiments/' + item.experiment.name) }}'>
+                                {{ item.experiment.name }}
                                 <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
                             </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Experiment</td>
-                        <td class='text-right'>
-                            {% if item.experiment is not none %}
-                                <a target='_blank'
-                                   href='{{ get_encode_url('experiments/' + item.experiment.name) }}'>
-                                    {{ item.experiment.name }}
-                                    <span class='ml-2 oi oi-link-intact' aria-hidden='true'></span>
-                                </a>
-                            {% else %}
-                                N/A
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Assay Type</td>
-                        <td class='text-right'>{{ item.assay_title or 'N/A' }}</td>
-                    </tr>
-                </table>
-            </div>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Assay Type</td>
+                    <td class='text-right'>{{ item.assay_title or 'N/A' }}</td>
+                </tr>
+                {{ render_user_rows(ip_breakdown) }}
+            </table>
         </div>
-        {{ render_table_row(render_user_table, ip_breakdown.values('ip_address', 'requester', 'count'), 'Downloaders') }}
     </div>
 {% endblock %}
 {% block scripts %}
@@ -75,15 +61,15 @@
                     data: {
                         labels: ['IP Address', 'Requester'],
                         datasets: [
-                            {% for request_data, ip_data in zip_longest(request_breakdown, ip_breakdown) %}
+                            {% for (requester, requester_count), (ip_address, _, ip_address_count) in zip_longest(request_breakdown, ip_breakdown) %}
                                 {
                                     label: [
-                                        '{{ ip_data['ip_address']|safe if ip_data else 'N/A' }}',
-                                        '{{ request_data['requester']|safe if request_data else 'N/A' }}'
+                                        '{{ ip_address|safe if ip_data else 'N/A' }}',
+                                        '{{ requester|safe if request_data else 'N/A' }}'
                                     ],
                                     data: [
-                                        '{{ ip_data['count']|safe if ip_data else 0 }}',
-                                        '{{ request_data['count']|safe if request_data else 0 }}'
+                                        '{{ ip_address_count|safe if ip_data else 0 }}',
+                                        '{{ requester_count|safe if request_data else 0 }}'
                                     ],
                                     backgroundColor: getChartBackgroundColor({{ loop.index0 }}),
                                     borderColor: getChartLineColor({{ loop.index0 }}),

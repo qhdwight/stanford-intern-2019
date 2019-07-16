@@ -5,8 +5,8 @@ import requests
 from django.db.models import Count, Avg
 from django.utils import timezone
 
-from dashboard.models import Log, QueryCountAtTime, get_item_name, AnalysisLabItem, IpAddress
-from util import time_this
+from dashboard.models import Log, QueryCountAtTime, get_item_name, AnalysisLabItem, IpAddress, Item
+from activity_viewer.util import time_this
 
 START_TIME = datetime(2019, 3, 1, tzinfo=timezone.get_current_timezone())
 END_TIME = timezone.now()
@@ -171,3 +171,7 @@ def get_relative_access():
     created_df = DATES_DF[['created']]
     accessed_by_year = created_df.groupby(created_df['created'].dt.year).size()
     return accessed_by_year
+
+
+def get_item(item_name):
+    return Item.objects.get(name=item_name)

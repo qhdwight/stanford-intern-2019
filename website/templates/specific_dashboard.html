@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% set page_name = 'dashboard' %}
+{% from 'dashboard_macros.html' import render_back_button, render_time_range, ajax_table with context %}
+{% include 'navbar.html' %}
+<div class='container'>
+    <div class='row'>
+        <div class='col'>
+            <div class='d-flex flex-row justify-content-center m-4'>
+                {{ render_back_button() }}
+                <h4 class='mx-4 mb-0 align-self-center'>
+                    {{ requester }}
+                </h4>
+            </div>
+        </div>
+    </div>
+    {{ render_time_range() }}
+    <hr>
+    {% block dashboard_content %}
+    {% endblock dashboard_content %}
+</div>

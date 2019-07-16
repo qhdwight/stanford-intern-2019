@@ -1,41 +1,9 @@
-{% extends 'base.html' %}
-{% set page_name = 'dashboard' %}
-{% block title %}Item Dashboard{% endblock %}
-{% from 'dashboard_macros.html' import render_back_button, render_time_range, ajax_table with context %}
-{% block content %}
-    {% include 'navbar.html' %}
-    <div class='container'>
-        <div class='row'>
-            <div class='col'>
-                <div class='d-flex flex-row justify-content-center m-4'>
-                    {{ render_back_button() }}
-                    <h4 class='mx-4 mb-0 align-self-center'>
-                        {{ requester }}
-                    </h4>
-                </div>
-            </div>
-        </div>
-        {{ render_time_range() }}
-        <hr>
-        <div class='row'>
-            <div class='col text-center'>
-                <h4>Total Downloads: {{ locale_format(total_downloads) }}</h4>
-                <h4>Unique Downloads: {{ locale_format(unique_downloads) }}</h4>
-            </div>
-        </div>
-        <hr>
-        <div id='most-downloaded-table'>
-            <div class='text-center m-4'>
-                <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>
-                Loading Most Downloaded Table...
-            </div>
-        </div>
-    </div>
-{% endblock %}
+{% extends 'source_dashboard.html' %}
+{% block title %}User Dashboard{% endblock %}
 {% block scripts %}
     <script>
         $(document).ready(function () {
             {{ ajax_table('dashboard:items_for_requester_data_table', 'most-downloaded-table', start_time, end_time, {'requester':requester}) }}
-        })
+        });
     </script>
 {% endblock %}

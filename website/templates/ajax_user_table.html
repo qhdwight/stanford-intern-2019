@@ -1,0 +1,13 @@
+{% extends 'ajax_table.html' %}
+{% from 'user_table.html' import render_user_rows with context %}
+{% block table_body %}
+    <table class='table table-striped mt-4'>
+        <tr>
+            <th scope='col'>#</th>
+            <th scope='col'>IP Address</th>
+            <th scope='col'>Requester</th>
+            <th scope='col'>Hits</th>
+        </tr>
+        {{ render_user_rows(table_data, table_page_size, table_page) }}
+    </table>
+{% endblock table %}
