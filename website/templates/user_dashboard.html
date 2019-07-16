@@ -1,5 +1,9 @@
 {% extends 'source_dashboard.html' %}
+{% from 'dashboard_macros.html' import ajax_table with context %}
 {% block title %}User Dashboard{% endblock %}
+{% block dashboard_title %}
+    {{ requester }}
+{% endblock %}
 {% block scripts %}
     <script>
         $(document).ready(function () {

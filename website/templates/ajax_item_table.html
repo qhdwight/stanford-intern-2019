@@ -34,7 +34,7 @@
                 <td>{{ count }}</td>
                 <td>
                     <a id='btn-item-{{ loop.index0 }}'
-                       href='{{ url_range_aware('dashboard:item_dashboard', start_time, end_time, kwargs={'item_name': name}) }}'>
+                       href='{{ url_range_aware('dashboard:item_dashboard', start_time, end_time, kwargs={'item_name': item_name}) }}'>
                         Details
                         <span class='ml-2 oi oi-bar-chart' aria-hidden='true'></span>
                     </a>

@@ -5,7 +5,6 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from jinja2 import Environment
 
-from dashboard.models import get_item_name
 from dashboard.query import get_encode_url
 
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')

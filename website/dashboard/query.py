@@ -28,7 +28,7 @@ def get_header(s3_key):
 
 
 def get_encode_url(name):
-    return f'{ENCODE_URL_BASE}/{name}'
+    return f'{ENCODE_URL_BASE}/{name}/'
 
 
 def get_encode_url_from_s3(s3_key):

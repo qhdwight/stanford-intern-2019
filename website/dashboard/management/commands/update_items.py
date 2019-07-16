@@ -148,6 +148,3 @@ class Command(BaseCommand):
             #     lab=db_lab,
             #     date_uploaded=date_uploaded
             # ))
-
-        Item.objects.bulk_update(db_items, ['lab', 'award'], batch_size=400)
-        print('Done! Hopefully...')

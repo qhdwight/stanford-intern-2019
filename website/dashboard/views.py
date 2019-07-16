@@ -128,7 +128,7 @@ def requester_dashboard(request, requester, start_time=START_TIME, end_time=END_
     time_range_form = get_time_range_form(request)
     if time_range_form.is_valid():
         return redirect_from_form(request, time_range_form, requester=requester)
-    total_downloads, unique_downloads = query.get_stats_for_source(requester=requester)
+    total_downloads, unique_downloads = query.get_stats_for_source(start_time, end_time, requester=requester)
     context = {}
     add_source_context(context, unique_downloads, total_downloads, requester=requester)
     add_range_context(context, time_range_form, start_time, end_time)
@@ -166,7 +166,7 @@ def render_table(request, data, name, template_name, page, start_time=None, end_
 @time_this
 def render_item_table(request, data, page, start_time=None, end_time=None, page_size=DEFAULT_PAGE_SIZE, **kwargs):
     return render_table(request,
-                        data.values_list('item__name', 'item__experiment__name', 'item__experiment__assay_title',
+                        data.values_list('item__s3_key', 'item__experiment__name', 'item__experiment__assay_title',
                                          'count'),
                         'Most Uniquely Downloaded', 'ajax_item_table.html', page, start_time, end_time, page_size, **kwargs)
 

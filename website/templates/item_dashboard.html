@@ -47,9 +47,16 @@
                     <td>Assay Type</td>
                     <td class='text-right'>{{ item.assay_title or 'N/A' }}</td>
                 </tr>
-                {{ render_user_rows(ip_breakdown) }}
             </table>
         </div>
+    </div>
+    <div class='row mt-5'>
+        <div class='col text-center'>
+            <h2>Biggest Downloaders</h2>
+        </div>
+        <table class='table table-striped mt-4'>
+            {{ render_user_rows(ip_breakdown) }}
+        </table>
     </div>
 {% endblock %}
 {% block scripts %}
@@ -61,7 +68,7 @@
                     data: {
                         labels: ['IP Address', 'Requester'],
                         datasets: [
-                            {% for (requester, requester_count), (ip_address, _, ip_address_count) in zip_longest(request_breakdown, ip_breakdown) %}
+                            {% for (requester, requester_count), (ip_address, _, ip_address_count) in zip_longest(request_breakdown, ip_breakdown, fillvalue=(None, None)) %}
                                 {
                                     label: [
                                         '{{ ip_address|safe if ip_data else 'N/A' }}',
