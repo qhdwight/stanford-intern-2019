@@ -58,9 +58,14 @@ def get_db_log_from_log_line(log_file_name, log):
     )
 
 
-def process_chunk(log_file_names, existing_request_ids, items_df):
+def process_chunk(log_file_names, total_files, existing_request_ids, items_df, file_count_lock, file_count):
+    pb = tqdm(total=total_files, initial=file_count.value, unit='file', desc='Files Scanned', leave=False)
     db_logs = []
-    for log_file_name in tqdm(log_file_names):
+    for log_file_name in log_file_names:
+        with file_count_lock:
+            file_count.value += 1
+            pb.n = file_count.value
+        pb.refresh()
         with open(f'{LOGS_DIR}/{log_file_name}', 'r') as log_file:
             for log in s3logparse.parse_log_lines(log_file.readlines()):
                 # Skip if we have already pulled this log file. Note this cancels out of the entire file.
@@ -219,9 +224,19 @@ class Command(BaseCommand):
         all_file_names = os.listdir(LOGS_DIR)
 
         log_file_name_chunks = np.array_split(all_file_names, 8)
+        manager = mp.Manager()
+        file_count = manager.Value('i', 0)
+        file_count_lock = manager.Lock()
         pool = mp.Pool(processes=8)
+        start = datetime.now()
         results = [
-            pool.apply_async(process_chunk, args=(log_file_name_chunk, existing_request_ids, items_df))
+            pool.apply_async(
+                process_chunk,
+                args=(
+                    log_file_name_chunk, len(all_file_names), existing_request_ids, items_df,
+                    file_count_lock, file_count
+                )
+            )
             for log_file_name_chunk in log_file_name_chunks
         ]
         all_db_items = []
@@ -231,4 +246,4 @@ class Command(BaseCommand):
 
         print(f'Batch inserting {len(all_db_items)} logs into database...')
         Log.objects.bulk_create(all_db_items, batch_size=500)
-        print('Done!')
+        print(f'Done in {datetime.now() - start}!')
