@@ -223,11 +223,11 @@ class Command(BaseCommand):
         # Looping through each actual log file on disk. They correspond to the time at which they were generated.
         all_file_names = os.listdir(LOGS_DIR)
 
-        log_file_name_chunks = np.array_split(all_file_names, 8)
+        log_file_name_chunks = np.array_split(all_file_names, mp.cpu_count()*2)
         manager = mp.Manager()
         file_count = manager.Value('i', 0)
         file_count_lock = manager.Lock()
-        pool = mp.Pool(processes=8)
+        pool = mp.Pool(processes=mp.cpu_count()*2)
         start = datetime.now()
         results = [
             pool.apply_async(

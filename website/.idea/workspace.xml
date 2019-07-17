@@ -62,8 +62,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dashboard/management/commands/sync.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
-              <caret line="73" column="25" lean-forward="true" selection-start-line="73" selection-start-column="25" selection-end-line="73" selection-end-column="25" />
+            <state relative-caret-position="369">
+              <caret line="229" column="49" selection-start-line="229" selection-start-column="49" selection-end-line="229" selection-end-column="49" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
                 <element signature="e#726#1384#0" />
@@ -457,7 +457,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="307363000" />
+    <option name="totallyTimeSpent" value="308423000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -487,8 +487,8 @@
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.4434968" side_tool="true" weight="0.525" />
-      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.60589814" weight="0.55790645" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="13" sideWeight="0.5565032" visible="true" weight="0.36859688" />
+      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.60589814" weight="0.26726058" />
+      <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.5565032" weight="0.36859688" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="14" weight="0.32871014" />
       <window_info anchor="right" x="0" y="0" width="430" height="852" id="Documentation" side_tool="true" visible="true" weight="0.23501071" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
@@ -774,8 +774,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dashboard/management/commands/sync.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="73" column="25" lean-forward="true" selection-start-line="73" selection-start-column="25" selection-end-line="73" selection-end-column="25" />
+        <state relative-caret-position="369">
+          <caret line="229" column="49" selection-start-line="229" selection-start-column="49" selection-end-line="229" selection-end-column="49" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
             <element signature="e#726#1384#0" />
