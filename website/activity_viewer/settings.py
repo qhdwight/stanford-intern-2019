@@ -79,9 +79,10 @@ WSGI_APPLICATION = 'activity_viewer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 's3loganalysis',
         'USER': 'admin',
+        'PASSWORD': config('ADMIN_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
     }
