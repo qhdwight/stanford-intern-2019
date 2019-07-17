@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 's3loganalysis',
         'USER': 'admin',
-        'PASSWORD': config('ADMIN_PASSWORD'),
+        'PASSWORD': config('PG_ADMIN_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
     }
