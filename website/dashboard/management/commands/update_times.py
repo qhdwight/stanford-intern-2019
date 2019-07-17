@@ -1,5 +1,4 @@
 from django.core.management.base import BaseCommand
-from tqdm import tqdm
 
 from dashboard.models import QueryCountAtTime
 from dashboard.query import calculate_query_count_intervals, BERNSTEIN_EXPERIMENT_FILTER_KWARGS

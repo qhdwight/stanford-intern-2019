@@ -203,7 +203,10 @@ class Command(BaseCommand):
                     # Converting S3 log parse object to django object.
                     # TODO there are two conversions when one could do. Maybe the log parse library should be ditched.
                     db_log = self.get_db_log_from_log_line(log_file_name, log)
-                    db_log.item_id = items_df.loc[db_log.s3_key].pk
+                    try:
+                        db_log.item_id = items_df.loc[db_log.s3_key].pk
+                    except KeyError:
+                        pass
                     db_logs.append(db_log)
         print(f'Batch inserting {len(db_logs)} logs into database...')
         Log.objects.bulk_create(db_logs, batch_size=99)
