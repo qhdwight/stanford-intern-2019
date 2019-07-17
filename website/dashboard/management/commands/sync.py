@@ -2,7 +2,9 @@ import json
 import os
 from datetime import datetime
 
+import numpy as np
 import pandas as pd
+import multiprocessing as mp
 import requests
 from django.core.management.base import BaseCommand
 from s3logparse import s3logparse
@@ -32,6 +34,53 @@ EXPERIMENT_FIELDS = [
 LOGS_DIR = 's3_logs'
 
 
+def get_db_log_from_log_line(log_file_name, log):
+    # TODO compress somehow?
+    return Log(
+        key_name=log_file_name,
+        bucket=log.bucket,
+        time=log.timestamp,
+        ip_address=log.remote_ip,
+        requester=log.requester,
+        request_id=log.request_id,
+        operation=log.operation,
+        s3_key=log.s3_key,
+        request_uri=log.request_uri,
+        http_status=log.status_code,
+        error_code=log.error_code,
+        bytes_sent=log.bytes_sent,
+        object_size=log.object_size,
+        total_time=log.total_time,
+        turn_around_time=log.turn_around_time,
+        referrer=log.referrer,
+        user_agent=log.user_agent,
+        version_id=log.version_id
+    )
+
+
+def process_chunk(log_file_names, existing_request_ids, items_df):
+    db_logs = []
+    for log_file_name in tqdm(log_file_names):
+        with open(f'{LOGS_DIR}/{log_file_name}', 'r') as log_file:
+            for log in s3logparse.parse_log_lines(log_file.readlines()):
+                # Skip if we have already pulled this log file. Note this cancels out of the entire file.
+                # Request IDs are unique.
+                if log.operation == 'REST.COPY.PART' or (existing_request_ids == log.request_id).any():
+                    break
+                if log.operation != 'REST.GET.OBJECT':
+                    continue
+                # Converting S3 log parse object to django object.
+                # TODO there are two conversions when one could do.
+                #  Maybe the log parse library should be ditched.
+                db_log = get_db_log_from_log_line(log_file_name, log)
+                try:
+                    db_log.item_id = items_df.loc[db_log.s3_key].pk
+                except KeyError:
+                    pass
+                db_logs.append(db_log)
+    return db_logs
+
+
 class Command(BaseCommand):
     help = 'Syncs the database with the latest logs'
 
@@ -51,30 +100,6 @@ class Command(BaseCommand):
         parser.add_argument(
             '--skip',
             action='store_true'
-        )
-
-    @staticmethod
-    def get_db_log_from_log_line(log_file_name, log):
-        # TODO compress somehow?
-        return Log(
-            key_name=log_file_name,
-            bucket=log.bucket,
-            time=log.timestamp,
-            ip_address=log.remote_ip,
-            requester=log.requester,
-            request_id=log.request_id,
-            operation=log.operation,
-            s3_key=log.s3_key,
-            request_uri=log.request_uri,
-            http_status=log.status_code,
-            error_code=log.error_code,
-            bytes_sent=log.bytes_sent,
-            object_size=log.object_size,
-            total_time=log.total_time,
-            turn_around_time=log.turn_around_time,
-            referrer=log.referrer,
-            user_agent=log.user_agent,
-            version_id=log.version_id
         )
 
     @staticmethod
@@ -189,25 +214,21 @@ class Command(BaseCommand):
         items_df = pd.DataFrame(Item.objects.values_list('pk', flat=True),
                                 Item.objects.values_list('s3_key', flat=True),
                                 columns=['pk'])
+
         # Looping through each actual log file on disk. They correspond to the time at which they were generated.
-        db_logs = []
-        for log_file_name in tqdm(os.listdir(LOGS_DIR)):
-            with open(f'{LOGS_DIR}/{log_file_name}', 'r') as log_file:
-                for log in s3logparse.parse_log_lines(log_file.readlines()):
-                    # Skip if we have already pulled this log file. Note this cancels out of the entire file.
-                    # Request IDs are unique.
-                    if log.operation == 'REST.COPY.PART' or (existing_request_ids == log.request_id).any():
-                        break
-                    if log.operation != 'REST.GET.OBJECT':
-                        continue
-                    # Converting S3 log parse object to django object.
-                    # TODO there are two conversions when one could do. Maybe the log parse library should be ditched.
-                    db_log = self.get_db_log_from_log_line(log_file_name, log)
-                    try:
-                        db_log.item_id = items_df.loc[db_log.s3_key].pk
-                    except KeyError:
-                        pass
-                    db_logs.append(db_log)
-        print(f'Batch inserting {len(db_logs)} logs into database...')
-        Log.objects.bulk_create(db_logs, batch_size=99)
+        all_file_names = os.listdir(LOGS_DIR)
+
+        log_file_name_chunks = np.array_split(all_file_names, 8)
+        pool = mp.Pool(processes=8)
+        results = [
+            pool.apply_async(process_chunk, args=(log_file_name_chunk, existing_request_ids, items_df))
+            for log_file_name_chunk in log_file_name_chunks
+        ]
+        all_db_items = []
+        for result in results:
+            for db_item in result.get():
+                all_db_items.append(db_item)
+
+        print(f'Batch inserting {len(all_db_items)} logs into database...')
+        Log.objects.bulk_create(all_db_items, batch_size=500)
         print('Done!')
