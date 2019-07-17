@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/management/commands/extract.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/management/commands/sync.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/management/commands/sync.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/management/commands/update_items.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/management/commands/update_times.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/management/commands/update_times.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/management/extractor.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity_viewer/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/activity_viewer/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,46 +29,26 @@
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard/management/commands/update_times.py">
+        <entry file="file://$PROJECT_DIR$/dashboard/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#51#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard/management/commands/analyze.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="57" column="93" selection-start-line="57" selection-start-column="93" selection-end-line="57" selection-end-column="93" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="130">
+              <caret line="68" column="46" lean-forward="true" selection-start-line="68" selection-start-column="46" selection-end-line="68" selection-end-column="46" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/dashboard/management/commands/sync.py">
+        <entry file="file://$PROJECT_DIR$/activity_viewer/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="196" column="38" selection-start-line="196" selection-start-column="38" selection-end-line="196" selection-end-column="38" />
+            <state relative-caret-position="26">
+              <caret line="79" column="13" lean-forward="true" selection-start-line="79" selection-start-column="13" selection-end-line="79" selection-end-column="13" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard/analysis.ipynb">
-          <provider selected="true" editor-type-id="jupyter-editor" />
         </entry>
       </file>
     </leaf>
@@ -150,7 +126,6 @@
         <option value="$PROJECT_DIR$/static/css/site.css" />
         <option value="$PROJECT_DIR$/templates/item_table.py" />
         <option value="$PROJECT_DIR$/templates/render_form_macro.html" />
-        <option value="$PROJECT_DIR$/activity_viewer/settings.py" />
         <option value="$PROJECT_DIR$/activity_viewer/views.py" />
         <option value="$PROJECT_DIR$/dashboard/management/crawler.py" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/extract.py" />
@@ -194,6 +169,7 @@
         <option value="$PROJECT_DIR$/templates/item_dashboard.html" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/update_times.py" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/sync.py" />
+        <option value="$PROJECT_DIR$/activity_viewer/settings.py" />
       </list>
     </option>
   </component>
@@ -209,12 +185,18 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="website" type="b2602c69:ProjectViewProjectNode" />
               <item name="website" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="website" type="b2602c69:ProjectViewProjectNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="activity_viewer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="website" type="b2602c69:ProjectViewProjectNode" />
@@ -234,17 +216,10 @@
               <item name="management" type="462c0819:PsiDirectoryNode" />
               <item name="commands" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="website" type="b2602c69:ProjectViewProjectNode" />
-              <item name="website" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="migrations" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -433,7 +408,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="295730000" />
+    <option name="totallyTimeSpent" value="296204000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -445,10 +420,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="0" y="28" width="1920" height="1052" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22814499" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17826553" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="0" />
@@ -551,20 +526,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/shortcuts.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/template/loader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/shortcuts.py" />
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/template/loader.py" />
     <entry file="file://$PROJECT_DIR$/activity_viewer/util.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="24">
@@ -577,34 +540,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/item_table.html" />
     <entry file="file://$PROJECT_DIR$/s3_logs/2019-02-07-00-26-16-22B63EFBE4E1D3A4" />
-    <entry file="file://C:/msys64/mingw64/lib/go/src/io/io.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="362" column="5" selection-start-line="362" selection-start-column="5" selection-end-line="362" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/msys64/mingw64/lib/go/src/bytes/buffer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-248">
-          <caret line="53" column="39" lean-forward="true" selection-start-line="53" selection-start-column="39" selection-end-line="53" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/msys64/mingw64/lib/go/src/os/file_windows.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-24">
-          <caret line="153" column="5" selection-start-line="153" selection-start-column="5" selection-end-line="153" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/msys64/mingw64/lib/go/src/os/file.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="283" column="22" lean-forward="true" selection-start-line="283" selection-start-column="22" selection-end-line="283" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/msys64/mingw64/lib/go/src/io/io.go" />
+    <entry file="file://C:/msys64/mingw64/lib/go/src/bytes/buffer.go" />
+    <entry file="file://C:/msys64/mingw64/lib/go/src/os/file_windows.go" />
+    <entry file="file://C:/msys64/mingw64/lib/go/src/os/file.go" />
     <entry file="file://$PROJECT_DIR$/go/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="130">
@@ -617,25 +556,13 @@
     <entry file="file://$PROJECT_DIR$/dashboard/management/commands/extract.py" />
     <entry file="file://$PROJECT_DIR$/dashboard/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="65" column="24" selection-start-line="65" selection-start-column="24" selection-end-line="65" selection-end-column="24" />
+        <state relative-caret-position="130">
+          <caret line="68" column="46" lean-forward="true" selection-start-line="68" selection-start-column="46" selection-end-line="68" selection-end-column="46" />
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/msys64/mingw64/lib/go/src/os/getwd.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/msys64/mingw64/lib/go/src/path/filepath/path.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="208" column="5" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/msys64/mingw64/lib/go/src/os/getwd.go" />
+    <entry file="file://C:/msys64/mingw64/lib/go/src/path/filepath/path.go" />
     <entry file="file://$PROJECT_DIR$/go/src/extract.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="203">
@@ -653,13 +580,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/db/models/query.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="407" selection-start-line="407" selection-end-line="407" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/db/models/query.py" />
     <entry file="file://$PROJECT_DIR$/templates/user_dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="48">
@@ -684,15 +605,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/template/backends/jinja2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/django/template/backends/jinja2.py" />
     <entry file="file://$PROJECT_DIR$/dashboard/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="305">
