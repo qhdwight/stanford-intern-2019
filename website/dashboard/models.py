@@ -80,7 +80,7 @@ class Log(models.Model):
     object_size = models.BigIntegerField(null=True, db_index=True)
     total_time = models.PositiveIntegerField(null=True)
     turn_around_time = models.PositiveIntegerField(null=True)
-    referrer = models.URLField(null=True)
+    referrer = models.TextField(null=True)
     user_agent = models.TextField(max_length=128, null=True)
     version_id = models.TextField(max_length=128, null=True)
     # host_id = models.TextField(max_length=1024)
