@@ -225,7 +225,7 @@ class Command(BaseCommand):
         all_file_names = os.listdir(LOGS_DIR)
         file_count = len(all_file_names)
 
-        chunk_count = max(file_count / 5000, 1)
+        chunk_count = int(max(file_count / 50000, 1))
         self.progress_bar = tqdm(total=chunk_count, unit='file', desc='Files Processed')
         log_file_name_chunks = np.array_split(all_file_names, chunk_count)
         pool = mp.Pool(processes=mp.cpu_count())

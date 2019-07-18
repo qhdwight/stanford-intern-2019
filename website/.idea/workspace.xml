@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/management/commands/sync.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/management/commands/sync.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dashboard/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="82" column="31" selection-start-line="82" selection-start-column="31" selection-end-line="82" selection-end-column="31" />
+            <state>
+              <caret selection-end-line="53" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -56,11 +55,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dashboard/management/commands/sync.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5746">
-              <caret line="234" column="30" selection-start-line="234" selection-start-column="30" selection-end-line="234" selection-end-column="30" />
+            <state relative-caret-position="231">
+              <caret line="227" column="44" selection-start-line="227" selection-start-column="44" selection-end-line="227" selection-end-column="44" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -185,8 +184,8 @@
         <option value="$PROJECT_DIR$/dashboard/management/commands/update_times.py" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/activity_viewer/settings.py" />
-        <option value="$PROJECT_DIR$/dashboard/management/commands/sync.py" />
         <option value="$PROJECT_DIR$/dashboard/models.py" />
+        <option value="$PROJECT_DIR$/dashboard/management/commands/sync.py" />
       </list>
     </option>
   </component>
@@ -450,12 +449,12 @@
       <workItem from="1563325651225" duration="654000" />
       <workItem from="1563327471043" duration="5518000" />
       <workItem from="1563419198277" duration="6431000" />
-      <workItem from="1563468887214" duration="16000" />
+      <workItem from="1563468887214" duration="1291000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="316163000" />
+    <option name="totallyTimeSpent" value="317438000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -723,8 +722,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dashboard/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="82" column="31" selection-start-line="82" selection-start-column="31" selection-end-line="82" selection-end-column="31" />
+        <state>
+          <caret selection-end-line="53" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -743,8 +742,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dashboard/management/commands/sync.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5746">
-          <caret line="234" column="30" selection-start-line="234" selection-start-column="30" selection-end-line="234" selection-end-column="30" />
+        <state relative-caret-position="231">
+          <caret line="227" column="44" selection-start-line="227" selection-start-column="44" selection-end-line="227" selection-end-column="44" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
