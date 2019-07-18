@@ -59,14 +59,14 @@ def get_db_log_from_log_line(log_file_name, log):
     )
 
 
-def process_chunk(log_file_names, existing_request_ids, items_df):
+def process_chunk(log_file_names):
     db_logs = []
     for log_file_name in log_file_names:
         with open(f'{LOGS_DIR}/{log_file_name}', 'r') as log_file:
             for log in s3logparse.parse_log_lines(log_file.readlines()):
                 # Skip if we have already pulled this log file. Note this cancels out of the entire file.
                 # Request IDs are unique.
-                if log.operation == 'REST.COPY.PART' or (existing_request_ids == log.request_id).any():
+                if log.operation == 'REST.COPY.PART':
                     break
                 if log.operation != 'REST.GET.OBJECT':
                     continue
@@ -75,8 +75,8 @@ def process_chunk(log_file_names, existing_request_ids, items_df):
                 #  Maybe the log parse library should be ditched.
                 db_log = get_db_log_from_log_line(log_file_name, log)
                 try:
-                    db_log.item_id = items_df.loc[db_log.s3_key].pk
-                except KeyError:
+                    db_log.item_id = Item.objects.get(s3_key=db_log.s3_key).pk
+                except Log.DoesNotExist:
                     pass
                 db_logs.append(db_log)
     return db_logs
@@ -216,24 +216,20 @@ class Command(BaseCommand):
             self.add_items_and_experiments(item_results, experiment_result_dict)
 
         print('Updating log files from locals...')
-        existing_request_ids = pd.Series(Log.objects.values_list('request_id', flat=True))
-        items_df = pd.DataFrame(Item.objects.values_list('pk', flat=True),
-                                Item.objects.values_list('s3_key', flat=True),
-                                columns=['pk'])
 
         # Looping through each actual log file on disk. They correspond to the time at which they were generated.
         all_file_names = os.listdir(LOGS_DIR)
         file_count = len(all_file_names)
 
-        chunk_count = int(max(file_count / 50000, 1))
-        self.progress_bar = tqdm(total=chunk_count, unit='file', desc='Files Processed')
+        chunk_count = int(max(file_count / 5000, 1))
+        self.progress_bar = tqdm(total=chunk_count, unit='5000 file', desc='5000 of Files Processed')
         log_file_name_chunks = np.array_split(all_file_names, chunk_count)
         pool = mp.Pool(processes=mp.cpu_count())
         start = datetime.now()
         for log_file_name_chunk in log_file_name_chunks:
             pool.apply_async(
                 process_chunk,
-                args=(log_file_name_chunk, existing_request_ids, items_df),
+                args=(log_file_name_chunk,),
                 callback=self.on_processed_chunk
             )
         pool.close()
