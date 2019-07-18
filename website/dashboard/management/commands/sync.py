@@ -238,5 +238,6 @@ class Command(BaseCommand):
             )
         pool.close()
         pool.join()
+        self.progress_bar.close()
 
         print(f'Done in {datetime.now() - start}!')
