@@ -51,20 +51,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.env">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dashboard/management/commands/sync.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="226" column="73" selection-start-line="226" selection-start-column="73" selection-end-line="226" selection-end-column="73" />
+            <state relative-caret-position="220">
+              <caret line="199" column="22" selection-start-line="199" selection-start-column="22" selection-end-line="199" selection-end-column="22" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
                 <element signature="e#726#1384#0" />
@@ -85,7 +76,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>get_general_stats</find>
       <find>.annotate</find>
       <find>get_most_</find>
       <find>.item_name</find>
@@ -115,6 +105,7 @@
       <find>tqdm</find>
       <find>db_item</find>
       <find>.get_lock</find>
+      <find>print(</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -454,12 +445,12 @@
       <workItem from="1563209813502" duration="4676000" />
       <workItem from="1563325651225" duration="654000" />
       <workItem from="1563327471043" duration="5518000" />
-      <workItem from="1563419198277" duration="164000" />
+      <workItem from="1563419198277" duration="5058000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="309880000" />
+    <option name="totallyTimeSpent" value="314774000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -489,7 +480,7 @@
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.4434968" side_tool="true" weight="0.525" />
-      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.60589814" weight="0.26837417" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" sideWeight="0.60589814" visible="true" weight="0.26837417" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.5565032" weight="0.36859688" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="14" weight="0.32871014" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
@@ -769,15 +760,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="55" />
+        <state relative-caret-position="130">
+          <caret line="5" column="29" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dashboard/management/commands/sync.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="226" column="73" selection-start-line="226" selection-start-column="73" selection-end-line="226" selection-end-column="73" />
+        <state relative-caret-position="220">
+          <caret line="199" column="22" selection-start-line="199" selection-start-column="22" selection-end-line="199" selection-end-column="22" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
             <element signature="e#726#1384#0" />

@@ -1,10 +1,11 @@
 import json
+import multiprocessing as mp
 import os
 from datetime import datetime
 
+import gc
 import numpy as np
 import pandas as pd
-import multiprocessing as mp
 import requests
 from django.core.management.base import BaseCommand
 from s3logparse import s3logparse
@@ -195,6 +196,11 @@ class Command(BaseCommand):
                 'date_uploaded': date_uploaded
             }, s3_key=s3_key)
 
+    def on_processed_chunk(self, db_logs):
+        Log.objects.bulk_create(db_logs)
+        self.progress_bar.update()
+        gc.collect()
+
     def handle(self, *args, **options):
         if options['skip']:
             print('Skipping synchronization of items and experiments...')
@@ -217,22 +223,20 @@ class Command(BaseCommand):
 
         # Looping through each actual log file on disk. They correspond to the time at which they were generated.
         all_file_names = os.listdir(LOGS_DIR)
+        file_count = len(all_file_names)
 
-        log_file_name_chunks = np.array_split(all_file_names, mp.cpu_count())
+        chunk_count = max(file_count / 5000, 1)
+        self.progress_bar = tqdm(total=chunk_count, unit='file', desc='Files Processed')
+        log_file_name_chunks = np.array_split(all_file_names, chunk_count)
         pool = mp.Pool(processes=mp.cpu_count())
         start = datetime.now()
-        results = [
+        for log_file_name_chunk in log_file_name_chunks:
             pool.apply_async(
                 process_chunk,
-                args=(log_file_name_chunk, existing_request_ids, items_df)
+                args=(log_file_name_chunk, existing_request_ids, items_df),
+                callback=self.on_processed_chunk
             )
-            for log_file_name_chunk in log_file_name_chunks
-        ]
-        all_db_items = []
-        for result in results:
-            for db_item in result.get():
-                all_db_items.append(db_item)
+        pool.close()
+        pool.join()
 
-        print(f'Batch inserting {len(all_db_items)} logs into database...')
-        Log.objects.bulk_create(all_db_items, batch_size=500)
         print(f'Done in {datetime.now() - start}!')
