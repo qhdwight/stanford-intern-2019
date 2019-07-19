@@ -53,8 +53,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dashboard/management/commands/sync.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="240" column="67" selection-start-line="240" selection-start-column="67" selection-end-line="240" selection-end-column="67" />
+            <state relative-caret-position="194">
+              <caret line="232" column="55" selection-start-line="232" selection-start-column="55" selection-end-line="232" selection-end-column="55" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -92,7 +92,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>'item'</find>
       <find>.va</find>
       <find>-count</find>
       <find>table_data</find>
@@ -122,6 +121,7 @@
       <find>max_length=200</find>
       <find>.update()</find>
       <find>self.progress_bar</find>
+      <find>start</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -463,12 +463,12 @@
       <workItem from="1563325651225" duration="654000" />
       <workItem from="1563327471043" duration="5518000" />
       <workItem from="1563419198277" duration="6431000" />
-      <workItem from="1563468887214" duration="10084000" />
+      <workItem from="1563468887214" duration="10720000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="326231000" />
+    <option name="totallyTimeSpent" value="326867000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -498,7 +498,7 @@
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.4434968" side_tool="true" weight="0.525" />
-      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.60589814" weight="0.35523385" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" sideWeight="0.60589814" visible="true" weight="0.35523385" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.5565032" weight="0.36859688" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="14" weight="0.32871014" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
@@ -507,7 +507,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
       <window_info anchor="right" id="SciView" order="4" weight="0.32922912" />
       <window_info anchor="right" id="Database" order="5" weight="0.12868632" />
-      <window_info active="true" anchor="right" x="0" y="0" width="430" height="852" id="Documentation" order="6" side_tool="true" visible="true" weight="0.23501071" />
+      <window_info anchor="right" x="0" y="0" width="430" height="852" id="Documentation" order="6" side_tool="true" visible="true" weight="0.23501071" />
     </layout>
     <layout-to-restore>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3078635" />
@@ -800,8 +800,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dashboard/management/commands/sync.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="240" column="67" selection-start-line="240" selection-start-column="67" selection-end-line="240" selection-end-column="67" />
+        <state relative-caret-position="194">
+          <caret line="232" column="55" selection-start-line="232" selection-start-column="55" selection-end-line="232" selection-end-column="55" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
