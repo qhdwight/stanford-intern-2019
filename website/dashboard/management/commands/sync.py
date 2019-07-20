@@ -237,7 +237,7 @@ class Command(BaseCommand):
                     db_log.item_id = s3_key_to_id.get(db_log.s3_key)
                     # db_log.item_id = Item.objects.values_list('pk', flat=True).filter(s3_key=db_log.s3_key).first()
                     db_logs.append(db_log)
-        Log.objects.bulk_create(db_logs, batch_size=1000)
+        print(Log.objects.bulk_create(db_logs, batch_size=1000).query)
 
         # all_file_names = os.listdir(LOGS_DIR)
         # file_count = len(all_file_names)

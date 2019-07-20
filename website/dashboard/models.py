@@ -65,7 +65,6 @@ class Item(models.Model):
 
 class Log(models.Model):
     item = models.ForeignKey(Item, null=True, on_delete=models.PROTECT)
-    key_name = models.TextField(max_length=32)
     bucket = models.TextField(max_length=16, null=True)
     time = models.DateTimeField(null=True, db_index=True)
     ip_address = models.GenericIPAddressField(null=True, db_index=True)
