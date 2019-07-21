@@ -98,162 +98,162 @@ func main() {
 	const logDirName = "s3_logs"
 	logDir, err := godirwalk.ReadDirents(logDirName, nil)
 	check(err)
+	logNames, err := godirwalk.ReadDirnames(logDirName, nil)
+	check(err)
 	// Progress bar
 	bar := pb.New(logDir.Len()).Prefix("Files Processed:").Format(pb.FORMAT)
 	bar.ManualUpdate = true
 	bar.ShowElapsedTime = true
 	bar.Start()
 	// Walk directory
-	err = godirwalk.Walk(logDirName, &godirwalk.Options{
-		Callback: func(fileName string, de *godirwalk.Dirent) error {
-			if de.IsDir() {
-				return nil
-			}
-			file, err := os.Open(fileName)
-			check(err)
-			// Copy contents of log file into buffer
-			buf.Reset()
-			_, err = io.Copy(buf, file)
-			check(err)
-			err = file.Close()
-			check(err)
-			fileContent := getBufStr(buf.Bytes())
-			// Read log instances from file
-			var logFieldIdx, fieldIdx, lastFieldEnd int
-			var inEscaped, fieldIsEscaped bool
-			buf.Reset()
+	for _, fileName := range logNames {
+		buf.Reset()
+		buf.WriteString(logDirName)
+		buf.WriteString("/")
+		buf.WriteString(fileName)
+		file, err := os.Open(getBufStr(buf.Bytes()))
+		check(err)
+		// Copy contents of log file into buffer
+		buf.Reset()
+		_, err = io.Copy(buf, file)
+		check(err)
+		err = file.Close()
+		check(err)
+		fileContent := getBufStr(buf.Bytes())
+		// Read log instances from file
+		var logFieldIdx, fieldIdx, lastFieldEnd int
+		var inEscaped, fieldIsEscaped bool
+		buf.Reset()
 
-			addField := func(endIdx int) bool {
-				fieldStart := lastFieldEnd
-				lastFieldEnd = endIdx
-				sliceStart, sliceEnd := fieldStart+1, endIdx
-				if fieldIsEscaped {
-					sliceStart++
-					sliceEnd--
+		addField := func(endIdx int) bool {
+			fieldStart := lastFieldEnd
+			lastFieldEnd = endIdx
+			sliceStart, sliceEnd := fieldStart+1, endIdx
+			if fieldIsEscaped {
+				sliceStart++
+				sliceEnd--
+			}
+			field := getBufStr(buf.Bytes()[sliceStart:sliceEnd])
+			fieldIsEscaped = false
+			switch logFieldIdx {
+			// 0: Bucket Owner (Ignored)
+			// 1: Bucket
+			// 2: Time
+			// 3: IP
+			// 4: Requester
+			// 5: Request ID
+			// 6: Operation
+			// 7: Key
+			// 8: URI
+			// 9: HTTP Status
+			// 10: Error Code
+			// 11: Bytes Sent
+			// 12: Object Size
+			// 13: Total Time
+			// 14: Turn Around Time
+			// 15: Referrer
+			// 16: User Agent
+			// 17: Version Id
+			case 1, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17:
+				fieldBuilder := &fieldBuilders[fieldIdx]
+				if field == "-" {
+					fieldBuilder.WriteString(psqlNull)
+				} else {
+					fieldBuilder.WriteString("'")
+					fieldBuilder.WriteString(field)
+					fieldBuilder.WriteString("'")
 				}
-				field := getBufStr(buf.Bytes()[sliceStart:sliceEnd])
-				fieldIsEscaped = false
-				switch logFieldIdx {
-				// 0: Bucket Owner (Ignored)
-				// 1: Bucket
-				// 2: Time
-				// 3: IP
-				// 4: Requester
-				// 5: Request ID
-				// 6: Operation
-				// 7: Key
-				// 8: URI
-				// 9: HTTP Status
-				// 10: Error Code
-				// 11: Bytes Sent
-				// 12: Object Size
-				// 13: Total Time
-				// 14: Turn Around Time
-				// 15: Referrer
-				// 16: User Agent
-				// 17: Version Id
-				case 1, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17:
+				fieldIdx++
+				break
+			case 6:
+				if field == "-" {
+					fieldBuilders[fieldIdx].WriteString(psqlNull)
+				} else if field == "REST.GET.OBJECT" {
 					fieldBuilder := &fieldBuilders[fieldIdx]
-					if field == "-" {
-						fieldBuilder.WriteString(psqlNull)
-					} else {
-						fieldBuilder.WriteString("'")
-						fieldBuilder.WriteString(field)
-						fieldBuilder.WriteString("'")
-					}
-					fieldIdx++
-					break
-				case 6:
-					if field == "-" {
-						fieldBuilders[fieldIdx].WriteString(psqlNull)
-					} else if field == "REST.GET.OBJECT" {
-						fieldBuilder := &fieldBuilders[fieldIdx]
-						fieldBuilder.WriteString("'")
-						fieldBuilder.WriteString(field)
-						fieldBuilder.WriteString("'")
-					} else {
-						return false
-					}
-					fieldIdx++
-					break
-				case 7:
-					if field == "-" {
-						fieldBuilders[fieldIdx].WriteString(psqlNull)
-						fieldBuilders[fieldIdx+1].WriteString(psqlNull)
-					} else {
-						fieldBuilder := &fieldBuilders[fieldIdx]
-						fieldBuilder.WriteString("'")
-						fieldBuilder.WriteString(field)
-						fieldBuilder.WriteString("'")
-						itemId := s3KeyToItemId[field]
-						if itemId == "" {
-							itemId = psqlNull
-						}
-						fieldBuilders[fieldIdx+1].WriteString(itemId)
-					}
-					fieldIdx += 2
-					break
-				case 2:
-					if field == "-" {
-						fieldBuilders[fieldIdx].WriteString(psqlNull)
-					} else {
-						fieldBuilder := &fieldBuilders[fieldIdx]
-						fieldBuilder.WriteString("to_timestamp('")
-						fieldBuilder.WriteString(field)
-						fieldBuilder.WriteString("','DD/Mon/YYYY:HH24:MI:SS')")
-					}
-					fieldIdx++
-					break
+					fieldBuilder.WriteString("'")
+					fieldBuilder.WriteString(field)
+					fieldBuilder.WriteString("'")
+				} else {
+					return false
 				}
-				logFieldIdx++
-				return true
+				fieldIdx++
+				break
+			case 7:
+				if field == "-" {
+					fieldBuilders[fieldIdx].WriteString(psqlNull)
+					fieldBuilders[fieldIdx+1].WriteString(psqlNull)
+				} else {
+					fieldBuilder := &fieldBuilders[fieldIdx]
+					fieldBuilder.WriteString("'")
+					fieldBuilder.WriteString(field)
+					fieldBuilder.WriteString("'")
+					itemId := s3KeyToItemId[field]
+					if itemId == "" {
+						itemId = psqlNull
+					}
+					fieldBuilders[fieldIdx+1].WriteString(itemId)
+				}
+				fieldIdx += 2
+				break
+			case 2:
+				if field == "-" {
+					fieldBuilders[fieldIdx].WriteString(psqlNull)
+				} else {
+					fieldBuilder := &fieldBuilders[fieldIdx]
+					fieldBuilder.WriteString("to_timestamp('")
+					fieldBuilder.WriteString(field)
+					fieldBuilder.WriteString("','DD/Mon/YYYY:HH24:MI:SS')")
+				}
+				fieldIdx++
+				break
 			}
+			logFieldIdx++
+			return true
+		}
 
-			for charIdx, char := range fileContent {
-				if char == '[' || char == ']' || char == '"' { // Escape special strings with spaces and timestamps
-					inEscaped = !inEscaped
-					fieldIsEscaped = true
-				} else if char == '\n' { // Move onto another log instance
-					rowBuilders = append(rowBuilders, bytes.Buffer{})
-					addField(charIdx)
-					for fieldIdx < fieldCount-1 {
-						fieldIdx++
-						fieldBuilders[fieldIdx].WriteString(psqlNull)
-					}
-					rowBuilder := &rowBuilders[batchLogIdx]
-					var row [fieldCount]string
-					for idx := range fieldBuilders {
-						row[idx] = getBufStr(fieldBuilders[idx].Bytes())
-					}
-					rowBuilder.WriteString("(")
-					rowBuilder.WriteString(strings.Join(row[:], ","))
-					rowBuilder.WriteString(")")
+		for charIdx, char := range fileContent {
+			if char == '[' || char == ']' || char == '"' { // Escape special strings with spaces and timestamps
+				inEscaped = !inEscaped
+				fieldIsEscaped = true
+			} else if char == '\n' { // Move onto another log instance
+				rowBuilders = append(rowBuilders, bytes.Buffer{})
+				addField(charIdx)
+				for fieldIdx < fieldCount-1 {
+					fieldIdx++
+					fieldBuilders[fieldIdx].WriteString(psqlNull)
+				}
+				rowBuilder := &rowBuilders[batchLogIdx]
+				var row [fieldCount]string
+				for idx := range fieldBuilders {
+					row[idx] = getBufStr(fieldBuilders[idx].Bytes())
+				}
+				rowBuilder.WriteString("(")
+				rowBuilder.WriteString(strings.Join(row[:], ","))
+				rowBuilder.WriteString(")")
+				for idx := range fieldBuilders[:fieldIdx] {
+					fieldBuilders[idx].Reset()
+				}
+				fieldIdx = 0
+				logFieldIdx = 0
+				batchLogIdx++
+				if batchLogIdx == batchSize {
+					batchInsert()
+				}
+			} else if char == ' ' && !inEscaped { // We are ending a field definition
+				if !addField(charIdx) {
+					// Field we do not want in the database
 					for idx := range fieldBuilders[:fieldIdx] {
 						fieldBuilders[idx].Reset()
 					}
-					fieldIdx = 0
-					logFieldIdx = 0
-					batchLogIdx++
-					if batchLogIdx == batchSize {
-						batchInsert()
-					}
-				} else if char == ' ' && !inEscaped { // We are ending a field definition
-					if !addField(charIdx) {
-						// Field we do not want in the database
-						for idx := range fieldBuilders[:fieldIdx] {
-							fieldBuilders[idx].Reset()
-						}
-						fieldIdx, logFieldIdx = 0, 0
-						break
-					}
+					fieldIdx, logFieldIdx = 0, 0
+					break
 				}
 			}
+		}
 
-			bar.Increment()
-			bar.Update()
-			return nil
-		},
-	})
+		bar.Increment()
+		bar.Update()
+	}
 	check(err)
 	bar.Finish()
 	if batchLogIdx > 0 {
