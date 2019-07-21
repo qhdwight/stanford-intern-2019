@@ -13,6 +13,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 	"unsafe"
 
 	_ "github.com/lib/pq"
@@ -102,8 +103,8 @@ func main() {
 	check(err)
 	// Progress bar
 	bar := pb.New(logDir.Len()).Prefix("Files Processed:").Format(pb.FORMAT)
-	bar.ManualUpdate = true
 	bar.ShowElapsedTime = true
+	bar.RefreshRate = time.Second
 	bar.Start()
 	// Walk directory
 	for _, fileName := range logNames {
@@ -250,9 +251,7 @@ func main() {
 				}
 			}
 		}
-
 		bar.Increment()
-		bar.Update()
 	}
 	check(err)
 	bar.Finish()
