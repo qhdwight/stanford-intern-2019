@@ -87,13 +87,13 @@ func main() {
 		for rowIdx, rowBuilder := range rowBuilders {
 			rows[rowIdx] = getBufStr(rowBuilder.Bytes())
 		}
-		_ = insertStatement + strings.Join(rows, ",")
+		query := insertStatement + strings.Join(rows, ",")
 		for _, rowBuilder := range rowBuilders {
 			rowBuilder.Reset()
 		}
 		rowBuilders = rowBuilders[:0]
-		//_, err = db.Exec(query)
-		//check(err)
+		_, err = db.Exec(query)
+		check(err)
 		batchLogIdx = 0
 		runtime.GC()
 	}
