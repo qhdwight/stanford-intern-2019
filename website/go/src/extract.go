@@ -4,10 +4,13 @@ import (
 	"bytes"
 	"database/sql"
 	"fmt"
+	"github.com/cheggaaa/pb"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
+	"runtime"
+	"strconv"
 	"strings"
 	"unsafe"
 
@@ -15,11 +18,13 @@ import (
 )
 
 const (
-	host      = "localhost"
-	port      = 5432
-	user      = "admin"
-	dbName    = "s3loganalysis"
-	batchSize = 5000
+	host       = "localhost"
+	port       = 5432
+	user       = "admin"
+	dbName     = "s3loganalysis"
+	batchSize  = 5
+	fieldCount = 18
+	psqlNull   = "NULL"
 )
 
 func check(err error) {
@@ -66,17 +71,38 @@ func main() {
 		var itemId int
 		err = rows.Scan(&s3Key, &itemId)
 		check(err)
-		s3KeyToItemId[s3Key] = fmt.Sprintf("'%d'", itemId)
+		s3KeyToItemId[s3Key] = "'" + strconv.Itoa(itemId) + "'"
 	}
 	err = rows.Close()
 	check(err)
-	fmt.Println("Done mapping keys to ids")
 	// Read all files and add them to the database
 	buf := &bytes.Buffer{}
-	var fieldBuilder [][19]bytes.Buffer
+	fieldBuilders := [fieldCount]bytes.Buffer{}
+	rowBuilders := make([]bytes.Buffer, 0, batchSize)
 	const insertStatement = "INSERT INTO dashboard_log (bucket, time, ip_address, requester, request_id, operation, s3_key, item_id, request_uri, http_status, error_code, bytes_sent, object_size, total_time, turn_around_time, referrer, user_agent, version_id) VALUES "
-	var curBatchLogCnt int
-	for _, fileInfo := range fileInfos[:10] {
+	var batchLogIdx int
+
+	batchInsert := func() {
+		rows := make([]string, len(rowBuilders))
+		for rowIdx, rowBuilder := range rowBuilders {
+			rows[rowIdx] = getBufStr(rowBuilder.Bytes())
+		}
+		_ = insertStatement + strings.Join(rows, ",")
+		for _, rowBuilder := range rowBuilders {
+			rowBuilder.Reset()
+		}
+		rowBuilders = rowBuilders[:0]
+		//_, err = db.Exec(query)
+		//check(err)
+		batchLogIdx = 0
+		runtime.GC()
+	}
+
+	bar := pb.New(len(fileInfos)).Prefix("Files Processed:").Format(pb.FORMAT)
+	bar.ManualUpdate = true
+	bar.ShowElapsedTime = true
+	bar.Start()
+	for _, fileInfo := range fileInfos {
 		buf.Reset()
 		// Get name of log file
 		// String concatenation is actually fast
@@ -95,7 +121,8 @@ func main() {
 		var logFieldIdx, fieldIdx, lastFieldEnd int
 		var inEscaped, fieldIsEscaped bool
 		buf.Reset()
-		addField := func(endIdx int) {
+
+		addField := func(endIdx int) bool {
 			fieldStart := lastFieldEnd
 			lastFieldEnd = endIdx
 			sliceStart, sliceEnd := fieldStart+1, endIdx
@@ -105,7 +132,6 @@ func main() {
 			}
 			field := getBufStr(buf.Bytes()[sliceStart:sliceEnd])
 			fieldIsEscaped = false
-			//fmt.Printf("%d, %s\n", fieldIdx, field)
 			switch logFieldIdx {
 			// 0: Bucket Owner (Ignored)
 			// 1: Bucket
@@ -125,81 +151,109 @@ func main() {
 			// 15: Referrer
 			// 16: User Agent
 			// 17: Version Id
-			case 1, 3, 4, 5, 6, 8, 9, 10, 11, 14, 15, 16, 17:
+			case 1, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17:
+				fieldBuilder := &fieldBuilders[fieldIdx]
 				if field == "-" {
-					fieldBuilder[curBatchLogCnt][fieldIdx].WriteString("NULL")
+					fieldBuilder.WriteString(psqlNull)
 				} else {
-					builder := &fieldBuilder[curBatchLogCnt][fieldIdx]
-					builder.WriteString("'")
-					builder.WriteString(field)
-					builder.WriteString("'")
+					fieldBuilder.WriteString("'")
+					fieldBuilder.WriteString(field)
+					fieldBuilder.WriteString("'")
+				}
+				fieldIdx++
+				break
+			case 6:
+				if field == "-" {
+					fieldBuilders[fieldIdx].WriteString(psqlNull)
+				} else if field == "REST.GET.OBJECT" {
+					fieldBuilder := &fieldBuilders[fieldIdx]
+					fieldBuilder.WriteString("'")
+					fieldBuilder.WriteString(field)
+					fieldBuilder.WriteString("'")
+				} else {
+					return false
 				}
 				fieldIdx++
 				break
 			case 7:
 				if field == "-" {
-					fieldBuilder[curBatchLogCnt][fieldIdx].WriteString("NULL")
-					fieldBuilder[curBatchLogCnt][fieldIdx+1].WriteString("NULL")
+					fieldBuilders[fieldIdx].WriteString(psqlNull)
+					fieldBuilders[fieldIdx+1].WriteString(psqlNull)
 				} else {
-					builder := &fieldBuilder[curBatchLogCnt][fieldIdx]
-					builder.WriteString("'")
-					builder.WriteString(field)
-					builder.WriteString("'")
-					fieldBuilder[curBatchLogCnt][fieldIdx+1].WriteString(s3KeyToItemId[field])
+					fieldBuilder := &fieldBuilders[fieldIdx]
+					fieldBuilder.WriteString("'")
+					fieldBuilder.WriteString(field)
+					fieldBuilder.WriteString("'")
+					itemId := s3KeyToItemId[field]
+					if itemId == "" {
+						itemId = psqlNull
+					}
+					fieldBuilders[fieldIdx+1].WriteString(itemId)
 				}
 				fieldIdx += 2
 				break
 			case 2:
 				if field == "-" {
-					fieldBuilder[curBatchLogCnt][fieldIdx].WriteString("NULL")
+					fieldBuilders[fieldIdx].WriteString(psqlNull)
 				} else {
-					builder := &fieldBuilder[curBatchLogCnt][fieldIdx]
-					builder.WriteString("to_timestamp('" + field + "','DD/Mon/YYYY:HH24:MI:SS')")
-					builder.WriteString(field)
-					builder.WriteString("','DD/Mon/YYYY:HH24:MI:SS')")
+					fieldBuilder := &fieldBuilders[fieldIdx]
+					fieldBuilder.WriteString("to_timestamp('")
+					fieldBuilder.WriteString(field)
+					fieldBuilder.WriteString("','DD/Mon/YYYY:HH24:MI:SS')")
 				}
 				fieldIdx++
 				break
 			}
 			logFieldIdx++
+			return true
 		}
+
 		for charIdx, char := range fileContent {
 			if char == '[' || char == ']' || char == '"' { // Escape special strings with spaces and timestamps
 				inEscaped = !inEscaped
 				fieldIsEscaped = true
 			} else if char == '\n' { // Move onto another log instance
+				rowBuilders = append(rowBuilders, bytes.Buffer{})
 				addField(charIdx)
-				for fieldIdx < len(fieldBuilder) {
+				for fieldIdx < fieldCount-1 {
 					fieldIdx++
-					fieldBuilder[curBatchLogCnt][fieldIdx].WriteString("NULL")
+					fieldBuilders[fieldIdx].WriteString(psqlNull)
+				}
+				rowBuilder := &rowBuilders[batchLogIdx]
+				var row [fieldCount]string
+				for idx := range fieldBuilders {
+					row[idx] = getBufStr(fieldBuilders[idx].Bytes())
+				}
+				rowBuilder.WriteString("(")
+				rowBuilder.WriteString(strings.Join(row[:], ","))
+				rowBuilder.WriteString(")")
+				for idx := range fieldBuilders[:fieldIdx] {
+					fieldBuilders[idx].Reset()
 				}
 				fieldIdx = 0
 				logFieldIdx = 0
-				curBatchLogCnt++
-				if curBatchLogCnt == 5 {
-					var query [][19]string
-					for logIdx := 0; logIdx < 5; logIdx++ {
-						query = append(query, [19]string{})
-						for fieldIdx, builder := range fieldBuilder[curBatchLogCnt] {
-							query[logIdx][fieldIdx] = getBufStr(builder.Bytes())
-						}
-					}
-					//query := strings.Join("(" + strings.Join(fields[:], ",") + ")", ",")s
-					//for _, builder := range fieldBuilder {
-					//	builder.Reset()
-					//}
-					//fmt.Println(query)
-					//_, err = db.Exec(query)
-					//check(err)
-					//fmt.Println(query)
-					//curBatchLogCnt = 0
-					//queryBuilder.Reset()
-					//queryBuilder.WriteString(insertStatement)
+				batchLogIdx++
+				if batchLogIdx == batchSize {
+					batchInsert()
 				}
 			} else if char == ' ' && !inEscaped { // We are ending a field definition
-				addField(charIdx)
+				if !addField(charIdx) {
+					// Field we do not want in the database
+					for idx := range fieldBuilders[:fieldIdx] {
+						fieldBuilders[idx].Reset()
+					}
+					fieldIdx, logFieldIdx = 0, 0
+					break
+				}
 			}
 		}
+
+		bar.Increment()
+		bar.Update()
+	}
+	bar.Finish()
+	if batchLogIdx > 0 {
+		batchInsert()
 	}
 	err = db.Close()
 	check(err)
