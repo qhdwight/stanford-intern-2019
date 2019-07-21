@@ -22,7 +22,7 @@ const (
 	port       = 5432
 	user       = "admin"
 	dbName     = "s3loganalysis"
-	batchSize  = 5
+	batchSize  = 1000
 	fieldCount = 18
 	psqlNull   = "NULL"
 )
