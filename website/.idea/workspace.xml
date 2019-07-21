@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/extract.go" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/extract.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -72,13 +74,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/go/src/extract.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
-              <caret line="89" column="15" selection-start-line="89" selection-start-column="15" selection-end-line="89" selection-end-column="15" />
+            <state relative-caret-position="301">
+              <caret line="111" selection-start-line="111" selection-end-line="111" />
               <folding>
                 <element signature="e#14#133#0" expanded="true" />
-                <element signature="e#3054#5210#0" />
-                <element signature="e#5253#6449#0" />
+                <element signature="e#3357#5476#0" />
+                <element signature="e#5519#6710#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/go/src/github.com/karrick/godirwalk/readdir.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="621">
+              <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -475,7 +486,7 @@
       <window_info anchor="bottom" id="Messages" order="0" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49946466" weight="0.32850778" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.8592077" weight="0.23273942" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.8592077" visible="true" weight="0.23273942" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.40089086" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -529,8 +540,6 @@
     </ignored-roots>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/dashboard/migrations/0022_auto_20190717_2051.py" />
-    <entry file="file://$PROJECT_DIR$/logs.csv" />
     <entry file="file:///usr/local/go/src/os/file_unix.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
@@ -844,14 +853,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/go/src/github.com/karrick/godirwalk/readdir.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="621">
+          <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/go/src/github.com/karrick/godirwalk/dirent.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="51" column="17" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/go/src/extract.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="89" column="15" selection-start-line="89" selection-start-column="15" selection-end-line="89" selection-end-column="15" />
+        <state relative-caret-position="301">
+          <caret line="111" selection-start-line="111" selection-end-line="111" />
           <folding>
             <element signature="e#14#133#0" expanded="true" />
-            <element signature="e#3054#5210#0" />
-            <element signature="e#5253#6449#0" />
+            <element signature="e#3357#5476#0" />
+            <element signature="e#5519#6710#0" />
           </folding>
         </state>
       </provider>
