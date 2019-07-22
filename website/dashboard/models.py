@@ -69,7 +69,7 @@ class Log(models.Model):
     time = models.DateTimeField(null=True, db_index=True)
     ip_address = models.GenericIPAddressField(null=True, db_index=True)
     requester = models.TextField(max_length=64, null=True, db_index=True)
-    request_id = models.TextField(max_length=16, unique=True)
+    request_id = models.TextField(max_length=16, db_index=True)
     operation = models.TextField(max_length=16, null=True)
     s3_key = models.TextField(max_length=64, null=True, db_index=True)
     request_uri = models.TextField(max_length=1024, null=True)
