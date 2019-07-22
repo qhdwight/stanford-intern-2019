@@ -111,7 +111,6 @@ func main() {
 	err = s3c.ListObjectsV2Pages(
 		&s3.ListObjectsV2Input{
 			Bucket:  bucket,
-			Prefix:  aws.String("2019-07-21"),
 			MaxKeys: aws.Int64(1000),
 		},
 		func(page *s3.ListObjectsV2Output, lastPage bool) bool {
