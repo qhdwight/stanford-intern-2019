@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/extract.go" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/extract.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/item_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/item_dashboard.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -71,53 +74,28 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/go/src/extract.go">
+        <entry file="file://$PROJECT_DIR$/templates/item_dashboard.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="113" column="37" lean-forward="true" selection-start-line="113" selection-start-column="37" selection-end-line="113" selection-end-column="37" />
-              <folding>
-                <element signature="e#14#133#0" expanded="true" />
-                <element signature="e#3120#3723#0" />
-                <element signature="e#4346#6465#0" />
-              </folding>
+            <state relative-caret-position="286">
+              <caret line="80" column="89" lean-forward="true" selection-start-line="80" selection-start-column="89" selection-end-line="80" selection-end-column="89" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-              <filtering>
-                <filter text="" />
-              </filtering>
+        <entry file="file://$PROJECT_DIR$/.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="52">
+              <caret line="2" column="26" lean-forward="true" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard/models.py">
+        <entry file="file://$PROJECT_DIR$/templates/ajax_item_table.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1146">
-              <caret line="73" column="69" selection-start-line="73" selection-start-column="69" selection-end-line="73" selection-end-column="69" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file:///usr/local/go/src/io/ioutil/ioutil.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="78" column="58" selection-start-line="78" selection-start-column="58" selection-end-line="78" selection-end-column="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file:///usr/local/go/src/os/types.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4">
-              <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+            <state relative-caret-position="78">
+              <caret line="3" selection-start-line="3" selection-end-line="10" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -134,7 +112,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>strings.Builder`</find>
       <find>AIDAIVGIVCYNZ5WFKG6CK</find>
       <find>S3Console/0.4, aws-internal/3 aws-sdk-java/1.11.488 Linux/4.9.124-0.1.ac.198.71.329.metal1.x86_64 OpenJDK_64-Bit_Server_VM/25.192-b12 java/1.8.0_192</find>
       <find>06A187DFB4A32EE1</find>
@@ -164,6 +141,7 @@
       <find>bar.</find>
       <find>break</find>
       <find>db.Exec</find>
+      <find>ajax_item_table.html</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -234,15 +212,15 @@
         <option value="$PROJECT_DIR$/templates/specific_dashboard.html" />
         <option value="$PROJECT_DIR$/templates/ip_address_dashboard.html" />
         <option value="$PROJECT_DIR$/dashboard/query.py" />
-        <option value="$PROJECT_DIR$/dashboard/views.py" />
         <option value="$PROJECT_DIR$/activity_viewer/jinja_settings.py" />
-        <option value="$PROJECT_DIR$/templates/item_dashboard.html" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/update_times.py" />
         <option value="$PROJECT_DIR$/activity_viewer/settings.py" />
         <option value="$PROJECT_DIR$/dashboard/management/commands/sync.py" />
-        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/dashboard/models.py" />
         <option value="$PROJECT_DIR$/go/src/extract.go" />
+        <option value="$PROJECT_DIR$/dashboard/views.py" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/templates/item_dashboard.html" />
       </list>
     </option>
   </component>
@@ -258,6 +236,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -278,7 +257,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -326,7 +304,15 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build extract.go">
+  <component name="RunManager" selected="Django server.Analyze">
+    <configuration name="go build extract.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="website" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/go/src/extract.go" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="website" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -347,14 +333,6 @@
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="go build extract.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="website" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/go/src/extract.go" />
-      <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
     <configuration name="Analyze" type="Python.DjangoServer" factoryName="Django server">
@@ -451,13 +429,11 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Go Build.go build extract.go" />
+      <item itemvalue="Django server.Analyze" />
+      <item itemvalue="Django server.Extract" />
+      <item itemvalue="Django server.Run" />
+      <item itemvalue="Django server.Update After Logs" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Go Build.go build extract.go" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -493,11 +469,12 @@
       <workItem from="1563419198277" duration="6431000" />
       <workItem from="1563468887214" duration="13924000" />
       <workItem from="1563568755500" duration="6769000" />
+      <workItem from="1563901037232" duration="952000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="337225000" />
+    <option name="totallyTimeSpent" value="338177000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -512,7 +489,7 @@
     <frame x="0" y="28" width="1920" height="1052" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15631692" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15845825" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="0" />
@@ -536,8 +513,8 @@
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
       <window_info anchor="right" id="SciView" order="4" weight="0.32922912" />
-      <window_info anchor="right" id="Database" order="5" sideWeight="0.4988864" visible="true" weight="0.21734476" />
-      <window_info anchor="right" x="0" y="0" width="430" height="852" id="Documentation" order="6" sideWeight="0.5011136" side_tool="true" visible="true" weight="0.21734476" />
+      <window_info anchor="right" id="Database" order="5" sideWeight="0.49777284" visible="true" weight="0.21734476" />
+      <window_info anchor="right" x="0" y="0" width="430" height="852" id="Documentation" order="6" sideWeight="0.5022272" side_tool="true" visible="true" weight="0.21734476" />
     </layout>
     <layout-to-restore>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3078635" />
@@ -574,58 +551,10 @@
     </ignored-roots>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/s3_logs/2019-02-09-00-16-58-332F5F0529AE81E9">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file:///usr/local/go/src/strings/strings.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
           <caret line="691" column="5" selection-start-line="691" selection-start-column="5" selection-end-line="691" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
         </state>
       </provider>
     </entry>
@@ -636,69 +565,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/go/src/github.com/gosuri/uiprogress/bar.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="143" column="14" selection-start-line="143" selection-start-column="14" selection-end-line="143" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/go/src/github.com/gosuri/uiprogress/bar.go" />
     <entry file="file://$PROJECT_DIR$/go/src/github.com/cheggaaa/pb/pb.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="194">
           <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="5" column="38" selection-start-line="5" selection-end-line="5" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -891,74 +762,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/meme.txt">
+    <entry file="file://$PROJECT_DIR$/meme.txt" />
+    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
+          <filtering>
+            <filter text="" />
+          </filtering>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/go/src/github.com/aws/aws-sdk-go/aws/convert_types.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="1924" column="508" lean-forward="true" selection-start-line="1924" selection-start-column="508" selection-end-line="1924" selection-end-column="508" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://66a99356-e598-41b9-97c6-dfd0b8e145f6/database/s3loganalysis/schema/public/table/dashboard_log">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4625ce6b-e739-4452-99d8-f1cfb05eddf7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1146">
-          <caret line="73" column="69" selection-start-line="73" selection-start-column="69" selection-end-line="73" selection-end-column="69" />
+        <state relative-caret-position="284">
+          <caret line="182" column="5" selection-start-line="182" selection-start-column="5" selection-end-line="182" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/go/src/extract.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="113" column="37" lean-forward="true" selection-start-line="113" selection-start-column="37" selection-end-line="113" selection-end-column="37" />
+        <state relative-caret-position="72">
+          <caret line="3" column="11" lean-forward="true" selection-start-line="3" selection-start-column="11" selection-end-line="3" selection-end-column="11" />
           <folding>
-            <element signature="e#14#133#0" expanded="true" />
-            <element signature="e#3120#3723#0" />
+            <element signature="e#2994#3019#0" />
             <element signature="e#4346#6465#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="47" column="56" selection-start-line="47" selection-start-column="56" selection-end-line="47" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="168" column="75" selection-start-line="168" selection-start-column="75" selection-end-line="168" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ajax_item_table.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="3" selection-start-line="3" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="2" column="26" lean-forward="true" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/item_dashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="80" column="89" lean-forward="true" selection-start-line="80" selection-start-column="89" selection-end-line="80" selection-end-column="89" />
         </state>
       </provider>
     </entry>

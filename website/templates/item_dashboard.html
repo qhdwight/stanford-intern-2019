@@ -55,6 +55,12 @@
             <h2>Biggest Downloaders</h2>
         </div>
         <table class='table table-striped mt-4'>
+            <tr>
+                <th scope='col'>#</th>
+                <th scope='col'>IP Address</th>
+                <th scope='col'>Requester</th>
+                <th scope='col'>Total Downloads</th>
+            </tr>
             {{ render_user_rows(ip_breakdown) }}
         </table>
     </div>
@@ -68,7 +74,7 @@
                     data: {
                         labels: ['IP Address', 'Requester'],
                         datasets: [
-                            {% for (requester, requester_count), (ip_address, _, ip_address_count) in zip_longest(request_breakdown, ip_breakdown, fillvalue=(None, None)) %}
+                            {% for (requester, requester_count), (ip_address, _, ip_address_count) in zip_longest(request_breakdown, ip_breakdown, fillvalue=Noneok) %}
                                 {
                                     label: [
                                         '{{ ip_address|safe if ip_data else 'N/A' }}',

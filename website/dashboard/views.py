@@ -166,7 +166,7 @@ def render_table(request, data, name, template_name, page, start_time=None, end_
 @time_this
 def render_item_table(request, data, page, start_time=None, end_time=None, page_size=DEFAULT_PAGE_SIZE, **kwargs):
     return render_table(request,
-                        data.values_list('item__s3_key', 'item__experiment__name', 'item__experiment__assay_title',
+                        data.values_list('item__name', 'item__experiment__name', 'item__experiment__assay_title',
                                          'count'),
                         'Most Uniquely Downloaded', 'ajax_item_table.html', page, start_time, end_time, page_size, **kwargs)
 
