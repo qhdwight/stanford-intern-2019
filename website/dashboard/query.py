@@ -55,7 +55,7 @@ def take_page(query_set, page_size, page):
 def get_most_active_users_limited(amount, start_time=START_TIME, end_time=END_TIME, page=0, **kwargs):
     return take_page(filter_from_time_range(start_time, end_time)
                      .filter(**kwargs)
-                     .exclude(requester__contains='encoded-instance')
+                     # .exclude(requester__contains='encoded-instance')
                      .values_list('ip_address')
                      .annotate(count=Count('ip_address'))
                      .order_by('-count'), amount, page)
@@ -82,17 +82,18 @@ def get_query_count_intervals(start_time=START_TIME, end_time=END_TIME, data_set
 @time_this
 def get_general_stats(start_time=START_TIME, end_time=END_TIME, **kwargs):
     log_range = (filter_from_time_range(start_time, end_time)
-                 .exclude(requester__contains='encoded-instance')
+                 # .exclude(requester__contains='encoded-instance')
                  .filter(**kwargs))
     # Total requests, unique requests, unique ips, unique files
-    key_and_ip = log_range.values_list('s3_key', 'ip_address')
-    distinct_keys = key_and_ip.values_list('s3_key').distinct()
+    # key_and_ip = log_range.values_list('s3_key', 'ip_address')
+    # distinct_keys = key_and_ip.values_list('s3_key').distinct()
     return (log_range.count(),
-            key_and_ip.distinct().count(),
-            key_and_ip.values_list('ip_address').distinct().count(),
-            distinct_keys.count(),
-            log_range.values_list('requester').distinct().count(),
-            int(distinct_keys.aggregate(average_size=Avg('object_size')).get('average_size', 0.0)))
+            0, 0, 0, 0, 0)
+            # key_and_ip.distinct().count(),
+            # key_and_ip.values_list('ip_address').distinct().count(),
+            # distinct_keys.count(),
+            # log_range.values_list('requester').distinct().count(),
+            # int(distinct_keys.aggregate(average_size=Avg('object_size')).get('average_size', 0.0)))
 
 
 def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
