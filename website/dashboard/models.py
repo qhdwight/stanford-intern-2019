@@ -73,7 +73,7 @@ class Log(models.Model):
     operation = models.TextField(max_length=16, null=True)
     s3_key = models.TextField(max_length=64, null=True, db_index=True)
     request_uri = models.TextField(max_length=1024, null=True)
-    http_status = models.PositiveSmallIntegerField(null=True)
+    http_status = models.PositiveSmallIntegerField(null=True, db_index=True)
     error_code = models.TextField(max_length=16, null=True, db_index=True)
     bytes_sent = models.BigIntegerField(null=True)
     object_size = models.BigIntegerField(null=True, db_index=True)
