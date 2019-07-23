@@ -16,7 +16,8 @@ CACHE_TIME = config('CACHE_TIME', default=3600, cast=int)
 ALLOWED_HOSTS = [
     'localhost',
     # Jupyter hub server private IP on virtual network
-    '171.67.205.36'
+    '171.67.205.36',
+    config("AWS_IP"),
 ]
 
 INSTALLED_APPS = [
