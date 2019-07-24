@@ -39,3 +39,5 @@ Run `python manage.py update_times` to allow for a time graph on the dashboard h
 To run the Go script by itself, the `GOPATH` environment variable must be set to the `go/` folder. To run, do `go run go/src/extract.go` command in terminal. This allows the current working directory to be set properly (run it from the website directory). If it need dependencies, run `go get ./...` in the `go/` directory. It uses packages from GitHub that must be downloaded before use.
 
 To bind functions in HTML, use `activity_viewer/jinja_settings.py` to map them.
+
+Try to use Django ORM to filter data before putting into `pandas` as there is a memory concern. It also takes a long time to load more than a million rows into a dataframe. In addition to this, use `values_list` instead of `values` and define columns manually for dataframe as it saves memory. The ORM is faster at filter operations but slower with distinct and grouping. 
