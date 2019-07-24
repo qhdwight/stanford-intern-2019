@@ -20,13 +20,14 @@ import (
 )
 
 const (
-	host       = "localhost"
-	port       = 5432
-	user       = "admin"
-	dbName     = "s3loganalysis"
-	batchSize  = 1000
-	fieldCount = 18
-	psqlNull   = "NULL"
+	host              = "localhost"
+	port              = 5432
+	user              = "admin"
+	dbName            = "s3loganalysis"
+	batchSize         = 1000
+	fieldCount        = 18
+	psqlNull          = "NULL"
+	lasts3KeyFileName = "lastKey.txt"
 )
 
 func check(err error) {
@@ -71,7 +72,7 @@ func main() {
 	check(err)
 
 	// Make a dictionary to map s3 keys to item ids to prevent excessive database queries
-	rows, err := db.Query("SELECT dashboard_item.s3_key, dashboard_item.id FROM dashboard_item")
+	rows, err := db.Query("SELECT s3_key, id FROM dashboard_item")
 	check(err)
 	s3KeyToItemId := map[string]string{}
 	for rows.Next() {
@@ -107,12 +108,16 @@ func main() {
 		batchLogIdx = 0
 		runtime.GC()
 	}
+	lastKeyBytes, err := ioutil.ReadFile(lasts3KeyFileName)
+	check(err)
+	lastKey := getBufStr(lastKeyBytes)
+	fmt.Println("Using", lastKey, "as last S3 key to start after")
 
 	err = s3c.ListObjectsV2Pages(
 		&s3.ListObjectsV2Input{
-			Bucket:  bucket,
-			Prefix: aws.String("2019-07-23"),
-			MaxKeys: aws.Int64(1000),
+			Bucket:     bucket,
+			StartAfter: aws.String(lastKey),
+			MaxKeys:    aws.Int64(1000),
 		},
 		func(page *s3.ListObjectsV2Output, lastPage bool) bool {
 			worker := make(chan bool, 20)
@@ -146,6 +151,7 @@ func main() {
 
 					err = resp.Body.Close()
 					check(err)
+
 					worker <- true
 					wg.Done()
 				}(objIdx, page.Contents[objIdx])
@@ -289,10 +295,18 @@ func main() {
 					fieldIdx, logFieldIdx = 0, 0
 					skipThisLine = false
 				}
- 			}
+			}
 
 			logBuf.Reset()
 			fmt.Println(len(page.Contents), "Files Processed in", time.Since(now))
+
+			if lastPage {
+				lastKey := *page.Contents[len(page.Contents)-1].Key
+				err = ioutil.WriteFile(lasts3KeyFileName, []byte(lastKey), 0777)
+				check(err)
+				fmt.Println("Last key scanned:", lastKey)
+			}
+
 			return true
 		},
 	)
