@@ -38,15 +38,31 @@ urlpatterns = []
 
 
 def add_urls(path_names, view, name):
+    """
+    Register URL patterns with the same view and name in Django.
+    :param path_names: Paths with different wanted parameters.
+    :param view: View to render for all. Must have matching arguments.
+    :param name: Name of the view for template access.
+    """
     urlpatterns.extend([path(path_name, view, name=name) for path_name in path_names])
 
 
 def get_ranged(base_path):
+    """
+    Add a ranged ability to the URL
+    :param base_path: URL to build from, must include <range>
+    :return: URLs that allowed ranged access. Still need to be added, as they are still just strings.
+    """
     return [base_path.replace('<range>/', ''),
             base_path.replace('<range>', '<datetime:start_time>/to/<datetime:end_time>')]
 
 
 def get_table(base_path):
+    """
+    Add a pagination ability to a table in addition to a default page.
+    :param base_path: URL to build from, must include <page>
+    :return: URLs that allow pagination. Still need to be added, as they are still just strings.
+    """
     return [base_path.replace('<page>', 'page/<int:page>'), base_path.replace('<page>/', '')]
 
 

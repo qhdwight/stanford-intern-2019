@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/dashboard/bad_request_analysis.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/lab_and_experiment_analysis.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/analysis.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/experiment_plot.png" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/experiment_plot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/bad_request_analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/bad_request_analysis.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/lab_and_experiment_analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/lab_and_experiment_analysis.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/management/commands/sync.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/management/commands/sync.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/query.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -281,17 +283,7 @@
     <option name="allServicesViewState">
       <serviceView>
         <treeState>
-          <expand>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@5ec80e6c" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-            </path>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@5ec80e6c" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@26023bc2" type="9fbbdea:ServiceModel$ServiceNode" />
-            </path>
-          </expand>
+          <expand />
           <select />
         </treeState>
       </serviceView>
@@ -334,7 +326,7 @@
       <workItem from="1563901037232" duration="9268000" />
       <workItem from="1563988372002" duration="32000" />
       <workItem from="1563988423363" duration="102000" />
-      <workItem from="1563988543203" duration="4686000" />
+      <workItem from="1563988543203" duration="6570000" />
     </task>
     <servers />
   </component>

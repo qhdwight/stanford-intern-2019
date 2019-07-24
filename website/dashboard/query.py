@@ -14,6 +14,7 @@ INTERVAL_DELTA = timedelta(4)
 
 ENCODE_URL_BASE = 'https://www.encodeproject.org'
 
+# Only valid file downloads
 GET_REQUESTS = Log.objects.filter(http_status=200)
 GET_JSON_HEADERS = {'accept': 'application/json'}
 
@@ -96,6 +97,10 @@ def get_general_stats(start_time=START_TIME, end_time=END_TIME, **kwargs):
 
 
 def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
+    """
+    Given an item, find who downloaded it the most totally. This is not unique accesses.
+    :return: Tuple containing requester access data and then ip address access data
+    """
     keys = (filter_from_time_range(start_time, end_time)
             .filter(s3_key=item.s3_key))
     return (keys.values_list('requester')
@@ -109,11 +114,7 @@ def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):
 
 def get_stats_for_source(start_time=START_TIME, end_time=END_TIME, **kwargs):
     """
-
-    :param start_time:
-    :param end_time:
-    :param kwargs:
-    :return:
+    :return: Tuple containing the number of file downloads, and the number of unique downloads
     """
     reqs = (filter_from_time_range(start_time, end_time)
             .filter(**kwargs))
@@ -145,6 +146,11 @@ def get_items_for_source_limited(amount, start_time=START_TIME, end_time=END_TIM
 
 
 def get_or_create_ip_info(ip_address):
+    # TODO load all ip information at insertion time?
+    """
+    Lazily get IP information for a given address. This contacts an IP API to get specific data.
+    :return: Retrieved or created ip information for this given address
+    """
     if IpAddress.objects.filter(ip_address=ip_address):
         return IpAddress.objects.get(ip_address=ip_address)
     else:
@@ -164,6 +170,9 @@ DATES_DF = None
 
 
 def get_relative_access():
+    """
+    Bernstein experiment. Run the analyze command first.
+    """
     global DATES_DF
     if not DATES_DF:
         DATES_DF = pd.read_csv('access_creation_dates.csv', parse_dates=['created', 'accessed'],

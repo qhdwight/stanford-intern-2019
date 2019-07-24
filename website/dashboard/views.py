@@ -14,6 +14,10 @@ GRAPH_SIZE = 6
 
 
 def add_range_context(context, time_range_form, start_time, end_time):
+    """
+    Add what time range of the logs we are searching for to the context
+    If it is the default all times, make sure the start and end time in the context is None
+    """
     is_default = start_time is START_TIME and end_time is END_TIME
     context.update({
         'is_default': is_default,
@@ -40,6 +44,8 @@ def add_table_context(context, page, page_size):
 
 def add_time_graph_context(context, time_info):
     context.update({
+        # ISO format is best understandable by Chart.js
+        # JSON allows the javascript to understand the values.
         'time_info_times': json.dumps([reading.time.isoformat() for reading in time_info]) if time_info else None,
         'time_info_counts': json.dumps([reading.count for reading in time_info]) if time_info else None
     })
@@ -48,6 +54,7 @@ def add_time_graph_context(context, time_info):
 
 @time_this
 def add_most_queried_graph_context(context, graph_most_queried):
+    # Map all values at the same index into a common array. Done for each index in the original tuple
     item_names, counts = tuple(zip(*graph_most_queried.values_list('item__name', 'count')))
     context.update({
         'most_queried_labels': json.dumps(item_names) if graph_most_queried else None,
@@ -57,6 +64,7 @@ def add_most_queried_graph_context(context, graph_most_queried):
 
 
 def add_statistics_context(context, stats):
+    # TODO make ajax?
     total_requests, unique_requests, unique_ips, unique_files, unique_requesters, average_file_size = stats
     context.update({
         'total_request_count': total_requests,
@@ -107,7 +115,6 @@ def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME)
         return redirect_from_form(request, time_range_form, item_name=item_name)
     item = query.get_item(item_name)
     request_breakdown, ip_breakdown = query.get_requesters_for_item(item, start_time, end_time)
-    print(ip_breakdown.values_list('requester', 'ip_address', 'count'))
     return render(request, 'item_dashboard.html', add_range_context({
         'item': item,
         'request_breakdown': request_breakdown.values_list('requester', 'count'),
@@ -116,6 +123,10 @@ def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME)
 
 
 def add_source_context(context, unique_downloads, total_downloads, **kwargs):
+    """
+    Add context to a given 'source' page, which is basically rendering a dashboard showing the files that a given
+    IP or AWS requester downloaded most often
+    """
     context.update({
         'unique_downloads': unique_downloads,
         'total_downloads': total_downloads,
@@ -213,7 +224,9 @@ def bernstein_experiment(request, start_time=START_TIME, end_time=END_TIME):
     time_info = query.get_query_count_intervals(start_time, end_time, 'bernstein')
     stats = query.get_general_stats(start_time, end_time, **BERNSTEIN_EXPERIMENT_FILTER_KWARGS)
     context = {
+        # Strange way to get labels but trust me this is right
         'relative_date_labels': relative_access.axes[0].tolist(),
+        # Records orientation provides just values
         'relative_date_data': relative_access.to_json(orient='records')
     }
     add_statistics_context(context, stats)

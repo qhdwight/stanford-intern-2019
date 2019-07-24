@@ -64,20 +64,29 @@ class Item(models.Model):
 
 
 class Log(models.Model):
+    """
+    A raw log line. There can be multiple logs per file, so this represents those individual ones.
+    As of now, we only take logs that have a GET request, not including head.
+    """
     REQUESTER_DEFAULT = 0
     REQUESTER_ENCODED_INSTANCE = 1
 
+    # Can be null since some requests have an invalid s3 key and thus no actual backing item
     item = models.ForeignKey(Item, null=True, on_delete=models.PROTECT)
     bucket = models.TextField(max_length=16, null=True)
+    # Time at which this log was created
     time = models.DateTimeField(null=True, db_index=True)
     ip_address = models.GenericIPAddressField(null=True, db_index=True)
     requester = models.TextField(max_length=64, null=True, db_index=True)
+    # Easily have the ability to filter out encoded instances without having to use a string contains search
     requester_type = models.PositiveSmallIntegerField(db_index=True)
     request_id = models.TextField(max_length=16, db_index=True)
     operation = models.TextField(max_length=16, null=True)
     s3_key = models.TextField(max_length=64, null=True, db_index=True)
     request_uri = models.TextField(max_length=1024, null=True)
+    # 200 represents a full download, 206 is partial and most likely from a browser/visualizer
     http_status = models.PositiveSmallIntegerField(null=True, db_index=True)
+    # If non-None, provides information about why the request was denied
     error_code = models.TextField(max_length=16, null=True, db_index=True)
     bytes_sent = models.BigIntegerField(null=True)
     object_size = models.BigIntegerField(null=True, db_index=True)
@@ -86,6 +95,9 @@ class Log(models.Model):
     referrer = models.TextField(null=True)
     user_agent = models.TextField(max_length=128, null=True)
     version_id = models.TextField(max_length=128, null=True)
+
+    # Fields that are in log but we do not care about past here
+
     # host_id = models.TextField(max_length=1024)
     # UNAUTHENTICATED = 0
     # SIG_V2 = 1

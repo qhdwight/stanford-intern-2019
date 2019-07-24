@@ -1,11 +1,7 @@
 import json
-import multiprocessing as mp
 import os
 from datetime import datetime
 
-import gc
-import numpy as np
-import pandas as pd
 import requests
 from django.core.management.base import BaseCommand
 from s3logparse import s3logparse
@@ -193,11 +189,6 @@ class Command(BaseCommand):
                 'date_uploaded': date_uploaded
             }, s3_key=s3_key)
 
-    def on_processed_chunk(self, db_logs):
-        Log.objects.bulk_create(db_logs)
-        # self.progress_bar.update()
-        gc.collect()
-
     def handle(self, *args, **options):
         if options['skip']:
             print('Skipping synchronization of items and experiments...')
@@ -212,51 +203,4 @@ class Command(BaseCommand):
             print('Adding items and experiments...')
             self.add_items_and_experiments(item_results, experiment_result_dict)
 
-        print('Updating log files from locals...')
-
-        # Looping through each actual log file on disk. They correspond to the time at which they were generated.
-        all_file_names = os.listdir(LOGS_DIR)
-        start = datetime.now()
-        db_logs = []
-        s3_key_to_id = {}
-        for key, pk in Item.objects.values_list('s3_key', 'pk'):
-            s3_key_to_id[key] = pk
-        for log_file_name in tqdm(all_file_names):
-            with open(f'{LOGS_DIR}/{log_file_name}', 'r') as log_file:
-                for log in s3logparse.parse_log_lines(log_file.readlines()):
-                    # Skip if we have already pulled this log file. Note this cancels out of the entire file.
-                    # Request IDs are unique.
-                    if log.operation == 'REST.COPY.PART':
-                        break
-                    if log.operation != 'REST.GET.OBJECT':
-                        continue
-                    # Converting S3 log parse object to django object.
-                    # TODO there are two conversions when one could do.
-                    #  Maybe the log parse library should be ditched.
-                    db_log = get_db_log_from_log_line(log_file_name, log)
-                    db_log.item_id = s3_key_to_id.get(db_log.s3_key)
-                    # db_log.item_id = Item.objects.values_list('pk', flat=True).filter(s3_key=db_log.s3_key).first()
-                    db_logs.append(db_log)
-        print(Log.objects.bulk_create(db_logs, batch_size=1000).query)
-
-        # all_file_names = os.listdir(LOGS_DIR)
-        # file_count = len(all_file_names)
-        # chunk_count = int(max(file_count / 5000, 1))
-        # self.progress_bar = tqdm(total=chunk_count, unit='5000 file', desc='5000 of Files Processed')
-        # start = datetime.now()
-        # s3_key_to_id = {}
-        # for key, pk in Item.objects.values_list('s3_key', 'pk'):
-        #     s3_key_to_id[key] = pk
-        # log_file_name_chunks = np.array_split(all_file_names, chunk_count)
-        # pool = mp.Pool(processes=mp.cpu_count())
-        # for log_file_name_chunk in log_file_name_chunks:
-        #     pool.apply_async(
-        #         process_chunk,
-        #         args=(log_file_name_chunk, s3_key_to_id),
-        #         callback=self.on_processed_chunk
-        #     )
-        # pool.close()
-        # pool.join()
-        # self.progress_bar.close()
-
-        print(f'Done in {datetime.now() - start}!')
+        # print(f'Done in {datetime.now() - start}!')
