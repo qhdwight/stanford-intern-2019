@@ -64,11 +64,15 @@ class Item(models.Model):
 
 
 class Log(models.Model):
+    REQUESTER_DEFAULT = 0
+    REQUESTER_ENCODED_INSTANCE = 1
+
     item = models.ForeignKey(Item, null=True, on_delete=models.PROTECT)
     bucket = models.TextField(max_length=16, null=True)
     time = models.DateTimeField(null=True, db_index=True)
     ip_address = models.GenericIPAddressField(null=True, db_index=True)
     requester = models.TextField(max_length=64, null=True, db_index=True)
+    requester_type = models.PositiveSmallIntegerField(db_index=True)
     request_id = models.TextField(max_length=16, db_index=True)
     operation = models.TextField(max_length=16, null=True)
     s3_key = models.TextField(max_length=64, null=True, db_index=True)

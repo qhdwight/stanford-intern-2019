@@ -2,6 +2,9 @@
 {% set page_name = 'dashboard' %}
 {% from 'user_table.html' import render_user_rows with context %}
 {% block title %}Item Dashboard{% endblock %}
+{% block dashboard_title %}
+    {{ item.name }}
+{% endblock %}
 {% block dashboard_content %}
     <div class='row'>
         <div class='col'>
@@ -74,15 +77,15 @@
                     data: {
                         labels: ['IP Address', 'Requester'],
                         datasets: [
-                            {% for (requester, requester_count), (ip_address, _, ip_address_count) in zip_longest(request_breakdown, ip_breakdown, fillvalue=Noneok) %}
+                            {% for (requester, requester_count), (_, ip_address, ip_address_count) in zip_longest(request_breakdown, ip_breakdown, fillvalue=(None, None)) %}
                                 {
                                     label: [
-                                        '{{ ip_address|safe if ip_data else 'N/A' }}',
-                                        '{{ requester|safe if request_data else 'N/A' }}'
+                                        '{{ ip_address|safe if ip_address else 'N/A' }}',
+                                        '{{ requester|safe if requester else 'N/A' }}'
                                     ],
                                     data: [
-                                        '{{ ip_address_count|safe if ip_data else 0 }}',
-                                        '{{ requester_count|safe if request_data else 0 }}'
+                                        '{{ ip_address_count|safe if ip_address_count else 0 }}',
+                                        '{{ requester_count|safe if requester_count else 0 }}'
                                     ],
                                     backgroundColor: getChartBackgroundColor({{ loop.index0 }}),
                                     borderColor: getChartLineColor({{ loop.index0 }}),

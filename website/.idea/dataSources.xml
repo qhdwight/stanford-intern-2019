@@ -7,5 +7,13 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/s3loganalysis</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="Django default" uuid="88ff05cc-2718-497c-8a6e-316cf89efdfc">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/activity_viewer/settings.py</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1:5432/s3loganalysis</jdbc-url>
+    </data-source>
   </component>
 </project>

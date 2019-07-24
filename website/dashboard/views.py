@@ -107,6 +107,7 @@ def item_dashboard(request, item_name, start_time=START_TIME, end_time=END_TIME)
         return redirect_from_form(request, time_range_form, item_name=item_name)
     item = query.get_item(item_name)
     request_breakdown, ip_breakdown = query.get_requesters_for_item(item, start_time, end_time)
+    print(ip_breakdown.values_list('requester', 'ip_address', 'count'))
     return render(request, 'item_dashboard.html', add_range_context({
         'item': item,
         'request_breakdown': request_breakdown.values_list('requester', 'count'),
@@ -168,7 +169,8 @@ def render_item_table(request, data, page, start_time=None, end_time=None, page_
     return render_table(request,
                         data.values_list('item__name', 'item__experiment__name', 'item__experiment__assay_title',
                                          'count'),
-                        'Most Uniquely Downloaded', 'ajax_item_table.html', page, start_time, end_time, page_size, **kwargs)
+                        'Most Uniquely Downloaded', 'ajax_item_table.html', page, start_time, end_time, page_size,
+                        **kwargs)
 
 
 def render_user_table(request, data, page, start_time=None, end_time=None, page_size=DEFAULT_PAGE_SIZE, **kwargs):
