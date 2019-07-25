@@ -7,23 +7,11 @@
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
       <user-name>admin</user-name>
-      <schema-mapping>
-        <introspection-scope>
-          <node kind="database" qname="@">
-            <node kind="schema" qname="@" />
-          </node>
-        </introspection-scope>
-      </schema-mapping>
+      <introspection-schemas>@:@</introspection-schemas>
     </data-source>
     <data-source name="Django default" uuid="88ff05cc-2718-497c-8a6e-316cf89efdfc">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="POSTGRES" exact-version="0" />
-      <schema-mapping>
-        <introspection-scope>
-          <node kind="database" qname="@">
-            <node kind="schema" qname="@" />
-          </node>
-        </introspection-scope>
-      </schema-mapping>
+      <introspection-schemas>@:@</introspection-schemas>
     </data-source>
   </component>
 </project>
