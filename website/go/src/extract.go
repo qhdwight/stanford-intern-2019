@@ -27,7 +27,7 @@ const (
 	batchSize         = 1000
 	fieldCount        = 18
 	psqlNull          = "NULL"
-	lasts3KeyFileName = "lastKey.txt"
+	lasts3KeyFileName = "LastLogS3Key.txt"
 )
 
 func check(err error) {

@@ -32,7 +32,7 @@ Batching is important because all of the data is too small to fit into RAM. Do n
 
 Loading a small amount of data into `pandas` makes grouping or distinct selects faster since it is all in-memory. In general, distinct queries and counts are very slow in the Postgres database, as it requires a full database scan. This is the major reason why the homepage takes so long to load.
 
-When migrating, make sure to run the Postgres `VACUUM FULL;` command afterward. It takes a long time, so aim for overnight. The indices are rebuilt, dead rows are reclaimed, and the speed improvement is very noticeable. Running `VACUUM (ANALYZE, VERBOSE)` may help as well.
+When migrating, make sure to run the Postgres `VACUUM FULL;` command afterward. It takes a long time, so aim for overnight. The indices are rebuilt, dead rows are reclaimed, and the speed improvement is very noticeable. Running `VACUUM (ANALYZE, VERBOSE);` may help as well.
 
 Run `python manage.py update_times` to allow for a time graph on the dashboard homepage. `python manage.py` allows the Bernstein experiment page to be properly rendered. It is also a good example of how to analyze across Log table and Item/Experiment tables.
 
