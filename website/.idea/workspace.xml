@@ -2,20 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/LastLogS3Key.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/common_items_together.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/download_times.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/time_activity.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/user_analysis.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/66a99356-e598-41b9-97c6-dfd0b8e145f6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/66a99356-e598-41b9-97c6-dfd0b8e145f6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dashboard/most_downloaded_release_normalized.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/bad_request_analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/bad_request_analysis.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/experiment_plot.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/lab_and_experiment_analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/lab_and_experiment_analysis.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/lab_plot.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/go/src/extract.go" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/extract.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/common_items_together.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/common_items_together.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/download_times.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/download_times.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" afterDir="false" />
     </list>
@@ -152,7 +142,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="service.view.auto.scroll.to.source" value="true" />
-    <property name="settings.editor.selected.configurable" value="go.vgo" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.notebooks.jupyter.connections.configuration.JupyterServerConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -360,18 +350,9 @@
       <workItem from="1563988543203" duration="9420000" />
       <workItem from="1564009537176" duration="13534000" />
       <workItem from="1564418673290" duration="336000" />
-      <workItem from="1564419024869" duration="3120000" />
+      <workItem from="1564419024869" duration="13153000" />
     </task>
     <servers />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
