@@ -19,19 +19,13 @@
     {% endif %}
 {% endmacro %}
 
-{% macro render_stat(stat, display_name, format='regular') %}
+{% macro render_stat(stat_name, display_name, format='regular', start_time=None, end_time=None) %}
     <div class='col text-center m-4'>
-        {% if stat is not none %}
-            <p class='counter display-3' format='{{ format }}'
-               {% if is_default %}data-count='{{ stat }}'>
-                   0
-               {% else %}>
-                   {{ stat }}
-               {% endif %}
-            </p>
-        {% else %}
-            <p class='display-2'>None</p>
-        {% endif %}
+        {% set current_view = request.resolver_match.view_name %}
+        <p class='counter display-3' format='{{ format }}'
+           data-url='{{ url_range_aware(current_view + '_stats', start_time, end_time, kwargs={'stat_name': stat_name }) }}'>
+            <span class='spinner-grow' role='status' aria-hidden='true'></span>
+        </p>
         <h3 class='fade-in-header'>{{ display_name }}</h3>
     </div>
 {% endmacro %}

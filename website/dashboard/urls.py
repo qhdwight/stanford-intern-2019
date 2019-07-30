@@ -47,6 +47,13 @@ def add_urls(path_names, view, name):
     urlpatterns.extend([path(path_name, view, name=name) for path_name in path_names])
 
 
+def add_urls_with_stats(path_names, view, stats_view, name):
+    add_urls(path_names, view, name)
+    stats_name = f'{name}_stats'
+    stats_paths = [path(f'{base_path}<str:stat_name>/', stats_view, name=stats_name) for base_path in path_names]
+    urlpatterns.extend(stats_paths)
+
+
 def get_ranged(base_path):
     """
     Add a ranged ability to the URL
@@ -70,7 +77,7 @@ def get_table_ranged(base_path):
     return itertools.chain.from_iterable([get_ranged(table_url) for table_url in get_table(base_path)])
 
 
-add_urls(get_ranged('<range>/'), views.dashboard, name='dashboard')
+add_urls_with_stats(get_ranged('<range>/'), views.dashboard, views.dashboard_stats, name='dashboard')
 add_urls(get_ranged('requester/<requester:requester>/<range>/'), views.requester_dashboard, name='requester_dashboard')
 add_urls(get_ranged('ip_address/<str:ip_address>/<range>/'), views.ip_address_dashboard, name='ip_address_dashboard')
 add_urls(get_ranged('item/<str:item_name>/<range>/'), views.item_dashboard, name='item_dashboard')
@@ -82,7 +89,8 @@ add_urls(get_table_ranged('items_for_requester_data_table/<requester:requester>/
          views.items_for_requester_data_table, 'items_for_requester_data_table')
 add_urls(get_table_ranged('items_for_ip_address_data_table/<str:ip_address>/<range>/<page>/'),
          views.items_for_ip_address_data_table, 'items_for_ip_address_data_table')
-add_urls(get_ranged('experiment/bernstein/<range>/'), views.bernstein_experiment, 'bernstein_experiment')
+add_urls_with_stats(get_ranged('experiment/bernstein/<range>/'), views.bernstein_experiment,
+                    views.bernstein_experiment_stats, 'bernstein_experiment')
 add_urls(get_table_ranged('experiment/bernstein/most_queried_data_table/<range>/<page>/'),
          views.bernstein_experiment_most_queried_data_table, 'bernstein_experiment_most_queried_data_table')
 add_urls(get_table_ranged('experiment/bernstein/biggest_users_data_table/<range>/<page>/'),

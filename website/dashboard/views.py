@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 
@@ -63,20 +64,6 @@ def add_most_queried_graph_context(context, graph_most_queried):
     return context
 
 
-def add_statistics_context(context, stats):
-    # TODO make ajax?
-    total_requests, unique_requests, unique_ips, unique_files, unique_requesters, average_file_size = stats
-    context.update({
-        'total_request_count': total_requests,
-        'unique_request_count': unique_requests,
-        'unique_ips': unique_ips,
-        'unique_files': unique_files,
-        'unique_requesters': unique_requesters,
-        'average_file_size': average_file_size,
-    })
-    return context
-
-
 def get_time_range_form(request):
     if request.method == 'POST':
         time_range_form = SelectTimeRangeForm(request.POST)
@@ -99,9 +86,7 @@ def dashboard(request, start_time=START_TIME, end_time=END_TIME):
         return redirect_from_form(request, time_range_form)
     graph_most_queried = query.get_most_queried_items_limited(GRAPH_SIZE, start_time, end_time)
     time_info = query.get_query_count_intervals(start_time, end_time)
-    stats = query.get_general_stats(start_time, end_time)
     context = {}
-    add_statistics_context(context, stats)
     add_most_queried_graph_context(context, graph_most_queried)
     add_time_graph_context(context, time_info)
     add_range_context(context, time_range_form, start_time, end_time)
@@ -222,14 +207,12 @@ def bernstein_experiment(request, start_time=START_TIME, end_time=END_TIME):
     if time_range_form.is_valid():
         return redirect_from_form(request, time_range_form)
     time_info = query.get_query_count_intervals(start_time, end_time, 'bernstein')
-    stats = query.get_general_stats(start_time, end_time, **BERNSTEIN_EXPERIMENT_FILTER_KWARGS)
     context = {
         # Strange way to get labels but trust me this is right
         'relative_date_labels': relative_access.axes[0].tolist(),
         # Records orientation provides just values
         'relative_date_data': relative_access.to_json(orient='records')
     }
-    add_statistics_context(context, stats)
     add_time_graph_context(context, time_info)
     add_range_context(context, time_range_form, start_time, end_time)
     return render(request, 'bernstein_experiment.html', context)
@@ -247,3 +230,15 @@ def bernstein_experiment_biggest_users_data_table(request, start_time=START_TIME
     biggest_users = query.get_most_active_users_limited(DEFAULT_PAGE_SIZE, start_time, end_time, page,
                                                         **BERNSTEIN_EXPERIMENT_FILTER_KWARGS)
     return render_user_table(request, biggest_users, page, start_time, end_time)
+
+
+@cache_page(settings.CACHE_TIME)
+def dashboard_stats(request, stat_name, start_time=START_TIME, end_time=END_TIME):
+    stat = query.get_general_stat(stat_name, start_time, end_time)
+    return HttpResponse(str(stat))
+
+
+@cache_page(settings.CACHE_TIME)
+def bernstein_experiment_stats(request, stat_name, start_time=START_TIME, end_time=END_TIME):
+    stat = query.get_general_stat(stat_name, start_time, end_time, **BERNSTEIN_EXPERIMENT_FILTER_KWARGS)
+    return HttpResponse(str(stat))

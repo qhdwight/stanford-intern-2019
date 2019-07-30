@@ -2,10 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/66a99356-e598-41b9-97c6-dfd0b8e145f6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/66a99356-e598-41b9-97c6-dfd0b8e145f6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activity_viewer/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/activity_viewer/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/query.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/bernstein_experiment.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/bernstein_experiment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard_macros.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard_macros.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -133,8 +141,9 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="go.vendoring.notification.had.been.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/go" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -348,7 +357,8 @@
       <workItem from="1563988543203" duration="9420000" />
       <workItem from="1564009537176" duration="13534000" />
       <workItem from="1564418673290" duration="336000" />
-      <workItem from="1564419024869" duration="14123000" />
+      <workItem from="1564419024869" duration="19140000" />
+      <workItem from="1564516610728" duration="2765000" />
     </task>
     <servers />
   </component>
@@ -390,6 +400,7 @@
     </ignored-roots>
   </component>
   <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
     <proxy>direct</proxy>
   </component>
 </project>

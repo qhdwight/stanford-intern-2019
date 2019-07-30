@@ -15,23 +15,23 @@
       <Owner>admin</Owner>
       <IntrospectionStateNumber>459156</IntrospectionStateNumber>
       <Current>1</Current>
-      <Relations>sequence|table|16668|16670|1
-sequence|table|16678|16680|1
-sequence|table|16688|16690|1
-sequence|table|16607|16609|1
-sequence|table|16627|16629|1
-sequence|table|16556|16558|1
-sequence|table|16544|16546|1
-sequence|table|16577|16579|1
-sequence|table|16511|16513|1
+      <Relations>sequence|table|16407|16409|1
+sequence|table|16386|16388|1
+sequence|table|16397|16399|1
 sequence|table|16443|16445|1
-sequence|table|16451|16453|1
-sequence|table|16407|16409|1
 sequence|table|16415|16417|1
 sequence|table|16425|16427|1
 sequence|table|16433|16435|1
-sequence|table|16386|16388|1
-sequence|table|16397|16399|1
+sequence|table|16511|16513|1
+sequence|table|16451|16453|1
+sequence|table|16668|16670|1
+sequence|table|16678|16680|1
+sequence|table|16688|16690|1
+sequence|table|16556|16558|1
+sequence|table|16544|16546|1
+sequence|table|16577|16579|1
+sequence|table|16607|16609|1
+sequence|table|16627|16629|1
 </Relations>
       <Visible>1</Visible>
     </database>

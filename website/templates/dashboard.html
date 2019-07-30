@@ -3,35 +3,19 @@
 {% block title %}Dashboard{% endblock %}
 {% from 'render_form_macro.html' import render_form with context %}
 {% from 'dashboard_macros.html' import render_time_range, ajax_table, render_stat with context %}
-{% macro render_stat(stat, display_name, format='regular') %}
-    <div class='col text-center m-4'>
-        {% if stat is not none %}
-            <p class='counter display-3' format='{{ format }}'
-               {% if is_default %}data-count='{{ stat }}'>
-                   0
-               {% else %}>
-                   {{ stat }}
-               {% endif %}
-            </p>
-        {% else %}
-            <p class='display-2'>None</p>
-        {% endif %}
-        <h3 class='fade-in-header'>{{ display_name }}</h3>
-    </div>
-{% endmacro %}
 {% block content %}
     {% include 'navbar.html' %}
     <div class='container'>
         <div class='col m-4'>
             <div class='row'>
-                {{ render_stat(total_request_count, 'Total Downloads') }}
-                {{ render_stat(unique_request_count, 'Unique Downloads') }}
-                {{ render_stat(average_file_size, 'Average File Size', 'space') }}
+                {{ render_stat('total_downloads', 'Total Downloads') }}
+                {{ render_stat('unique_request_count', 'Unique Downloads') }}
+                {{ render_stat('average_file_size', 'Average File Size', 'space') }}
             </div>
             <div class='row'>
-                {{ render_stat(unique_ips, 'Unique IPs') }}
-                {{ render_stat(unique_files, 'Unique Files') }}
-                {{ render_stat(unique_requesters, 'Unique Requesters') }}
+                {{ render_stat('unique_ips', 'Unique IPs') }}
+                {{ render_stat('unique_files', 'Unique Files') }}
+                {{ render_stat('unique_requesters', 'Unique Requesters') }}
             </div>
             {{ render_time_range() }}
             <hr>

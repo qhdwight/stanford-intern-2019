@@ -15,7 +15,7 @@ INTERVAL_DELTA = timedelta(4)
 ENCODE_URL_BASE = 'https://www.encodeproject.org'
 
 # Only valid file downloads
-GET_REQUESTS = Log.objects.filter(http_status=200)
+GET_REQUESTS = Log.objects.filter(http_status=200).exclude(requester_type=1)
 GET_JSON_HEADERS = {'accept': 'application/json'}
 
 BERNSTEIN_EXPERIMENT_FILTER_KWARGS = {'item_name__in': AnalysisLabItem.objects.values_list('name', flat=True)}
@@ -81,19 +81,26 @@ def get_query_count_intervals(start_time=START_TIME, end_time=END_TIME, data_set
 
 
 @time_this
-def get_general_stats(start_time=START_TIME, end_time=END_TIME, **kwargs):
+def get_general_stat(stat_name, start_time=START_TIME, end_time=END_TIME, **kwargs):
     log_range = (filter_from_time_range(start_time, end_time)
                  .exclude(requester_type=Log.REQUESTER_ENCODED_INSTANCE)
                  .filter(**kwargs))
     # Total requests, unique requests, unique ips, unique files
     key_and_ip = log_range.values_list('s3_key', 'ip_address')
     distinct_keys = key_and_ip.values_list('s3_key').distinct()
-    return (log_range.count(),
-            key_and_ip.distinct().count(),
-            key_and_ip.values_list('ip_address').distinct().count(),
-            distinct_keys.count(),
-            log_range.values_list('requester').distinct().count(),
-            int(distinct_keys.aggregate(average_size=Avg('object_size')).get('average_size', 0.0)))
+    # QuerySets are lazy so above is basically just setup for building query
+    if stat_name == 'total_request_count':
+        return log_range.count()
+    elif stat_name == 'unique_request_count':
+        return key_and_ip.distinct().count()
+    elif stat_name == 'unique_ips':
+        return key_and_ip.values_list('ip_address').distinct().count()
+    elif stat_name == 'unique_files':
+        return distinct_keys.count()
+    elif stat_name == 'unique_requesters':
+        return log_range.values_list('requester').distinct().count()
+    elif stat_name == 'average_file_size':
+        return int(distinct_keys.aggregate(average_size=Avg('object_size')).get('average_size', 0.0))
 
 
 def get_requesters_for_item(item, start_time=START_TIME, end_time=END_TIME):

@@ -40,4 +40,6 @@ To run the Go script by itself, the `GOPATH` environment variable must be set to
 
 To bind functions in HTML, use `activity_viewer/jinja_settings.py` to map them.
 
-Try to use Django ORM to filter data before putting into `pandas` as there is a memory concern. It also takes a long time to load more than a million rows into a dataframe. In addition to this, use `values_list` instead of `values` and define columns manually for dataframe as it saves memory. The ORM is faster at filter operations but slower with distinct and grouping. 
+Try to use Django ORM to filter data before putting into `pandas` as there is a memory concern. It also takes a long time to load more than a million rows into a dataframe. In addition to this, use `values_list` instead of `values` and define columns manually for dataframe as it saves memory. The ORM is faster at filter operations but slower with distinct and grouping.
+
+I used (this)[https://pgtune.leopard.in.ua/#/] to try and tune the performance of the system. I used the alter system commands not `postgresql.conf`

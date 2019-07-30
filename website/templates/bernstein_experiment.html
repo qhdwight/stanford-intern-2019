@@ -13,14 +13,14 @@
                 </div>
             </div>
             <div class='row'>
-                {{ render_stat(total_request_count, 'Total Downloads') }}
-                {{ render_stat(unique_request_count, 'Unique Downloads') }}
-                {{ render_stat(average_file_size, 'Average File Size', 'space') }}
+                {{ render_stat('total_request_count', 'Total Downloads') }}
+                {{ render_stat('unique_request_count', 'Unique Downloads') }}
+                {{ render_stat('average_file_size', 'Average File Size', 'space') }}
             </div>
             <div class='row'>
-                {{ render_stat(unique_ips, 'Unique IPs') }}
-                {{ render_stat(unique_files, 'Unique Files') }}
-                {{ render_stat(unique_requesters, 'Unique AWS Requesters') }}
+                {{ render_stat('unique_ips', 'Unique IPs') }}
+                {{ render_stat('unique_files', 'Unique Files') }}
+                {{ render_stat('unique_requesters', 'Unique AWS Requesters') }}
             </div>
             {{ render_time_range() }}
             <hr>
