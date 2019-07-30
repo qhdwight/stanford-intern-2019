@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/dashboard/most_downloaded_release_normalized.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/common_items_together.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/common_items_together.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/download_times.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/download_times.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity_viewer/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/activity_viewer/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" afterDir="false" />
     </list>
@@ -350,7 +348,7 @@
       <workItem from="1563988543203" duration="9420000" />
       <workItem from="1564009537176" duration="13534000" />
       <workItem from="1564418673290" duration="336000" />
-      <workItem from="1564419024869" duration="13153000" />
+      <workItem from="1564419024869" duration="14123000" />
     </task>
     <servers />
   </component>
