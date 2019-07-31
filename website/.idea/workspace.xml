@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StartNotebook.sh" beforeDir="false" afterPath="$PROJECT_DIR$/StartNotebook.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" afterDir="false" />
     </list>
@@ -284,7 +283,7 @@
       <workItem from="1564009537176" duration="13534000" />
       <workItem from="1564418673290" duration="336000" />
       <workItem from="1564419024869" duration="19140000" />
-      <workItem from="1564516610728" duration="8938000" />
+      <workItem from="1564516610728" duration="8979000" />
     </task>
     <servers />
   </component>
