@@ -109,3 +109,5 @@ analyze_files.txt
 *.sqlite3
 
 staticfiles/
+
+LastLogS3Key.txt

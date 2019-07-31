@@ -25,9 +25,33 @@ const (
 	user              = "admin"
 	dbName            = "s3loganalysis"
 	batchSize         = 1000
-	fieldCount        = 18
+	fieldCount        = 19
 	psqlNull          = "NULL"
 	lasts3KeyFileName = "LastLogS3Key.txt"
+)
+
+type LogField int
+
+// Note this should be its own block to make it start at zero properly
+const (
+	_ LogField = iota
+	Bucket
+	Time
+	Ip
+	Requester
+	RequestId
+	Operation
+	S3Key
+	RequestUri
+	HttpStatus
+	ErrorCode
+	BytesSent
+	ObjectSize
+	TotalTime
+	TurnAroundTime
+	Referrer
+	UserAgent
+	VersionId
 )
 
 func check(err error) {
@@ -37,6 +61,8 @@ func check(err error) {
 }
 
 func getBufStr(buf []byte) string {
+	// This returns a stirng that points directly to the buffer memory, avoiding making a copy
+	// This is dangerous if you change the buffer before done with the string! So be careful
 	return *(*string)(unsafe.Pointer(&buf))
 }
 
@@ -60,6 +86,7 @@ func main() {
 	s3c := s3.New(sess)
 	bucket := aws.String("encode-public-logs")
 	logMtx := &sync.Mutex{}
+	// Make a reasonably sized buffer to start to avoid constant resizing in the beginning
 	logBuf := bytes.NewBuffer(make([]byte, 0, 100000000))
 
 	// Open connection to database, read password from .env file
@@ -74,40 +101,47 @@ func main() {
 	// Make a dictionary to map s3 keys to item ids to prevent excessive database queries
 	rows, err := db.Query("SELECT s3_key, id FROM dashboard_item")
 	check(err)
-	s3KeyToItemId := map[string]string{}
+	s3KeyToItemId := map[string]string{} // Similar to a dictionary that maps a string to a string in Python
+	// We are mapping S3 keys to their item IDs via the Item table so we can quickly look it up in-memory later when we create logs
 	for rows.Next() {
 		var s3Key string
 		var itemId int
+		// Drop into Go variables from PSQL query result in order
 		err = rows.Scan(&s3Key, &itemId)
 		check(err)
+		// Quotes are important since all PSQL variables need to be wrapped in them, even numbers
 		s3KeyToItemId[s3Key] = "'" + strconv.Itoa(itemId) + "'"
 	}
 	err = rows.Close()
 	check(err)
 
-	// Read all files and add them to the database
 	fieldBuilders := [fieldCount]bytes.Buffer{}
 	rowBuilders := make([]bytes.Buffer, 0, batchSize)
-	const insertStatement = "INSERT INTO dashboard_log (bucket, time, ip_address, requester, request_id, operation, s3_key, item_id, request_uri, http_status, error_code, bytes_sent, object_size, total_time, turn_around_time, referrer, user_agent, version_id) VALUES "
+	const insertStatement = "INSERT INTO dashboard_log (bucket, time, ip_address, requester, requester_type, request_id, operation, s3_key, item_id, request_uri, http_status, error_code, bytes_sent, object_size, total_time, turn_around_time, referrer, user_agent, version_id)"
 	var batchLogIdx int
 
 	batchInsert := func() {
+		// We can not read an array of byte buffers directly, so we need to convert it into an array of strings
+		// They will still be pointing into initial byte buffers to save memory, we just need Go to recognize them as strings instead of bytes
 		rows := make([]string, len(rowBuilders))
 		for rowIdx, rowBuilder := range rowBuilders {
 			rows[rowIdx] = getBufStr(rowBuilder.Bytes())
 		}
-		query := insertStatement + strings.Join(rows, ",")
+		query := insertStatement + " VALUES " + strings.Join(rows, ",")
 		for _, rowBuilder := range rowBuilders {
 			rowBuilder.Reset()
 		}
+		// Reset slice to zero length. This does not free the other memory, which is what we want so we do not have to allocate later!
 		rowBuilders = rowBuilders[:0]
 		_, err = db.Exec(query)
 		fmt.Println("Inserted into db")
-		//fmt.Println(query)
 		check(err)
 		batchLogIdx = 0
+		// We created a bunch of stuff on the heap so now is a good time to GC
 		runtime.GC()
 	}
+	// We use the last key read to start reading everything after it
+	// Logs are constant so nothing before the last read log changes - we only need to extract the new logs
 	lastKeyBytes, err := ioutil.ReadFile(lasts3KeyFileName)
 	check(err)
 	lastKey := getBufStr(lastKeyBytes)
@@ -117,13 +151,18 @@ func main() {
 		&s3.ListObjectsV2Input{
 			Bucket:     bucket,
 			StartAfter: aws.String(lastKey),
-			MaxKeys:    aws.Int64(1000),
+			MaxKeys:    aws.Int64(1000), // 1000 is the maximum
 		},
 		func(page *s3.ListObjectsV2Output, lastPage bool) bool {
+			// This channel represents how many workers are available
+			// The actual value of the boolean doesn't matter, just whether it exists in the channel
+			// TODO change to struct{} instead of bool to avoid confusion since value does not matter
 			worker := make(chan bool, 20)
+			// Fill up the worker pool initially
 			for i := 0; i < cap(worker); i++ {
 				worker <- true
 			}
+			// A wait group is basically an atomic counter. You can wait until the counter reaches zero, or when we have read all logs.
 			wg := &sync.WaitGroup{}
 			wg.Add(len(page.Contents))
 			objIdx := 0
@@ -131,6 +170,7 @@ func main() {
 			for {
 				<-worker
 				if objIdx == len(page.Contents) {
+					// We are done with all logs. Note that objIdx is a copy so no thread safety issues
 					break
 				}
 				go func(idx int, obj *s3.Object) {
@@ -143,8 +183,8 @@ func main() {
 					//fmt.Println("Get: ", time.Since(gs))
 
 					//rs := time.Now()
-					logMtx.Lock()
-					_, err = logBuf.ReadFrom(resp.Body)
+					logMtx.Lock()                       // We use one buffer so make sure to lock it when writing to it
+					_, err = logBuf.ReadFrom(resp.Body) // Copy from HTTP response into our buffer
 					check(err)
 					logMtx.Unlock()
 					//fmt.Println("Read: ", time.Since(rs))
@@ -152,12 +192,12 @@ func main() {
 					err = resp.Body.Close()
 					check(err)
 
-					worker <- true
-					wg.Done()
+					worker <- true // Return this worker to the pool
+					wg.Done()      // Essentially decrements atomic counter by one
 				}(objIdx, page.Contents[objIdx])
 				objIdx += 1
 			}
-			wg.Wait()
+			wg.Wait() // Wait until wait group is done - counter reaches zero
 			fmt.Println(len(page.Contents), "Files Downloaded in", time.Since(now))
 
 			now = time.Now()
@@ -175,26 +215,9 @@ func main() {
 				}
 				field := getBufStr(logBuf.Bytes()[sliceStart:sliceEnd])
 				fieldIsEscaped = false
-				switch logFieldIdx {
-				// 0: Bucket Owner (Ignored)
-				// 1: Bucket
-				// 2: Time
-				// 3: IP
-				// 4: Requester
-				// 5: Request ID
-				// 6: Operation
-				// 7: Key
-				// 8: URI
-				// 9: HTTP Status
-				// 10: Error Code
-				// 11: Bytes Sent
-				// 12: Object Size
-				// 13: Total Time
-				// 14: Turn Around Time
-				// 15: Referrer
-				// 16: User Agent
-				// 17: Version Id
-				case 1, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17:
+				switch LogField(logFieldIdx) {
+				case Bucket, Ip, RequestId, RequestUri, HttpStatus, ErrorCode, BytesSent, ObjectSize, TotalTime, TurnAroundTime, Referrer, UserAgent, VersionId:
+					// TODO make function which retrieves next and automatically increments field index
 					fieldBuilder := &fieldBuilders[fieldIdx]
 					if field == "-" {
 						fieldBuilder.WriteString(psqlNull)
@@ -205,7 +228,23 @@ func main() {
 					}
 					fieldIdx++
 					break
-				case 6:
+				case Requester:
+					fieldBuilder := &fieldBuilders[fieldIdx]
+					if field == "-" {
+						fieldBuilder.WriteString(psqlNull)
+					} else {
+						fieldBuilder.WriteString("'")
+						fieldBuilder.WriteString(field)
+						fieldBuilder.WriteString("'")
+					}
+					if strings.Contains(field, "encoded-instance") {
+						fieldBuilders[fieldIdx+1].WriteString("'1'")
+					} else {
+						fieldBuilders[fieldIdx+1].WriteString("'0'")
+					}
+					fieldIdx += 2
+					break
+				case Operation:
 					if field == "-" {
 						fieldBuilders[fieldIdx].WriteString(psqlNull)
 					} else if field == "REST.GET.OBJECT" {
@@ -218,7 +257,7 @@ func main() {
 					}
 					fieldIdx++
 					break
-				case 7:
+				case S3Key:
 					if field == "-" {
 						fieldBuilders[fieldIdx].WriteString(psqlNull)
 						fieldBuilders[fieldIdx+1].WriteString(psqlNull)
@@ -235,7 +274,7 @@ func main() {
 					}
 					fieldIdx += 2
 					break
-				case 2:
+				case Time:
 					if field == "-" {
 						fieldBuilders[fieldIdx].WriteString(psqlNull)
 					} else {
@@ -301,6 +340,7 @@ func main() {
 			fmt.Println(len(page.Contents), "Files Processed in", time.Since(now))
 
 			if lastPage {
+				// Remember last key so next time we know exactly where to find new logs
 				lastKey := *page.Contents[len(page.Contents)-1].Key
 				err = ioutil.WriteFile(lasts3KeyFileName, []byte(lastKey), 0777)
 				check(err)
@@ -311,6 +351,7 @@ func main() {
 		},
 	)
 
+	// Test if there are still some logs left
 	if batchLogIdx > 0 {
 		batchInsert()
 	}

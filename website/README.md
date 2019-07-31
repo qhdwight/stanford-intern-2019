@@ -101,3 +101,4 @@ By default it is bound to the private IP of the EC2 instance. I assigned an elas
 |`python manage.py shell`|Get into a python shell with Django initialized|
 |`watch iostat -d`|View the IOPs of the database disk|
 |`tmux new` and `tmux ls` and `tmux a`|tmux is a handy tool that allows commands to be run in sub-shells that can be detached and left to run|
+|`pg_activity`|Run this in the `postgres` user after running `sudo su - postgres` and `bash` to activate the conda environment to view active database queries. **Very useful**.|

@@ -1,13 +1,14 @@
 import json
 import os
+import sys
+import subprocess
 from datetime import datetime
 
 import requests
 from django.core.management.base import BaseCommand
-from s3logparse import s3logparse
 from tqdm import tqdm
 
-from dashboard.models import Log, Experiment, Award, Lab, Item
+from dashboard.models import Experiment, Award, Lab, Item
 
 ITEM_FIELDS = [
     'assay_title',
@@ -28,51 +29,6 @@ EXPERIMENT_FIELDS = [
     'assay_term_name',
     'date_released',
 ]
-LOGS_DIR = 's3_logs'
-
-
-def get_db_log_from_log_line(log_file_name, log):
-    # TODO compress somehow?
-    return Log(
-        key_name=log_file_name,
-        bucket=log.bucket,
-        time=log.timestamp,
-        ip_address=log.remote_ip,
-        requester=log.requester,
-        request_id=log.request_id,
-        operation=log.operation,
-        s3_key=log.s3_key,
-        request_uri=log.request_uri,
-        http_status=log.status_code,
-        error_code=log.error_code,
-        bytes_sent=log.bytes_sent,
-        object_size=log.object_size,
-        total_time=log.total_time,
-        turn_around_time=log.turn_around_time,
-        referrer=log.referrer,
-        user_agent=log.user_agent,
-        version_id=log.version_id
-    )
-
-
-def process_chunk(log_file_names, s3_key_to_id):
-    db_logs = []
-    for log_file_name in log_file_names:
-        with open(f'{LOGS_DIR}/{log_file_name}', 'r') as log_file:
-            for log in s3logparse.parse_log_lines(log_file.readlines()):
-                # Skip if we have already pulled this log file. Note this cancels out of the entire file.
-                # Request IDs are unique.
-                if log.operation == 'REST.COPY.PART':
-                    break
-                if log.operation != 'REST.GET.OBJECT':
-                    continue
-                # Converting S3 log parse object to django object.
-                # TODO there are two conversions when one could do.
-                #  Maybe the log parse library should be ditched.
-                db_log = get_db_log_from_log_line(log_file_name, log)
-                db_log.item_id = s3_key_to_id.get(db_log.s3_key)
-                db_logs.append(db_log)
-    return db_logs
 
 
 class Command(BaseCommand):
@@ -202,5 +158,7 @@ class Command(BaseCommand):
                 experiment_result_dict[result['@id'].split('/')[2]] = result
             print('Adding items and experiments...')
             self.add_items_and_experiments(item_results, experiment_result_dict)
-
-        # print(f'Done in {datetime.now() - start}!')
+        print('Running Go command...')
+        start = datetime.now()
+        subprocess.run(['go', 'run', 'go/src/extract.go'], cwd=os.getcwd())
+        print(f'Finished logs in {datetime.now() - start}')
