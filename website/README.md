@@ -16,6 +16,18 @@ To access the ORM and generate queries in python, run the following command `pyt
 
 Example:
 
+```
+(s3_usage) ubuntu@ip-172-31-24-1:~/stanford-intern-2019/website$ python manage.py shell
+Python 3.7.3 (default, Mar 27 2019, 22:11:17) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.6.1 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from dashboard.models import Log                                                                                                                    
+
+In [2]: Log.objects.count()                                                                                                                                 
+Out[2]: 33991950
+```
+
 ## Interactive Website
 There is a website that allows you to explore the data in a basic manner. To access, run `python manage.py runserver <ip>:8000` where IP is the private one of the EC2 instance, which can be found in the dashboard. Then, it can be accessed at the public IP of the EC2 instance in your brower.  The website is slow initially, so give a couple of minutes for the homepage or other queries. **IMPORTANT**: Add your IP to the security group in the EC2 dashboard to be able to access the server. See subtleties for more information.
 
