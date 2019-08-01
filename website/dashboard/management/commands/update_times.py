@@ -15,7 +15,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        data_set = options['dataset'][0] or 'all'
+        data_set = options['dataset'] or 'all'
         print(f'Starting post-process for {data_set}')
         filter_args = BERNSTEIN_EXPERIMENT_FILTER_KWARGS if data_set == 'bernstein' else {}
         readings = calculate_query_count_intervals(**filter_args)
