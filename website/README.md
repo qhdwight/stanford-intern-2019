@@ -48,7 +48,7 @@ The Django default templating language is not used. Instead, [Jinja2](https://ji
 ### Running in Production/Debug Mode
 If using production (debug false), make sure to run the command `python manage.py collectstatic` first, as assets are compressed and cached. Set `CACHE_TIME` in `.env` as well to zero if testing so that pages will not be... cached. However, in production you want this since many queries take a long time to run.
 ### Website Usage and Extent of Ability
-The website is not intended for complex use. Instead, see the Jupyter notebooks in 'dashboard/' for more complicated queries using the django ORM. Raw Postgres SQL statements can also be used. Check the Go script in `go/src/extract.go` for faster database access.
+The website is not intended for complex use. Instead, see the Jupyter notebooks in 'dashboard/' for more complicated queries using the django ORM. Raw Postgres SQL statements can also be used. Check the Go script in `go/extract.go` for faster database access.
 ### Subtle Complexities of Project
 The reason Go is used is because of its manual memory management and speed. It is compiled and takes advantage of multi-threaded goroutines to download data from S3 in parallel. In addition to this, it uses a growing buffer that extends if needed to save on heap allocation. In practice, this script was 2x faster and used 2x less CPU than the python script when initially transferring data into the database.
 
@@ -62,9 +62,9 @@ When migrating, make sure to run the Postgres `VACUUM (FULL, ANALYZE, VERBOSE);`
 
 Run `python manage.py update_times` to allow for a time graph on the dashboard homepage. `python manage.py` allows the Bernstein experiment page to be properly rendered. It is also a good example of how to analyze across Log table and Item/Experiment tables.
 
-~~To run the Go script by itself, the `GOPATH` environment variable must be set to the `go/` folder. To run, do `go run go/src/extract.go` command in terminal. This allows the current working directory to be set properly (run it from the website directory). If it needs dependencies, run `go get ./...` in the `go/` directory. It uses packages from GitHub that must be downloaded before use.~~
+~~To run the Go script by itself, the `GOPATH` environment variable must be set to the `go/` folder. To run, do `go run go/extract.go` command in terminal. This allows the current working directory to be set properly (run it from the website directory). If it needs dependencies, run `go get ./...` in the `go/` directory. It uses packages from GitHub that must be downloaded before use.~~
 
-I set the go script to use [go modules](https://github.com/golang/go/wiki/Modules) now to avoid setting the `GOPATH` environment variables. Make sure you are in the `website` directory (go needs this as workign directory to properly access certain files, it reads from `.env` to get password for database). To extract, run `go run go/src/extract.go` and it should automatically download and install all dependencies required.
+I set the go script to use [go modules](https://github.com/golang/go/wiki/Modules) now to avoid setting the `GOPATH` environment variables. Make sure you are in the `website` directory (go needs this as workign directory to properly access certain files, it reads from `.env` to get password for database). To extract, run `go run go/extract.go` and it should automatically download and install all dependencies required.
 
 To bind functions in HTML, use `activity_viewer/jinja_settings.py` to map them.
 
@@ -93,7 +93,7 @@ By default it is bound to the private IP of the EC2 instance. I assigned an elas
 |Command|Use|
 |---|---|
 |`jupyter notebook --port 8888 --ip 172.31.24.1 --no-browser`|Run the Jupyter server manually. Run in `website/`|
-|`go run go/src/extract.go`|Extract manually with Go|
+|`go run go/extract.go`|Extract manually with Go|
 |`python manage.py migrate`|Create migrations from `models.py`|
 |`python manage.py sync`|Update items and logs. Add `--skip` option to skip updating items|
 |`python manage.py update_times`|Update the times that make the graph on the homepage|

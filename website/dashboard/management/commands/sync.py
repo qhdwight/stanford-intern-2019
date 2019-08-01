@@ -160,5 +160,5 @@ class Command(BaseCommand):
             self.add_items_and_experiments(item_results, experiment_result_dict)
         print('Running Go command...')
         start = datetime.now()
-        subprocess.run(['go', 'run', 'go/src/extract.go'], cwd=os.getcwd())
+        subprocess.run(['go', 'run', 'go/extract.go'], cwd=os.getcwd())
         print(f'Finished logs in {datetime.now() - start}')
