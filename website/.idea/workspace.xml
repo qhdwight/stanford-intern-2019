@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/66a99356-e598-41b9-97c6-dfd0b8e145f6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/66a99356-e598-41b9-97c6-dfd0b8e145f6.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LastLogS3Key.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LastLogS3Key.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/management/commands/sync.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/management/commands/sync.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go/src/extract.go" beforeDir="false" afterPath="$PROJECT_DIR$/go/extract.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/query.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/site.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/site.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -146,7 +146,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django server.Analyze">
+  <component name="RunManager" selected="Django server.Run">
     <configuration name="go build extract.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="website" />
       <working_directory value="$PROJECT_DIR$/" />
@@ -339,6 +339,7 @@
       <workItem from="1564418673290" duration="336000" />
       <workItem from="1564419024869" duration="19140000" />
       <workItem from="1564516610728" duration="12744000" />
+      <workItem from="1564684034727" duration="1243000" />
     </task>
     <servers />
   </component>

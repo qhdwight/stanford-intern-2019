@@ -45,6 +45,7 @@ def get_most_queried_items_limited(amount, start_time=START_TIME, end_time=END_T
     return take_page(filter_from_time_range(start_time, end_time)
                      .filter(**kwargs)
                      .values_list('s3_key')
+                     .filter(item__isnull=False)
                      .annotate(count=Count('ip_address', distinct=True))
                      .order_by('-count'), amount, page)
 
@@ -89,7 +90,7 @@ def get_general_stat(stat_name, start_time=START_TIME, end_time=END_TIME, **kwar
     key_and_ip = log_range.values_list('s3_key', 'ip_address')
     distinct_keys = key_and_ip.values_list('s3_key').distinct()
     # QuerySets are lazy so above is basically just setup for building query
-    if stat_name == 'total_request_count':
+    if stat_name == 'total_downloads':
         return log_range.count()
     elif stat_name == 'unique_request_count':
         return key_and_ip.distinct().count()
@@ -147,6 +148,7 @@ def get_items_for_source_limited(amount, start_time=START_TIME, end_time=END_TIM
     return take_page(filter_from_time_range(start_time, end_time)
                      .filter(**kwargs)
                      .values_list('s3_key')
+                     .filter(item__isnull=False)
                      # Group by S3 key and see how many total downloads there were
                      .annotate(count=Count('s3_key'))
                      .order_by('-count'), amount, page)

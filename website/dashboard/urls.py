@@ -50,7 +50,7 @@ def add_urls(path_names, view, name):
 def add_urls_with_stats(path_names, view, stats_view, name):
     add_urls(path_names, view, name)
     stats_name = f'{name}_stats'
-    stats_paths = [path(f'{base_path}<str:stat_name>/', stats_view, name=stats_name) for base_path in path_names]
+    stats_paths = [path(f'{base_path}stats/<str:stat_name>/', stats_view, name=stats_name) for base_path in path_names]
     urlpatterns.extend(stats_paths)
 
 

@@ -46,19 +46,27 @@ function formatCount(number, formatType) {
 }
 
 $(document).ready(function () {
-    $('.counter[data-count]').fadeTo(0, 0).fadeTo(1000, 1).each(function () {
-        const $this = $(this), countTo = $this.attr('data-count'), formatType = $this.attr('format');
-        $({finalNumber: $this.text()}).animate({
-                count: countTo
+    $('.counter[data-url]').each(function () {
+        const $this = $(this), dataUrl = $this.attr('data-url'), formatType = $this.attr('format');
+        $.ajax({
+            url: dataUrl,
+            success: function (result) {
+                $({finalNumber: $this.text()}).animate({
+                        count: result
+                    },
+                    {
+                        duration: 1500,
+                        easing: 'swing',
+                        step: function () {
+                            $this.text(formatCount(this.count, formatType))
+                        },
+                        complete: this.step
+                    });
             },
-            {
-                duration: 1500,
-                easing: 'swing',
-                step: function () {
-                    $this.text(formatCount(this.count, formatType))
-                },
-                complete: this.step
-            });
+            error: function (result) {
+                $this.text('Error')
+            }
+        });
     });
 
     function getCurrentPage(tableControlElement) {
