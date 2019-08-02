@@ -99,9 +99,8 @@ class Log(models.Model):
 
     class Meta:
         indexes = [
-            BrinIndex(fields=['item', 'time', 'ip_address', 'requester',
-                              'requester_type', 'request_id', 's3_key', 'http_status',
-                              'error_code', 'object_size'])
+            BrinIndex(fields=[field]) for field in ['item', 'time', 'ip_address', 'requester', 'requester_type',
+                                                    'request_id', 's3_key', 'http_status', 'error_code', 'object_size']
         ]
 
     # Fields that are in log but we do not care about past here

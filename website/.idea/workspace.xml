@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2b0336e-7679-40be-81d5-4f4ee0d7e9c9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/go/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/lib/pq/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go/src/github.com/mattn/go-colorable/go.sum" afterDir="false" />
     </list>
@@ -108,18 +108,19 @@
     <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/go" />
+      <recent name="C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website" />
+      <recent name="C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website\dashboard\management\commands" />
+      <recent name="$PROJECT_DIR$/dashboard/management/commands" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/go" />
       <recent name="C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website\templates" />
       <recent name="C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website" />
       <recent name="$PROJECT_DIR$/templates" />
       <recent name="C:\Users\qhdwi\Projects\Programming\Stanford Internship\stanford-intern-2019\website\static\js" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/go" />
-      <recent name="C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website" />
-      <recent name="C:\Users\qhdwi\Projects\Programming\stanford-intern-2019\website\dashboard\management\commands" />
-      <recent name="$PROJECT_DIR$/dashboard/management/commands" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -332,6 +333,7 @@
       <workItem from="1564419024869" duration="19140000" />
       <workItem from="1564516610728" duration="12744000" />
       <workItem from="1564684034727" duration="1243000" />
+      <workItem from="1564714271698" duration="250000" />
     </task>
     <servers />
   </component>
