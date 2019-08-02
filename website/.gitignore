@@ -110,4 +110,4 @@ analyze_files.txt
 
 staticfiles/
 
-website/LastLogS3Key.txt
+**/LastLogS3Key.txt
