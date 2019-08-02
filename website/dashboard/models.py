@@ -77,31 +77,25 @@ class Log(models.Model):
     bucket = models.TextField(max_length=16, null=True)
     # Time at which this log was created
     time = models.DateTimeField(null=True, db_index=True)
-    ip_address = models.GenericIPAddressField(null=True)
-    requester = models.TextField(max_length=64, null=True)
+    ip_address = models.GenericIPAddressField(null=True, db_index=True)
+    requester = models.TextField(max_length=64, null=True, db_index=True)
     # Easily have the ability to filter out encoded instances without having to use a string contains search
-    requester_type = models.PositiveSmallIntegerField()
-    request_id = models.TextField(max_length=16)
+    requester_type = models.PositiveSmallIntegerField(db_index=True)
+    request_id = models.TextField(max_length=16, db_index=True)
     operation = models.TextField(max_length=16, null=True)
-    s3_key = models.TextField(max_length=64, null=True)
+    s3_key = models.TextField(max_length=64, null=True, db_index=True)
     request_uri = models.TextField(max_length=1024, null=True)
     # 200 represents a full download, 206 is partial and most likely from a browser/visualizer
-    http_status = models.PositiveSmallIntegerField(null=True)
+    http_status = models.PositiveSmallIntegerField(null=True, db_index=True)
     # If non-None, provides information about why the request was denied
-    error_code = models.TextField(max_length=16, null=True)
+    error_code = models.TextField(max_length=16, null=True, db_index=True)
     bytes_sent = models.BigIntegerField(null=True)
-    object_size = models.BigIntegerField(null=True)
+    object_size = models.BigIntegerField(null=True, db_index=True)
     total_time = models.PositiveIntegerField(null=True)
     turn_around_time = models.PositiveIntegerField(null=True)
     referrer = models.TextField(null=True)
     user_agent = models.TextField(max_length=128, null=True)
     version_id = models.TextField(max_length=128, null=True)
-
-    class Meta:
-        indexes = [
-            BrinIndex(fields=[field]) for field in ['item', 'ip_address', 'requester', 'requester_type',
-                                                    'request_id', 's3_key', 'http_status', 'error_code', 'object_size']
-        ]
 
     # Fields that are in log but we do not care about past here
 
