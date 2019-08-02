@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="PostgreSQL - s3loganalysis@localhost" uuid="66a99356-e598-41b9-97c6-dfd0b8e145f6">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/s3loganalysis</jdbc-url>
-    </data-source>
     <data-source source="LOCAL" name="Django default" uuid="88ff05cc-2718-497c-8a6e-316cf89efdfc">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
@@ -14,6 +8,12 @@
       <remarks>$PROJECT_DIR$/activity_viewer/settings.py</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://127.0.0.1:5432/s3loganalysis</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="s3loganalysis@54.71.99.11" uuid="8a33e8ab-aa17-454f-aef2-a362f493b916">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://54.71.99.11:5432/s3loganalysis</jdbc-url>
     </data-source>
   </component>
 </project>
