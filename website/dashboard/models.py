@@ -76,7 +76,7 @@ class Log(models.Model):
     item = models.ForeignKey(Item, null=True, on_delete=models.PROTECT)
     bucket = models.TextField(max_length=16, null=True)
     # Time at which this log was created
-    time = models.DateTimeField(null=True)
+    time = models.DateTimeField(null=True, db_index=True)
     ip_address = models.GenericIPAddressField(null=True)
     requester = models.TextField(max_length=64, null=True)
     # Easily have the ability to filter out encoded instances without having to use a string contains search
@@ -99,7 +99,7 @@ class Log(models.Model):
 
     class Meta:
         indexes = [
-            BrinIndex(fields=[field]) for field in ['item', 'time', 'ip_address', 'requester', 'requester_type',
+            BrinIndex(fields=[field]) for field in ['item', 'ip_address', 'requester', 'requester_type',
                                                     'request_id', 's3_key', 'http_status', 'error_code', 'object_size']
         ]
 
