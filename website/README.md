@@ -6,7 +6,7 @@ A sync Django command can be run, triggering a Go script that uses the AWS SDK t
 
 Logs with invalid requests are also included in the database, which can be useful for analysis. The goal is to expose a python interface for quick searches, but also have the back-end of Postgres to run more complicated searches.
 
-The EC2 instance can be stopped and restarted without a problem - but ideally make sure that all active queries are stopped before stopping.
+The EC2 instance can be stopped and restarted without a problem - but ideally make sure that all active queries are stopped before stopping. *The name of the instance is `s3-log-anaylsis`*.
 
 ## Jupyter Notebook Examples
 Access the IP address of the EC2 instance with port 8888 in the browser to access the Jupyter notebooks. Go to the `dashboard` folder and there are examples of how to use the Django ORM and sometimes pandas to analyze data. **IMPORTANT**: If a token is required see the instructions under subtleties.
