@@ -1,4 +1,4 @@
-Django==2.2.3
+Django==2.2.4
 gunicorn==19.9.0
 Jinja2==2.10.1
 python-decouple==3.1
